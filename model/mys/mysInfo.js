@@ -374,6 +374,7 @@ export default class MysInfo {
       case -1002:
         if (res.api === 'detail') res.retcode = 0
         break
+      case 10035:        
       case 1034:
         let retry = 0
         res = await this.geetest(type, mysApi, data)
