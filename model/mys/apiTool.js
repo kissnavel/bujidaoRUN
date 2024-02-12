@@ -119,18 +119,18 @@ export default class apiTool {
           types: 'widget'
         },
         sign: {
-          url: `${hostList.host}event/bbs_sign_reward/sign`,
-          body: { act_id: 'e202009291139501', region: this.server, uid: this.uid },
+          url: `${hostList.host}event/luna/sign`,
+          body: { act_id: 'e202311201442471', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host}event/bbs_sign_reward/info`,
-          query: `act_id=e202009291139501&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/info`,
+          query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host}event/bbs_sign_reward/home`,
-          query: `act_id=e202009291139501&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/home`,
+          query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         }
       },

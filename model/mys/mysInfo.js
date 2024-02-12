@@ -52,11 +52,18 @@ export default class MysInfo {
       return false
     }
 
-    if (!['1', '2', '3', '5', '6', '7', '8', '18', '9'].includes(String(mysInfo.uid)[0])) {
+    let uidPrefix = mysInfo.uid.toString()
+    if (uidPrefix.length == 10) {
+      uidPrefix = uidPrefix.slice(0, 2)
+    } else {
+      uidPrefix = uidPrefix.slice(0, 1)
+    }
+
+    if (!['1', '2', '3', '5', '6', '7', '8', '18', '9'].includes(uidPrefix)) {
       // e.reply('只支持查询国服uid')
       return false
     }
-    if (!['6', '7', '8', '18', '9'].includes(String(mysInfo.uid)[0]) && api === 'useCdk') {
+    if (!['6', '7', '8', '18', '9'].includes(uidPrefix) && api === 'useCdk') {
       e.reply('兑换码使用只支持国际服uid')
       return false
     }
@@ -98,7 +105,7 @@ export default class MysInfo {
     }
 
     let matchUid = (msg = '') => {
-      let ret = /[125-9][0-9]{8}/g.exec(msg)
+      let ret = /([1-9]|18)[0-9]{8}/g.exec(msg)
       if (!ret) return false
       return ret[0]
     }
@@ -374,7 +381,7 @@ export default class MysInfo {
       case -1002:
         if (res.api === 'detail') res.retcode = 0
         break
-      case 10035:        
+      case 10035:
       case 1034:
         let retry = 0
         res = await this.geetest(type, mysApi, data)

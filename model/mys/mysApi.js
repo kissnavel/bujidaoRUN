@@ -47,7 +47,13 @@ export default class MysApi {
   }
 
   getServer() {
-    switch (String(this.uid)[0]) {
+    let uidPrefix = this.uid.toString()
+    if (uidPrefix.length == 10) {
+      uidPrefix = uidPrefix.slice(0, 2)
+    } else {
+      uidPrefix = uidPrefix.slice(0, 1)
+    }
+    switch (uidPrefix) {
       case '1':
       case '2':
         return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
@@ -148,7 +154,7 @@ export default class MysApi {
       'x-rpc-device_id': this.device_id,
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
       'Referer': 'https://webstatic.mihoyo.com'
-    }
+      }
 
     const header1 = {
       'x-rpc-app_version': '2.40.1',

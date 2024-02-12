@@ -26,7 +26,7 @@ export class ji_config extends plugin {
                     fnc: 'setbbs'
                 },
                 {
-                    reg: '^#?(原神|星铁|崩三)?(禁用|解禁)(uid)?\\s*[1-9][0-9]{8}$',
+                    reg: '^#?(原神|星铁|崩三)?(禁用|解禁)(uid)?\\s*([1-9]|18)[0-9]{8}$',
                     fnc: 'banUid'
                 },
                 {
