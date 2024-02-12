@@ -121,17 +121,17 @@ export default class apiTool {
         sign: {
           url: `${hostList.host}event/luna/sign`,
           body: { act_id: 'e202311201442471', region: this.server, uid: this.uid },
-          types: 'sign'
+          types: 'gssign'
         },
         sign_info: {
           url: `${hostList.host}event/luna/info`,
           query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
+          types: 'gssign'
         },
         sign_home: {
           url: `${hostList.host}event/luna/home`,
           query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
+          types: 'gssign'
         }
       },
       sr: {
