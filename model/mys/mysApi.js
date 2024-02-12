@@ -58,6 +58,7 @@ export default class MysApi {
       case '7':
         return this.game == 'sr' ? 'prod_official_euro' : 'os_euro'
       case '8':
+      case '18':
         return this.game == 'sr' ? 'prod_official_asia' : 'os_asia'
       case '9':
         return this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
