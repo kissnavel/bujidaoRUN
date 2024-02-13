@@ -21,7 +21,7 @@ export class ji_note extends plugin {
                     fnc: 'noteconfig'
                 },
                 {
-                    reg: '^#?(原神|星铁)?体力推送(阈值)?\\s*([1-9]|18)[0-9]{8}{0,2}$',
+                    reg: '^#?(原神|星铁)?体力推送(阈值)?\\s*[1-9][0-9]{0,2}$',
                     fnc: 'noteResin'
                 },
                 {

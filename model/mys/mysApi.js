@@ -154,9 +154,18 @@ export default class MysApi {
       'x-rpc-device_id': this.device_id,
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
       'Referer': 'https://webstatic.mihoyo.com'
+    }
+
+    const header_gs = {
+      'x-rpc-app_version': '2.40.1',
+      'x-rpc-client_type': '5',
+      'x-rpc-device_id': this.device_id,
+      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
+      'x-rpc-signgame': 'hk4e',
+      'Referer': 'https://act.mihoyo.com'
       }
 
-    const header1 = {
+    const header_bbs = {
       'x-rpc-app_version': '2.40.1',
       "x-rpc-device_model": "Mi 10",
       'x-rpc-device_name': this.device,
@@ -168,19 +177,10 @@ export default class MysApi {
       'x-rpc-device_id': this.device_id
     }
 
-    const header2 = {
-      'x-rpc-app_version': '2.40.1',
-      'x-rpc-client_type': '5',
-      'x-rpc-device_id': this.device_id,
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
-      'x-rpc-signgame': 'hk4e',
-      'Referer': 'https://act.mihoyo.com'
-      }
-
     switch (types) {
       case 'bbs':
         return {
-          ...header1,
+          ...header_bbs,
           'DS': (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
         }
       case 'sign':
@@ -194,9 +194,9 @@ export default class MysApi {
           'x-rpc-sys_version': '6.0.1',
           'DS': this.SignDs()
         }
-      case 'gssign':
+      case 'sign_gs':
         return {
-          ...header2,
+          ...header_gs,
           'X-Requested-With': 'com.mihoyo.hyperion',
           'x-rpc-platform': 'android',
           'x-rpc-device_model': 'Mi 10',

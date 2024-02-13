@@ -150,7 +150,7 @@ export default class Note extends base {
     let screenData = this.screenData
 
     if (game == 'sr') {
-      screenData.tplFile = `${this._path}/plugins/genshin/resources/StarRail/html/dailyNote/dailyNote.html`
+      screenData.tplFile = `${this._path}/plugins/genshin/resources/html/player/daily-note-sr.html`
       screenData.pluResPath = `${this._path}/plugins/genshin/resources/StarRail/`
     }
 

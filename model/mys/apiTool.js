@@ -11,7 +11,7 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
-      bbs_api: `https://bbs-api.mihoyo.com/`,
+      bbs_api: 'https://bbs-api.mihoyo.com/',
       hostRecord: 'https://api-takumi-record.mihoyo.com/'
     }
 
@@ -120,18 +120,18 @@ export default class apiTool {
         },
         sign: {
           url: `${hostList.host}event/luna/sign`,
-          body: { act_id: 'e202311201442471', region: this.server, uid: this.uid },
-          types: 'gssign'
+          body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
+          types: 'sign_gs'
         },
         sign_info: {
           url: `${hostList.host}event/luna/info`,
-          query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'gssign'
+          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
+          types: 'sign_gs'
         },
         sign_home: {
           url: `${hostList.host}event/luna/home`,
-          query: `act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'gssign'
+          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
+          types: 'sign_gs'
         }
       },
       sr: {
@@ -145,17 +145,17 @@ export default class apiTool {
         },
         sign: {
           url: `${hostList.host}event/luna/sign`,
-          body: { act_id: 'e202304121516551', region: this.server, uid: this.uid },
+          body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
           url: `${hostList.host}event/luna/info`,
-          query: `act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
           url: `${hostList.host}event/luna/home`,
-          query: `act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         index: {
@@ -204,12 +204,12 @@ export default class apiTool {
         },
         sign_info: {
           url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&region=${this.server}&act_id=e202306201626331&&uid=${this.uid}`,
+          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
           url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202306201626331`,
+          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         }
       }
