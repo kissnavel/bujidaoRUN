@@ -52,18 +52,11 @@ export default class MysInfo {
       return false
     }
 
-    let uidPrefix = mysInfo.uid.toString()
-    if (uidPrefix.length == 10) {
-      uidPrefix = uidPrefix.slice(0, 2)
-    } else {
-      uidPrefix = uidPrefix.slice(0, 1)
-    }
-
-    if (!['1', '2', '3', '5', '6', '7', '8', '18', '9'].includes(uidPrefix)) {
+    if (!['1', '2', '3', '5', '6', '7', '8', '18', '9'].includes(String(mysInfo.uid)[0])) {
       // e.reply('只支持查询国服uid')
       return false
     }
-    if (!['6', '7', '8', '18', '9'].includes(uidPrefix) && api === 'useCdk') {
+    if (!['6', '7', '8', '18', '9'].includes(String(mysInfo.uid)[0]) && api === 'useCdk') {
       e.reply('兑换码使用只支持国际服uid')
       return false
     }
@@ -299,7 +292,7 @@ export default class MysInfo {
 
     if (!this.uid) this.e.reply('请先#绑定uid')
 
-    if (!this.ckInfo.ck) this.e.reply('请【#扫码登录】或【#刷新ck】')
+    if (!this.ckInfo.ck) this.e.reply('请发送【#cookie帮助】查看配置教程\n或尝试【#刷新ck】')
 
     this.e.noTips = true
   }
@@ -381,9 +374,12 @@ export default class MysInfo {
       case -1002:
         if (res.api === 'detail') res.retcode = 0
         break
-      case 10035:
       case 5003:
+      case 10041:
+        if (!isTask) this.e.reply(`UID:${this.uid}，米游社账号异常，暂时无法查询`)
+        break
       case 1034:
+      case 10035:
         let retry = 0
         res = await this.geetest(type, mysApi, data)
         while (res?.retcode == 1034 && retry < Cfg.getConfig('config').retrytime) {

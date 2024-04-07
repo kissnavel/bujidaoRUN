@@ -40,7 +40,7 @@ export class ji_sign extends plugin {
         this.task = [
             {
                 cron: this.config.signTime,
-                name: '米游社签到任务',
+                name: '签到任务',
                 fnc: () => this.Task()
             },
             {

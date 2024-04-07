@@ -21,7 +21,7 @@ export default class MysSign extends base {
         let { cks, uids } = await Cfg.getcks(false, e.user_id)
 
         if (_.every(cks, _.isEmpty))
-            return e.reply('\n请【#扫码登录】绑定ck\n或尝试【#刷新ck】', false, { at: true })
+            return e.reply('\n无法签到，发送【#cookie帮助】查看配置教程\n或尝试【#刷新ck】', false, { at: true })
 
         if (signing) return e.reply(`\n当前签到剩余【${Nosign}】个\n预计【${finishTime}】完成`, false, { at: true, recallMsg: mysSign.set.recall })
 
@@ -234,7 +234,7 @@ export default class MysSign extends base {
             signing = false, Nosign = 0
 
         if (signing) {
-            if (manual) await this.e.reply('原神签到任务进行中，完成前请勿重复执行')
+            if (manual) await this.e.reply('签到任务进行中，完成前请勿重复执行')
             return
         }
 
@@ -394,4 +394,3 @@ export default class MysSign extends base {
         return { noSignNum, signNum }
     }
 }
-
