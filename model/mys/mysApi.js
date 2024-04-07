@@ -47,13 +47,7 @@ export default class MysApi {
   }
 
   getServer() {
-    let uidPrefix = this.uid.toString()
-    if (uidPrefix.length == 10) {
-      uidPrefix = uidPrefix.slice(0, 2)
-    } else {
-      uidPrefix = uidPrefix.slice(0, 1)
-    }
-    switch (uidPrefix) {
+    switch (String(this.uid)[0]) {
       case '1':
       case '2':
         return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
@@ -156,13 +150,12 @@ export default class MysApi {
       'Referer': 'https://webstatic.mihoyo.com'
     }
 
-    const header_gs = {
-      'x-rpc-app_version': '2.40.1',
-      'x-rpc-client_type': '5',
+    const header_os = {
+      'x-rpc-app_version': '2.9.0',
+      'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
-      'x-rpc-signgame': 'hk4e',
-      'Referer': 'https://act.mihoyo.com'
+      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
+      'Referer': 'https://webstatic-sea.hoyolab.com'
       }
 
     const header_bbs = {
@@ -185,19 +178,8 @@ export default class MysApi {
         }
       case 'sign':
         return {
-          ...header,
-          'X-Requested-With': 'com.mihoyo.hyperion',
-          'x-rpc-platform': 'android',
-          'x-rpc-device_model': 'Mi 10',
-          'x-rpc-device_name': this.device,
-          'x-rpc-channel': 'miyousheluodi',
-          'x-rpc-sys_version': '6.0.1',
-          'DS': this.SignDs()
-        }
-      case 'sign_gs':
-        return {
-          ...header_gs,
-          'X-Requested-With': 'com.mihoyo.hyperion',
+          ...header_os,
+          'X-Requested-With': 'com.mihoyo.hoyolab',
           'x-rpc-platform': 'android',
           'x-rpc-device_model': 'Mi 10',
           'x-rpc-device_name': this.device,
@@ -214,10 +196,16 @@ export default class MysApi {
     }
   }
 
-  getDs(q = '', b = '', salt = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs') {
+  getDs (q = '', b = '') {
+    let n = ''
+    if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
+      n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
+    } else if (/os_|official/.test(this.server)) {
+      n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
+    }
     let t = Math.round(new Date().getTime() / 1000)
     let r = Math.floor(Math.random() * 900000 + 100000)
-    let DS = md5(`salt=${salt}&t=${t}&r=${r}&b=${b}&q=${q}`)
+    let DS = md5(`salt=${n}&t=${t}&r=${r}&b=${b}&q=${q}`)
     return `${t},${r},${DS}`
   }
 

@@ -12,17 +12,24 @@ export default class apiTool {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
       bbs_api: 'https://bbs-api.mihoyo.com/',
-      hostRecord: 'https://api-takumi-record.mihoyo.com/'
+      host_os: 'https://sg-public-api.hoyolab.com/',
+      host_os_gs: 'https://sg-hk4e-api.hoyolab.com/'
+    }
+    let hostRecord
+    if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
+      hostRecord = 'https://api-takumi-record.mihoyo.com/'
+    } else if (['os_usa', 'os_euro', 'os_asia', 'os_cht'].includes(this.server)) {
+      hostRecord = 'https://bbs-api-os.mihoyo.com/'
     }
 
     let urlMap = {
       all: {
         createVerification: {
-          url: `${hostList.hostRecord}game_record/app/card/wapi/createVerification`,
+          url: `${hostRecord}game_record/app/card/wapi/createVerification`,
           query: 'is_high=true'
         },
         verifyVerification: {
-          url: `${hostList.hostRecord}game_record/app/card/wapi/verifyVerification`,
+          url: `${hostRecord}game_record/app/card/wapi/verifyVerification`,
           body: {
             "geetest_challenge": data.challenge,
             "geetest_validate": data.validate,
@@ -111,55 +118,55 @@ export default class apiTool {
       },
       gs: {
         dailyNote: {
-          url: `${hostList.hostRecord}game_record/app/genshin/api/dailyNote`,
+          url: `${hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         widget: {
-          url: `${hostList.hostRecord}game_record/genshin/aapi/widget/v2`,
+          url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
           types: 'widget'
         },
         sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
-          types: 'sign_gs'
+          url: `${hostList.host_os_gs}event/sol/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid },
+          types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign_gs'
+          url: `${hostList.host_os_gs}event/sol/info`,
+          query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+          types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign_gs'
+          url: `${hostList.host_os_gs}event/sol/home`,
+          query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+          types: 'sign'
         }
       },
       sr: {
         dailyNote: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/api/note`,
+          url: `${hostRecord}game_record/app/hkrpg/api/note`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         widget: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/aapi/widget`,
+          url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
           types: 'widget'
         },
         sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
+          url: `${hostList.host_os}event/luna/os/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host_os}event/luna/os/info`,
+          query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host_os}event/luna/os/home`,
+          query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         index: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/api/index`,
+          url: `${hostRecord}game_record/app/hkrpg/api/index`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         UserGame: {
@@ -167,11 +174,11 @@ export default class apiTool {
           body: { uid: this.uid, region: this.server, lang: 'zh-cn', game_biz: 'hkrpg_cn' }
         },
         spiralAbyss: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/api/challenge`,
+          url: `${hostRecord}game_record/app/hkrpg/api/challenge`,
           query: `isPrev=true&need_all=true&role_id=${this.uid}&schedule_type=${data.schedule_type}&server=${this.server}`
         },
         character: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/api/avatar/info`,
+          url: `${hostRecord}game_record/app/hkrpg/api/avatar/info`,
           query: `need_wiki=true&role_id=${this.uid}&server=${this.server}`
         },
         detail: {
@@ -187,29 +194,29 @@ export default class apiTool {
           query: `game=hkrpg&lang=zh-cn&tab_from=TabAll&page=1&size=999&uid=${this.uid}&region=${this.server}`
         },
         rogue: {
-          url: `${hostList.hostRecord}game_record/app/hkrpg/api/rogue`,
+          url: `${hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
         },
       },
       bh3: {
         userGameInfo: {
-          url: `${hostList.host}binding/api/getUserGameRolesByCookie`,
-          query: `game_biz=bh3_cn`,
+          url: `${hostList.host_os}binding/api/getUserGameRolesByCookie`,
+          query: `game_biz=bh3_global`,
           types: 'sign'
         },
         sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202306201626331', region: this.server, uid: this.uid },
+          url: `${hostList.host_os}event/mani/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host_os}event/mani/info`,
+          query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host_os}event/mani/home`,
+          query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         }
       }
