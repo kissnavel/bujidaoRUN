@@ -12,8 +12,6 @@ export default class apiTool {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
       bbs_api: 'https://bbs-api.mihoyo.com/',
-      host_os: 'https://sg-public-api.hoyolab.com/',
-      host_os_gs: 'https://sg-hk4e-api.hoyolab.com/'
     }
     let hostRecord
     if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
@@ -126,18 +124,18 @@ export default class apiTool {
           types: 'widget'
         },
         sign: {
-          url: `${hostList.host_os_gs}event/sol/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid },
+          url: `${hostList.host}event/luna/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host_os_gs}event/sol/info`,
-          query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/info`,
+          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host_os_gs}event/sol/home`,
-          query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/home`,
+          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         }
       },
@@ -151,18 +149,18 @@ export default class apiTool {
           types: 'widget'
         },
         sign: {
-          url: `${hostList.host_os}event/luna/os/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid },
+          url: `${hostList.host}event/luna/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host_os}event/luna/os/info`,
-          query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/info`,
+          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host_os}event/luna/os/home`,
-          query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/home`,
+          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         index: {
@@ -200,28 +198,66 @@ export default class apiTool {
       },
       bh3: {
         userGameInfo: {
-          url: `${hostList.host_os}binding/api/getUserGameRolesByCookie`,
-          query: `game_biz=bh3_global`,
+          url: `${hostList.host}binding/api/getUserGameRolesByCookie`,
+          query: `game_biz=bh3_cn`,
           types: 'sign'
         },
         sign: {
-          url: `${hostList.host_os}event/mani/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid },
+          url: `${hostList.host}event/luna/sign`,
+          body: { lang: 'zh-cn', act_id: 'e202306201626331', region: this.server, uid: this.uid },
           types: 'sign'
         },
         sign_info: {
-          url: `${hostList.host_os}event/mani/info`,
-          query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/info`,
+          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         },
         sign_home: {
-          url: `${hostList.host_os}event/mani/home`,
-          query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
+          url: `${hostList.host}event/luna/home`,
+          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
           types: 'sign'
         }
       }
     }
 
+    if (this.server.startsWith('os')) {
+      urlMap.gs.sign.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/sign'
+      urlMap.gs.sign.body = { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid }
+      urlMap.gs.sign.types = 'sign'
+      urlMap.gs.sign_info.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/info'
+      urlMap.gs.sign_info.query = `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`
+      urlMap.gs.sign_info.types = 'sign'
+      urlMap.gs.sign_home.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/home'
+      urlMap.gs.sign_home.query = `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`
+      urlMap.gs.sign_home.types = 'sign'
+    }
+
+    if (this.game == 'sr'&&this.server.includes('official')) {
+      urlMap.sr.sign.url = 'https://sg-public-api.hoyolab.com/event/luna/os/sign'
+      urlMap.sr.sign.body = { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid }
+      urlMap.sr.sign.types = 'sign'
+      urlMap.sr.sign_info.url = 'https://sg-public-api.hoyolab.com/event/luna/os/info'
+      urlMap.sr.sign_info.query = `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`
+      urlMap.sr.sign_info.types = 'sign'
+      urlMap.sr.sign_home.url = 'https://sg-public-api.hoyolab.com/event/luna/os/home'
+      urlMap.sr.sign_home.query = `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`
+      urlMap.sr.sign_home.types = 'sign'
+    }
+
+    if (this.game === 'bh3'&&this.server.includes('official')) {
+      urlMap.bh3.userGameInfo.url = 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie'
+      urlMap.bh3.userGameInfo.query = `game_biz=bh3_global`
+      urlMap.bh3.userGameInfo.types = 'sign'
+      urlMap.bh3.sign.url = 'https://sg-public-api.hoyolab.com/event/mani/sign'
+      urlMap.bh3.sign.body = { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid }
+      urlMap.bh3.sign.types = 'sign'
+      urlMap.bh3.sign_info.url = 'https://sg-public-api.hoyolab.com/event/mani/info'
+      urlMap.bh3.sign_info.query = `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`
+      urlMap.bh3.sign_info.types = 'sign'
+      urlMap.bh3.sign_home.url = 'https://sg-public-api.hoyolab.com/event/mani/home'
+      urlMap.bh3.sign_home.query = `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`
+      urlMap.bh3.sign_home.types = 'sign'
+    }
     return urlMap[this.game]
   }
 }

@@ -8,4 +8,4 @@ git clone https://github.com/kissnavel/bujidaoRUN.git ./plugins/bujidao/
 | :---------------- | --------------- |
 |#寄替换|为#探索、#深渊、#角色等自带功能提供过码|
 ---
-2、<a href="https://github.com/babanbang/bujidaoRUN">上游已删库</a>，修复了部分功能，已删除国服游戏签到并添加国际服游戏签到，保留国服社区签到，其余与上游无区别。
+2、<a href="https://github.com/babanbang/bujidaoRUN">上游已删库</a>，修复了部分功能，其余与上游无区别。已添加国际服游戏签到。

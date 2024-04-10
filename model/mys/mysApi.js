@@ -47,7 +47,7 @@ export default class MysApi {
   }
 
   getServer() {
-    switch (String(this.uid)[0]) {
+    switch (String(this.uid).slice(0, -8)) {
       case '1':
       case '2':
         return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
@@ -146,17 +146,24 @@ export default class MysApi {
       'x-rpc-app_version': '2.40.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
+      'X-Requested-With': 'com.mihoyo.hyperion',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
-      'Referer': 'https://webstatic.mihoyo.com'
+      ...(this.game? {
+        'x-rpc-signgame': 'hk4e',
+        'Referer': 'https://act.mihoyo.com/',
+      } : {
+        'Referer': 'https://webstatic.mihoyo.com',
+      })      
     }
 
     const header_os = {
       'x-rpc-app_version': '2.9.0',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
+      'X-Requested-With': 'com.mihoyo.hoyolab',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
       'Referer': 'https://webstatic-sea.hoyolab.com'
-      }
+    }
 
     const header_bbs = {
       'x-rpc-app_version': '2.40.1',
@@ -170,16 +177,17 @@ export default class MysApi {
       'x-rpc-device_id': this.device_id
     }
 
+    let client
+    if (this.server.startsWith('cn')) {
+      client = header
+    } else {
+      client = header_os
+    }
+
     switch (types) {
-      case 'bbs':
-        return {
-          ...header_bbs,
-          'DS': (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
-        }
       case 'sign':
         return {
-          ...header_os,
-          'X-Requested-With': 'com.mihoyo.hoyolab',
+          ...client,
           'x-rpc-platform': 'android',
           'x-rpc-device_model': 'Mi 10',
           'x-rpc-device_name': this.device,
@@ -187,11 +195,16 @@ export default class MysApi {
           'x-rpc-sys_version': '6.0.1',
           'DS': this.SignDs()
         }
+      case 'bbs':
+        return {
+          ...header_bbs,
+          'DS': (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
+        }
       case 'noheader':
         return {}
     }
     return {
-      ...header,
+      ...client,
       'DS': this.getDs(query, body)
     }
   }
