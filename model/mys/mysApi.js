@@ -143,17 +143,17 @@ export default class MysApi {
 
   getHeaders(types, query = '', body = '', sign = false) {
     const header = {
+      ...(this.game? {
+        'x-rpc-signgame': 'hk4e',
+        'Referer': 'https://act.mihoyo.com'
+      } : {
+        'Referer': 'https://webstatic.mihoyo.com'
+      }),
       'x-rpc-app_version': '2.40.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
       'X-Requested-With': 'com.mihoyo.hyperion',
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
-      ...(this.game? {
-        'x-rpc-signgame': 'hk4e',
-        'Referer': 'https://act.mihoyo.com/',
-      } : {
-        'Referer': 'https://webstatic.mihoyo.com',
-      })      
+      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`
     }
 
     const header_os = {
@@ -167,13 +167,13 @@ export default class MysApi {
 
     const header_bbs = {
       'x-rpc-app_version': '2.40.1',
-      "x-rpc-device_model": "Mi 10",
+      'x-rpc-device_model': 'Mi 10',
       'x-rpc-device_name': this.device,
-      "x-rpc-channel": "miyousheluodi",
+      'x-rpc-channel': 'miyousheluodi',
       'x-rpc-client_type': '2',
-      "Referer": "https://app.mihoyo.com",
-      "x-rpc-sys_version": "12",
-      "User-Agent": "okhttp/4.8.0",
+      'Referer': 'https://app.mihoyo.com',
+      'x-rpc-sys_version': '12',
+      'User-Agent': 'okhttp/4.8.0',
       'x-rpc-device_id': this.device_id
     }
 

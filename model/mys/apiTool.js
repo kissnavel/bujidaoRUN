@@ -11,7 +11,7 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
-      bbs_api: 'https://bbs-api.mihoyo.com/',
+      bbs_api: 'https://bbs-api.mihoyo.com/'
     }
     let hostRecord
     if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {

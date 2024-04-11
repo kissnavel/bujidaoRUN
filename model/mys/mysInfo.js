@@ -8,7 +8,7 @@ import Cfg from '../Cfg.js'
 import _ from 'lodash'
 
 export default class MysInfo {
-  static tips = '请【#扫码登录】或【#刷新ck】'
+  static tips = '请发送【#cookie帮助】查看配置教程\n或尝试【#刷新ck】'
 
   constructor(e) {
     if (e) {
