@@ -143,17 +143,17 @@ export default class MysApi {
 
   getHeaders(types, query = '', body = '', sign = false) {
     const header = {
-      ...(this.game? {
-        'x-rpc-signgame': 'hk4e',
-        'Referer': 'https://act.mihoyo.com'
-      } : {
-        'Referer': 'https://webstatic.mihoyo.com'
-      }),
       'x-rpc-app_version': '2.40.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
       'X-Requested-With': 'com.mihoyo.hyperion',
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`
+      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
+      ...(this.game? {
+        'x-rpc-signgame': 'hk4e',
+        Referer: 'https://act.mihoyo.com',
+      } : {
+        Referer: 'https://webstatic.mihoyo.com',
+      })
     }
 
     const header_os = {
@@ -162,7 +162,7 @@ export default class MysApi {
       'x-rpc-device_id': this.device_id,
       'X-Requested-With': 'com.mihoyo.hoyolab',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
-      'Referer': 'https://webstatic-sea.hoyolab.com'
+      Referer: 'https://webstatic-sea.hoyolab.com'
     }
 
     const header_bbs = {
@@ -171,7 +171,7 @@ export default class MysApi {
       'x-rpc-device_name': this.device,
       'x-rpc-channel': 'miyousheluodi',
       'x-rpc-client_type': '2',
-      'Referer': 'https://app.mihoyo.com',
+      Referer: 'https://app.mihoyo.com',
       'x-rpc-sys_version': '12',
       'User-Agent': 'okhttp/4.8.0',
       'x-rpc-device_id': this.device_id
@@ -193,19 +193,19 @@ export default class MysApi {
           'x-rpc-device_name': this.device,
           'x-rpc-channel': 'miyousheluodi',
           'x-rpc-sys_version': '6.0.1',
-          'DS': this.SignDs()
+          DS: this.SignDs()
         }
       case 'bbs':
         return {
           ...header_bbs,
-          'DS': (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
+          DS: (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
         }
       case 'noheader':
         return {}
     }
     return {
       ...client,
-      'DS': this.getDs(query, body)
+      DS: this.getDs(query, body)
     }
   }
 
