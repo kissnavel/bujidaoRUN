@@ -146,21 +146,13 @@ export default class MysApi {
       'x-rpc-app_version': '2.40.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'X-Requested-With': 'com.mihoyo.hyperion',
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`,
-      ...(this.game? {
-        'x-rpc-signgame': 'hk4e',
-        Referer: 'https://act.mihoyo.com',
-      } : {
-        Referer: 'https://webstatic.mihoyo.com',
-      })
+      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`
     }
 
     const header_os = {
       'x-rpc-app_version': '2.9.0',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
-      'X-Requested-With': 'com.mihoyo.hoyolab',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
       Referer: 'https://webstatic-sea.hoyolab.com'
     }
@@ -179,22 +171,53 @@ export default class MysApi {
 
     let client
     if (this.server.startsWith('cn')) {
-      client = header
+      client = {
+        ...header,
+        Referer: 'https://webstatic.mihoyo.com'
+      }
     } else {
       client = header_os
     }
 
     switch (types) {
       case 'sign':
-        return {
-          ...client,
-          'x-rpc-platform': 'android',
-          'x-rpc-device_model': 'Mi 10',
-          'x-rpc-device_name': this.device,
-          'x-rpc-channel': 'miyousheluodi',
-          'x-rpc-sys_version': '6.0.1',
-          DS: this.SignDs()
-        }
+        if (this.server.startsWith('cn'))
+          if (this.game)
+            return {
+              ...header,
+              'x-rpc-signgame': 'hk4e',
+              Referer: 'https://act.mihoyo.com',
+              'X-Requested-With': 'com.mihoyo.hyperion',
+              'x-rpc-platform': 'android',
+              'x-rpc-device_model': 'Mi 10',
+              'x-rpc-device_name': this.device,
+              'x-rpc-channel': 'miyousheluodi',
+              'x-rpc-sys_version': '6.0.1',
+              DS: this.SignDs()
+            }
+          else 
+            return {
+              ...header,
+              Referer: 'https://webstatic.mihoyo.com',
+              'X-Requested-With': 'com.mihoyo.hyperion',
+              'x-rpc-platform': 'android',
+              'x-rpc-device_model': 'Mi 10',
+              'x-rpc-device_name': this.device,
+              'x-rpc-channel': 'miyousheluodi',
+              'x-rpc-sys_version': '6.0.1',
+              DS: this.SignDs()
+            }
+        else
+          return {
+            ...header_os,
+            'X-Requested-With': 'com.mihoyo.hoyolab',
+            'x-rpc-platform': 'android',
+            'x-rpc-device_model': 'Mi 10',
+            'x-rpc-device_name': this.device,
+            'x-rpc-channel': 'miyousheluodi',
+            'x-rpc-sys_version': '6.0.1',
+            DS: this.SignDs()
+          }
       case 'bbs':
         return {
           ...header_bbs,
