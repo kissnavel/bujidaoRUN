@@ -170,13 +170,13 @@ export default class MysApi {
     }
 
     let client
-    if (this.server.startsWith('cn')) {
+    if (this.server.startsWith('os')) {
+      client = header_os
+    } else {
       client = {
         ...header,
         Referer: 'https://webstatic.mihoyo.com'
       }
-    } else {
-      client = header_os
     }
 
     switch (types) {

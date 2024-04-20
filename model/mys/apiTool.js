@@ -11,23 +11,18 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
-      bbs_api: 'https://bbs-api.mihoyo.com/'
-    }
-    let hostRecord
-    if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
-      hostRecord = 'https://api-takumi-record.mihoyo.com/'
-    } else if (['os_usa', 'os_euro', 'os_asia', 'os_cht'].includes(this.server)) {
-      hostRecord = 'https://bbs-api-os.mihoyo.com/'
+      bbs_api: 'https://bbs-api.mihoyo.com/',
+      hostRecord: 'https://api-takumi-record.mihoyo.com/'
     }
 
     let urlMap = {
       all: {
         createVerification: {
-          url: `${hostRecord}game_record/app/card/wapi/createVerification`,
+          url: `${hostList.hostRecord}game_record/app/card/wapi/createVerification`,
           query: 'is_high=true'
         },
         verifyVerification: {
-          url: `${hostRecord}game_record/app/card/wapi/verifyVerification`,
+          url: `${hostList.hostRecord}game_record/app/card/wapi/verifyVerification`,
           body: {
             "geetest_challenge": data.challenge,
             "geetest_validate": data.validate,
@@ -112,15 +107,15 @@ export default class apiTool {
             "geetest_seccode": `${data.validate}|jordan`
           },
           types: 'bbs'
-        },
+        }
       },
       gs: {
         dailyNote: {
-          url: `${hostRecord}game_record/app/genshin/api/dailyNote`,
+          url: `${hostList.hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         widget: {
-          url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
+          url: `${hostList.hostRecord}game_record/genshin/aapi/widget/v2`,
           types: 'widget'
         },
         sign: {
@@ -141,11 +136,11 @@ export default class apiTool {
       },
       sr: {
         dailyNote: {
-          url: `${hostRecord}game_record/app/hkrpg/api/note`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/api/note`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         widget: {
-          url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/aapi/widget`,
           types: 'widget'
         },
         sign: {
@@ -164,7 +159,7 @@ export default class apiTool {
           types: 'sign'
         },
         index: {
-          url: `${hostRecord}game_record/app/hkrpg/api/index`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/api/index`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
         UserGame: {
@@ -172,11 +167,11 @@ export default class apiTool {
           body: { uid: this.uid, region: this.server, lang: 'zh-cn', game_biz: 'hkrpg_cn' }
         },
         spiralAbyss: {
-          url: `${hostRecord}game_record/app/hkrpg/api/challenge`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/api/challenge`,
           query: `isPrev=true&need_all=true&role_id=${this.uid}&schedule_type=${data.schedule_type}&server=${this.server}`
         },
         character: {
-          url: `${hostRecord}game_record/app/hkrpg/api/avatar/info`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/api/avatar/info`,
           query: `need_wiki=true&role_id=${this.uid}&server=${this.server}`
         },
         detail: {
@@ -192,9 +187,9 @@ export default class apiTool {
           query: `game=hkrpg&lang=zh-cn&tab_from=TabAll&page=1&size=999&uid=${this.uid}&region=${this.server}`
         },
         rogue: {
-          url: `${hostRecord}game_record/app/hkrpg/api/rogue`,
+          url: `${hostList.hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
-        },
+        }
       },
       bh3: {
         userGameInfo: {
@@ -221,7 +216,7 @@ export default class apiTool {
     }
 
     if (this.server.startsWith('os')) {
-      urlMap.gs.sign.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/sign'
+      urlMap.gs.sign.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/sign'// 国际服原神签到
       urlMap.gs.sign.body = { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid }
       urlMap.gs.sign.types = 'sign'
       urlMap.gs.sign_info.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/info'
@@ -233,7 +228,7 @@ export default class apiTool {
     }
 
     if (this.game == 'sr'&&this.server.includes('official')) {
-      urlMap.sr.sign.url = 'https://sg-public-api.hoyolab.com/event/luna/os/sign'
+      urlMap.sr.sign.url = 'https://sg-public-api.hoyolab.com/event/luna/os/sign'// 国际服星铁签到
       urlMap.sr.sign.body = { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid }
       urlMap.sr.sign.types = 'sign'
       urlMap.sr.sign_info.url = 'https://sg-public-api.hoyolab.com/event/luna/os/info'
@@ -248,7 +243,7 @@ export default class apiTool {
       urlMap.bh3.userGameInfo.url = 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie'
       urlMap.bh3.userGameInfo.query = `game_biz=bh3_global`
       urlMap.bh3.userGameInfo.types = 'sign'
-      urlMap.bh3.sign.url = 'https://sg-public-api.hoyolab.com/event/mani/sign'
+      urlMap.bh3.sign.url = 'https://sg-public-api.hoyolab.com/event/mani/sign'// 国际服崩三签到，没有崩三号未做测试，暂时保留
       urlMap.bh3.sign.body = { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid }
       urlMap.bh3.sign.types = 'sign'
       urlMap.bh3.sign_info.url = 'https://sg-public-api.hoyolab.com/event/mani/info'
