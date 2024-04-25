@@ -11,28 +11,50 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let hostList = {
       host: 'https://api-takumi.mihoyo.com/',
+      host_os: 'https://sg-public-api.hoyolab.com/',
+      host_os_hk4e: 'https://sg-hk4e-api.hoyolab.com/',      
       bbs_api: 'https://bbs-api.mihoyo.com/',
-      hostRecord: 'https://api-takumi-record.mihoyo.com/'
+      hostRecord: 'https://api-takumi-record.mihoyo.com/',
+      hostRecord_os: 'https://bbs-api-os.hoyolab.com/'
     }
 
-    let urlMap = {
+    let urlMap = {// 细分签到
       all: {
-        createVerification: {
-          url: `${hostList.hostRecord}game_record/app/card/wapi/createVerification`,
-          query: 'is_high=true'
-        },
-        verifyVerification: {
-          url: `${hostList.hostRecord}game_record/app/card/wapi/verifyVerification`,
-          body: {
-            "geetest_challenge": data.challenge,
-            "geetest_validate": data.validate,
-            "geetest_seccode": `${data.validate}|jordan`
+        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+          createVerification: {
+            url: `${hostList.hostRecord}game_record/app/card/wapi/createVerification`,
+            query: 'is_high=true'
+          },
+          verifyVerification: {
+            url: `${hostList.hostRecord}game_record/app/card/wapi/verifyVerification`,
+            body: {
+              "geetest_challenge": data.challenge,
+              "geetest_validate": data.validate,
+              "geetest_seccode": `${data.validate}|jordan`
+            }
+          },
+          validate: {
+            url: `http://api.rrocr.com/api/recognize.html`,// 国服过码
+            query: `appkey=${this.api.apikey}&gt=${data.gt}&challenge=${data.challenge}&referer=https://webstatic.mihoyo.com&ip=&host=`
           }
-        },
-        validate: {
-          url: `http://api.rrocr.com/api/recognize.html`,
-          query: `appkey=${this.api.apikey}&gt=${data.gt}&challenge=${data.challenge}&referer=https://webstatic.mihoyo.com&ip=&host=`
-        }
+        } : {
+          createVerification: {
+            url: `${hostList.hostRecord_os}game_record/app/card/wapi/createVerification`,
+            query: 'is_high=true'
+          },
+          verifyVerification: {
+            url: `${hostList.hostRecord_os}game_record/app/card/wapi/verifyVerification`,
+            body: {
+              "geetest_challenge": data.challenge,
+              "geetest_validate": data.validate,
+              "geetest_seccode": `${data.validate}|jordan`
+            }
+          },
+          validate: {
+            url: `http://api.rrocr.com/api/recognize.html`,// 国际服过码，暂时保留，未触发验证未测试
+            query: `appkey=${this.api.apikey}&gt=${data.gt}&challenge=${data.challenge}&referer=https://webstatic-sea.hoyolab.com&ip=&host=`
+          }
+        })
       },
       bbs: {
         bbsisSign: {
@@ -109,7 +131,7 @@ export default class apiTool {
           types: 'bbs'
         }
       },
-      gs: {
+      gs: {        
         dailyNote: {
           url: `${hostList.hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
@@ -118,21 +140,39 @@ export default class apiTool {
           url: `${hostList.hostRecord}game_record/genshin/aapi/widget/v2`,
           types: 'widget'
         },
-        sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
-          types: 'sign'
-        },
-        sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
-        },
-        sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
-        }
+        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+          sign: {
+            url: `${hostList.host}event/luna/sign`,// 国服原神签到
+            body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host}event/luna/info`,
+            query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host}event/luna/home`,
+            query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        } : {
+          sign: {
+            url: `${hostList.host_os_hk4e}event/sol/sign`,// 国际服原神签到
+            body: { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host_os_hk4e}event/sol/info`,
+            query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host_os_hk4e}event/sol/home`,
+            query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        })
       },
       sr: {
         dailyNote: {
@@ -142,21 +182,6 @@ export default class apiTool {
         widget: {
           url: `${hostList.hostRecord}game_record/app/hkrpg/aapi/widget`,
           types: 'widget'
-        },
-        sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
-          types: 'sign'
-        },
-        sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
-        },
-        sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
         },
         index: {
           url: `${hostList.hostRecord}game_record/app/hkrpg/api/index`,
@@ -189,69 +214,86 @@ export default class apiTool {
         rogue: {
           url: `${hostList.hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
-        }
+        },
+        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+          sign: {
+            url: `${hostList.host}event/luna/sign`,// 国服星铁签到
+            body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host}event/luna/info`,
+            query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host}event/luna/home`,
+            query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        } : {
+          sign: {
+            url: `${hostList.host_os}event/luna/os/sign`,// 国际服星铁签到
+            body: { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host_os}event/luna/os/info`,
+            query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host_os}event/luna/os/home`,
+            query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        })
       },
       bh3: {
-        userGameInfo: {
-          url: `${hostList.host}binding/api/getUserGameRolesByCookie`,
-          query: `game_biz=bh3_cn`,
-          types: 'sign'
-        },
-        sign: {
-          url: `${hostList.host}event/luna/sign`,
-          body: { lang: 'zh-cn', act_id: 'e202306201626331', region: this.server, uid: this.uid },
-          types: 'sign'
-        },
-        sign_info: {
-          url: `${hostList.host}event/luna/info`,
-          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
-        },
-        sign_home: {
-          url: `${hostList.host}event/luna/home`,
-          query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
-          types: 'sign'
-        }
+        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+          userGameInfo: {
+            url: `${hostList.host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=bh3_cn`,
+            types: 'sign'
+          },
+          sign: {
+            url: `${hostList.host}event/luna/sign`,// 国服崩三签到
+            body: { lang: 'zh-cn', act_id: 'e202306201626331', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host}event/luna/info`,
+            query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host}event/luna/home`,
+            query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        } : {
+          userGameInfo: {
+            url: `${hostList.host_os}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=bh3_global`,
+            types: 'sign'
+          },
+          sign: {
+            url: `${hostList.host_os}event/mani/sign`,// 国际服崩三签到，暂时保留，无崩三号未测试
+            body: { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${hostList.host_os}event/mani/info`,
+            query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${hostList.host_os}event/mani/home`,
+            query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          }
+        })
       }
-    }
-
-    if (this.server.startsWith('os')) {
-      urlMap.gs.sign.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/sign'// 国际服原神签到
-      urlMap.gs.sign.body = { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid }
-      urlMap.gs.sign.types = 'sign'
-      urlMap.gs.sign_info.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/info'
-      urlMap.gs.sign_info.query = `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`
-      urlMap.gs.sign_info.types = 'sign'
-      urlMap.gs.sign_home.url = 'https://sg-hk4e-api.hoyolab.com/event/sol/home'
-      urlMap.gs.sign_home.query = `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`
-      urlMap.gs.sign_home.types = 'sign'
-    }
-
-    if (this.game == 'sr'&&this.server.includes('official')) {
-      urlMap.sr.sign.url = 'https://sg-public-api.hoyolab.com/event/luna/os/sign'// 国际服星铁签到
-      urlMap.sr.sign.body = { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid }
-      urlMap.sr.sign.types = 'sign'
-      urlMap.sr.sign_info.url = 'https://sg-public-api.hoyolab.com/event/luna/os/info'
-      urlMap.sr.sign_info.query = `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`
-      urlMap.sr.sign_info.types = 'sign'
-      urlMap.sr.sign_home.url = 'https://sg-public-api.hoyolab.com/event/luna/os/home'
-      urlMap.sr.sign_home.query = `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`
-      urlMap.sr.sign_home.types = 'sign'
-    }
-
-    if (this.game === 'bh3'&&this.server.includes('official')) {
-      urlMap.bh3.userGameInfo.url = 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie'
-      urlMap.bh3.userGameInfo.query = `game_biz=bh3_global`
-      urlMap.bh3.userGameInfo.types = 'sign'
-      urlMap.bh3.sign.url = 'https://sg-public-api.hoyolab.com/event/mani/sign'// 国际服崩三签到，没有崩三号未做测试，暂时保留
-      urlMap.bh3.sign.body = { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid }
-      urlMap.bh3.sign.types = 'sign'
-      urlMap.bh3.sign_info.url = 'https://sg-public-api.hoyolab.com/event/mani/info'
-      urlMap.bh3.sign_info.query = `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`
-      urlMap.bh3.sign_info.types = 'sign'
-      urlMap.bh3.sign_home.url = 'https://sg-public-api.hoyolab.com/event/mani/home'
-      urlMap.bh3.sign_home.query = `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`
-      urlMap.bh3.sign_home.types = 'sign'
     }
     return urlMap[this.game]
   }

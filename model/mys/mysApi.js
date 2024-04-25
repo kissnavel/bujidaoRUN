@@ -179,7 +179,7 @@ export default class MysApi {
       }
     }
 
-    switch (types) {
+    switch (types) {// 细分签到
       case 'sign':
         if (this.server.startsWith('cn'))
           if (this.game)
