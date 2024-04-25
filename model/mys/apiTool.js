@@ -131,7 +131,7 @@ export default class apiTool {
           types: 'bbs'
         }
       },
-      gs: {        
+      gs: {
         dailyNote: {
           url: `${hostList.hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
