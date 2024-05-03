@@ -280,7 +280,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (!(/os_|official/.test(this.server))) return null
+    if (!/os_|official/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
