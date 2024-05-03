@@ -170,7 +170,7 @@ export default class MysApi {
     }
 
     let client
-    if (this.server.startsWith('os')) {
+    if (/os_|official/.test(this.server)) {
       client = header_os
     } else {
       client = {
@@ -181,7 +181,7 @@ export default class MysApi {
 
     switch (types) {// 细分签到
       case 'sign':
-        if (this.server.startsWith('cn'))
+        if (['cn_gf01', 'cn_qd01'].includes(this.server))
           if (this.game)
             return {
               ...header,
@@ -280,7 +280,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (!this.server.startsWith('os')) return null
+    if (!(/os_|official/.test(this.server))) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
