@@ -9,18 +9,18 @@ export default class apiTool {
   }
 
   getUrlMap = (data = {}) => {
-    let host, host_os_hk4e, bbs_api, hostRecord
+    let host, host_hk4e, bbs_api, hostRecord
     if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
       bbs_api = 'https://bbs-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
     } else if (/os_|official/.test(this.server)) {
       host = 'https://sg-public-api.hoyolab.com/'
-      host_os_hk4e = 'https://sg-hk4e-api.hoyolab.com/'
+      host_hk4e = 'https://sg-hk4e-api.hoyolab.com/'
       hostRecord = 'https://bbs-api-os.hoyolab.com/'
     }
 
-    let urlMap = {// 细分签到
+    let urlMap = {
       all: {
         createVerification: {
           url: `${hostRecord}game_record/app/card/wapi/createVerification`,
@@ -115,7 +115,7 @@ export default class apiTool {
         }
       },
       gs: {
-        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+        ...(['cn_gf01', 'cn_qd01'].includes(this.server) ? {
           sign: {
             url: `${host}event/luna/sign`,// 国服原神签到
             body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
@@ -133,17 +133,17 @@ export default class apiTool {
           }
         } : {
           sign: {
-            url: `${host_os_hk4e}event/sol/sign`,// 国际服原神签到
+            url: `${host_hk4e}event/sol/sign`,// 国际服原神签到
             body: { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid },
             types: 'sign'
           },
           sign_info: {
-            url: `${host_os_hk4e}event/sol/info`,
+            url: `${host_hk4e}event/sol/info`,
             query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
           },
           sign_home: {
-            url: `${host_os_hk4e}event/sol/home`,
+            url: `${host_hk4e}event/sol/home`,
             query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
           }
@@ -158,7 +158,7 @@ export default class apiTool {
         }
       },
       sr: {
-        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+        ...(['prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
           sign: {
             url: `${host}event/luna/sign`,// 国服星铁签到
             body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
@@ -231,52 +231,8 @@ export default class apiTool {
           url: `${hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
         }
-      },
-      bh3: {
-        ...(['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
-          userGameInfo: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz=bh3_cn`,
-            types: 'sign'
-          },
-          sign: {
-            url: `${host}event/luna/sign`,// 国服崩三签到，暂时保留，无崩三号未测试
-            body: { lang: 'zh-cn', act_id: 'e202306201626331', region: this.server, uid: this.uid },
-            types: 'sign'
-          },
-          sign_info: {
-            url: `${host}event/luna/info`,
-            query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
-            types: 'sign'
-          },
-          sign_home: {
-            url: `${host}event/luna/home`,
-            query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
-            types: 'sign'
-          }
-        } : {
-          userGameInfo: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz=bh3_global`,
-            types: 'sign'
-          },
-          sign: {
-            url: `${host}event/mani/sign`,// 国际服崩三签到，暂时保留，无崩三号未测试
-            body: { lang: 'zh-cn', act_id: 'e202110291205111', region: this.server, uid: this.uid },
-            types: 'sign'
-          },
-          sign_info: {
-            url: `${host}event/mani/info`,
-            query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
-            types: 'sign'
-          },
-          sign_home: {
-            url: `${host}event/mani/home`,
-            query: `lang=zh-cn&act_id=e202110291205111&region=${this.server}&uid=${this.uid}`,
-            types: 'sign'
-          }
-        })
       }
+      // 删除bh3，待后续迭代zzz
     }
     return urlMap[this.game]
   }

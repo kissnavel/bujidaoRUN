@@ -146,6 +146,7 @@ export default class MysApi {
       'x-rpc-app_version': '2.40.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
+      'X-Requested-With': 'com.mihoyo.hyperion',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`
     }
 
@@ -153,6 +154,7 @@ export default class MysApi {
       'x-rpc-app_version': '2.9.0',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
+      'X-Requested-With': 'com.mihoyo.hoyolab',
       'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
       Referer: 'https://webstatic-sea.hoyolab.com'
     }
@@ -179,38 +181,23 @@ export default class MysApi {
       }
     }
 
-    switch (types) {// 细分签到
-      case 'sign':
+    switch (types) {
+      case 'sign':// 细分签到
         if (['cn_gf01', 'cn_qd01'].includes(this.server))
-          if (this.game)
-            return {
-              ...header,
-              'x-rpc-signgame': 'hk4e',
-              Referer: 'https://act.mihoyo.com',
-              'X-Requested-With': 'com.mihoyo.hyperion',
-              'x-rpc-platform': 'android',
-              'x-rpc-device_model': 'Mi 10',
-              'x-rpc-device_name': this.device,
-              'x-rpc-channel': 'miyousheluodi',
-              'x-rpc-sys_version': '6.0.1',
-              DS: this.SignDs()
-            }
-          else 
-            return {
-              ...header,
-              Referer: 'https://webstatic.mihoyo.com',
-              'X-Requested-With': 'com.mihoyo.hyperion',
-              'x-rpc-platform': 'android',
-              'x-rpc-device_model': 'Mi 10',
-              'x-rpc-device_name': this.device,
-              'x-rpc-channel': 'miyousheluodi',
-              'x-rpc-sys_version': '6.0.1',
-              DS: this.SignDs()
-            }
+          return {
+            ...header,
+            'x-rpc-signgame': 'hk4e',
+            Referer: 'https://act.mihoyo.com',
+            'x-rpc-platform': 'android',
+            'x-rpc-device_model': 'Mi 10',
+            'x-rpc-device_name': this.device,
+            'x-rpc-channel': 'miyousheluodi',
+            'x-rpc-sys_version': '6.0.1',
+            DS: this.SignDs()
+          }
         else
           return {
-            ...header_os,
-            'X-Requested-With': 'com.mihoyo.hoyolab',
+            ...client,
             'x-rpc-platform': 'android',
             'x-rpc-device_model': 'Mi 10',
             'x-rpc-device_name': this.device,
@@ -227,7 +214,11 @@ export default class MysApi {
         return {}
     }
     return {
-      ...client,
+      'x-rpc-app_version': client['x-rpc-app_version'],
+      'x-rpc-client_type': client['x-rpc-client_type'],
+      'x-rpc-device_id': client['x-rpc-device_id'],
+      'User-Agent': client['User-Agent'],
+      Referer: client.Referer,
       DS: this.getDs(query, body)
     }
   }
