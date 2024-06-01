@@ -35,7 +35,7 @@ export default class apiTool {
           }
         },
         validate: {
-          url: `http://api.rrocr.com/api/recognize.html`,
+          url: 'http://api.rrocr.com/api/recognize.html',
           query: `appkey=${this.api.apikey}&gt=${data.gt}&challenge=${data.challenge}&referer=https://webstatic.mihoyo.com&ip=&host=`
         }
       },
@@ -54,7 +54,7 @@ export default class apiTool {
         },
         bbsGetCaptcha: {
           url: `${bbs_api}misc/api/createVerification`,
-          query: `is_high=false`,
+          query: 'is_high=false',
           types: 'bbs'
         },
         bbsCaptchaVerify: {
@@ -101,7 +101,7 @@ export default class apiTool {
         },
         bbsGetCaptcha: {
           url: `${bbs_api}misc/api/createVerification`,
-          query: `is_high=false`,
+          query: 'is_high=false',
           types: 'bbs'
         },
         bbsCaptchaVerify: {
@@ -130,6 +130,10 @@ export default class apiTool {
             url: `${host}event/luna/home`,
             query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
+            types: 'widget'
           }
         } : {
           sign: {
@@ -146,15 +150,16 @@ export default class apiTool {
             url: `${host_hk4e}event/sol/home`,
             query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}community/apihub/api/widget/data`,
+            query: 'game_id=2',
+            types: 'widget'
           }
         }),
         dailyNote: {
           url: `${hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
-        },
-        widget: {
-          url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
-          types: 'widget'
         }
       },
       sr: {
@@ -173,6 +178,14 @@ export default class apiTool {
             url: `${host}event/luna/home`,
             query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
+            types: 'widget'
+          },
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=hkrpg_cn&region=${this.server}&game_uid=${this.uid}`
           }
         } : {
           sign: {
@@ -189,23 +202,23 @@ export default class apiTool {
             url: `${host}event/luna/os/home`,
             query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}community/apihub/api/hsr_widget`,
+            types: 'widget'
+          },
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=hkrpg_global&region=${this.server}&game_uid=${this.uid}`
           }
         }),
         dailyNote: {
           url: `${hostRecord}game_record/app/hkrpg/api/note`,
           query: `role_id=${this.uid}&server=${this.server}`
         },
-        widget: {
-          url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
-          types: 'widget'
-        },
         index: {
           url: `${hostRecord}game_record/app/hkrpg/api/index`,
           query: `role_id=${this.uid}&server=${this.server}`
-        },
-        UserGame: {
-          url: `${host}common/badge/v1/login/account`,
-          body: { uid: this.uid, region: this.server, lang: 'zh-cn', game_biz: 'hkrpg_cn' }
         },
         spiralAbyss: {
           url: `${hostRecord}game_record/app/hkrpg/api/challenge`,

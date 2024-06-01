@@ -29,7 +29,7 @@ export default class MysSign extends base {
 
         let msg = []; let res
         for (let g of mysSign.set.game) {
-            let name = g === 'sr' ? '星铁' : g == 'gs' ? '原神' : '崩三'
+            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '崩三'
             for (let i = 0; i < uids[g].length; i++) {
                 mysSign.ckNum = Number(i) + 1
                 if (i >= 1) await common.sleep(5000)
@@ -293,7 +293,7 @@ export default class MysSign extends base {
         let invalidqq = []
 
         for (let g of this.set.game) {
-            let name = g === 'sr' ? '星铁' : g == 'gs' ? '原神' : '崩三'
+            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '崩三'
             for (let i = 0; i < uids[g].length; i++) {
                 this.ckNum = Number(i) + 1
                 let uid = uids[g][i]

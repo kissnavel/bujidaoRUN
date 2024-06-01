@@ -143,31 +143,29 @@ export default class MysApi {
 
   getHeaders(types, query = '', body = '', sign = false) {
     const header = {
-      'x-rpc-app_version': '2.40.1',
+      'x-rpc-app_version': '2.71.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'X-Requested-With': 'com.mihoyo.hyperion',
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBS/2.40.1`
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.71.1',
     }
 
     const header_os = {
-      'x-rpc-app_version': '2.9.0',
+      'x-rpc-app_version': '2.55.0',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
-      'X-Requested-With': 'com.mihoyo.hoyolab',
-      'User-Agent': `Mozilla/5.0 (Linux; Android 12; YZ-${this.device}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.73 Mobile Safari/537.36 miHoYoBBSOversea/2.9.0`,
-      Referer: 'https://webstatic-sea.hoyolab.com'
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBSOversea/2.55.0',
+      Referer: 'https://act.hoyolab.com/'
     }
 
     const header_bbs = {
-      'x-rpc-app_version': '2.40.1',
-      'x-rpc-device_model': 'Mi 10',
-      'x-rpc-device_name': this.device,
+      'x-rpc-app_version': '2.71.1',
+      'x-rpc-device_model': 'J9110',
+      'x-rpc-device_name': 'Sony J9110',
       'x-rpc-channel': 'miyousheluodi',
       'x-rpc-client_type': '2',
-      Referer: 'https://app.mihoyo.com',
-      'x-rpc-sys_version': '12',
-      'User-Agent': 'okhttp/4.8.0',
+      Referer: 'https://app.mihoyo.com/',
+      'x-rpc-sys_version': '11',
+      'User-Agent': 'okhttp/4.9.3',
       'x-rpc-device_id': this.device_id
     }
 
@@ -177,32 +175,38 @@ export default class MysApi {
     } else {
       client = {
         ...header,
-        Referer: 'https://webstatic.mihoyo.com'
+        Referer: 'https://webstatic.mihoyo.com/'
       }
     }
 
     switch (types) {
       case 'sign':// 细分签到
-        if (['cn_gf01', 'cn_qd01'].includes(this.server))
+        if (/cn_|_cn/.test(this.server))
           return {
             ...header,
-            'x-rpc-signgame': 'hk4e',
-            Referer: 'https://act.mihoyo.com',
+            ...(['cn_gf01', 'cn_qd01'].includes(this.server) ? {
+              'x-rpc-signgame': 'hk4e',
+              Referer: 'https://act.mihoyo.com/'
+            } : {
+              Referer: 'https://act.mihoyo.com/'
+            }),
+            'X-Requested-With': 'com.mihoyo.hyperion',
             'x-rpc-platform': 'android',
-            'x-rpc-device_model': 'Mi 10',
-            'x-rpc-device_name': this.device,
+            'x-rpc-device_model': 'J9110',
+            'x-rpc-device_name': 'Sony J9110',
             'x-rpc-channel': 'miyousheluodi',
-            'x-rpc-sys_version': '6.0.1',
+            'x-rpc-sys_version': '11',
             DS: this.SignDs()
           }
         else
           return {
-            ...client,
+            ...header_os,
+            'X-Requested-With': 'com.mihoyo.hoyolab',
             'x-rpc-platform': 'android',
-            'x-rpc-device_model': 'Mi 10',
-            'x-rpc-device_name': this.device,
-            'x-rpc-channel': 'miyousheluodi',
-            'x-rpc-sys_version': '6.0.1',
+            'x-rpc-device_model': 'J9110',
+            'x-rpc-device_name': 'Sony J9110',
+            'x-rpc-channel': 'google',
+            'x-rpc-sys_version': '11',
             DS: this.SignDs()
           }
       case 'bbs':
@@ -214,11 +218,7 @@ export default class MysApi {
         return {}
     }
     return {
-      'x-rpc-app_version': client['x-rpc-app_version'],
-      'x-rpc-client_type': client['x-rpc-client_type'],
-      'x-rpc-device_id': client['x-rpc-device_id'],
-      'User-Agent': client['User-Agent'],
-      Referer: client.Referer,
+      ...client,
       DS: this.getDs(query, body)
     }
   }
