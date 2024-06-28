@@ -118,7 +118,7 @@ export default class apiTool {
         ...(['cn_gf01', 'cn_qd01'].includes(this.server) ? {
           sign: {
             url: `${host}event/luna/sign`,// 国服原神签到
-            body: { lang: 'zh-cn', act_id: 'e202311201442471', region: this.server, uid: this.uid },
+            body: { act_id: 'e202311201442471', region: this.server, uid: this.uid, lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
@@ -128,23 +128,23 @@ export default class apiTool {
           },
           sign_home: {
             url: `${host}event/luna/home`,
-            query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202311201442471',
             types: 'sign'
           }
         } : {
           sign: {
             url: `${host_hk4e}event/sol/sign`,// 国际服原神签到
-            body: { lang: 'zh-cn', act_id: 'e202102251931481', region: this.server, uid: this.uid },
+            body: { act_id: 'e202102251931481', lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
             url: `${host_hk4e}event/sol/info`,
-            query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202102251931481',
             types: 'sign'
           },
           sign_home: {
             url: `${host_hk4e}event/sol/home`,
-            query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202102251931481',
             types: 'sign'
           }
         }),
@@ -157,7 +157,7 @@ export default class apiTool {
         ...(['prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
           sign: {
             url: `${host}event/luna/sign`,// 国服星铁签到
-            body: { lang: 'zh-cn', act_id: 'e202304121516551', region: this.server, uid: this.uid },
+            body: { act_id: 'e202304121516551', region: this.server, uid: this.uid, lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
@@ -167,7 +167,7 @@ export default class apiTool {
           },
           sign_home: {
             url: `${host}event/luna/home`,
-            query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202304121516551',
             types: 'sign'
           },
           UserGame: {
@@ -177,17 +177,17 @@ export default class apiTool {
         } : {
           sign: {
             url: `${host}event/luna/os/sign`,// 国际服星铁签到
-            body: { lang: 'zh-cn', act_id: 'e202303301540311', region: this.server, uid: this.uid },
+            body: { act_id: 'e202303301540311', lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
             url: `${host}event/luna/os/info`,
-            query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202303301540311',
             types: 'sign'
           },
           sign_home: {
             url: `${host}event/luna/os/home`,
-            query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id=e202303301540311',
             types: 'sign'
           },
           UserGame: {
@@ -233,7 +233,7 @@ export default class apiTool {
         ...([' ', ' '].includes(this.server) ? {
           sign: {
             url: `${host}event/luna/sign`,// 国服绝区零签到
-            body: { lang: 'zh-cn', act_id: ' ', region: this.server, uid: this.uid },
+            body: { act_id: ' ', region: this.server, uid: this.uid, lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
@@ -243,7 +243,7 @@ export default class apiTool {
           },
           sign_home: {
             url: `${host}event/luna/home`,
-            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id= ',
             types: 'sign'
           },
           UserGame: {
@@ -253,17 +253,17 @@ export default class apiTool {
         } : {
           sign: {
             url: `${host}event/luna/os/sign`,// 国际服绝区零签到
-            body: { lang: 'zh-cn', act_id: ' ', region: this.server, uid: this.uid },
+            body: { act_id: ' ', lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
             url: `${host}event/luna/os/info`,
-            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id= ',
             types: 'sign'
           },
           sign_home: {
             url: `${host}event/luna/os/home`,
-            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            query: 'lang=zh-cn&act_id= ',
             types: 'sign'
           },
           UserGame: {
