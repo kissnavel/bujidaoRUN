@@ -12,7 +12,7 @@
     <div class="container">
         <div class="title">
             <div class="uid">
-                <div class="uid_item"><span class="uid_text">UID:</span><span class="uid_span">{{uid}}</span>
+                <div class="uid_item"><span class="uid_text">UID:</span><span class="uid_span">{{game_uid}}</span>
                 </div>
                 <div class="uid_item"><span class="uid_text">昵称:</span>
                     <div class="uid_span">
@@ -75,8 +75,8 @@
             </div>
             {{/each}}
         </div>
-        <div class="sgin"> 米游社每日签到：<span class="{{if has_signed!=1}}yellow{{/if}}" , style="padding-left: 65px;">{{if
-                has_signed==1}}已{{else}}未{{/if}}签到</span></div>
+        <div class="sign"> 米游社每日签到：<span class="{{if is_sign==true}}yellow{{/if}}" , style="padding-left: 65px;">{{if
+            is_sign==true}}已{{else}}未{{/if}}签到</span></div>
         <div class="logo"> Created By bujidaoRUN</div>
     </div>
     </div>

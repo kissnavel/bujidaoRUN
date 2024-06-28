@@ -10,7 +10,7 @@ export default class apiTool {
 
   getUrlMap = (data = {}) => {
     let host, host_hk4e, bbs_api, hostRecord
-    if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
+    if (/cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
       bbs_api = 'https://bbs-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
@@ -130,10 +130,6 @@ export default class apiTool {
             url: `${host}event/luna/home`,
             query: `lang=zh-cn&act_id=e202311201442471&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
-          },
-          widget: {
-            url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
-            types: 'widget'
           }
         } : {
           sign: {
@@ -150,11 +146,6 @@ export default class apiTool {
             url: `${host_hk4e}event/sol/home`,
             query: `lang=zh-cn&act_id=e202102251931481&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
-          },
-          widget: {
-            url: `${hostRecord}community/apihub/api/widget/data`,
-            query: 'game_id=2',
-            types: 'widget'
           }
         }),
         dailyNote: {
@@ -179,10 +170,6 @@ export default class apiTool {
             query: `lang=zh-cn&act_id=e202304121516551&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
           },
-          widget: {
-            url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
-            types: 'widget'
-          },
           UserGame: {
             url: `${host}binding/api/getUserGameRolesByCookie`,
             query: `game_biz=hkrpg_cn&region=${this.server}&game_uid=${this.uid}`
@@ -202,10 +189,6 @@ export default class apiTool {
             url: `${host}event/luna/os/home`,
             query: `lang=zh-cn&act_id=e202303301540311&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
-          },
-          widget: {
-            url: `${hostRecord}community/apihub/api/hsr_widget`,
-            types: 'widget'
           },
           UserGame: {
             url: `${host}binding/api/getUserGameRolesByCookie`,
@@ -244,8 +227,52 @@ export default class apiTool {
           url: `${hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
         }
+      },
+      /* 待游戏上线后添加参数测试
+      zzz: {
+        ...([' ', ' '].includes(this.server) ? {
+          sign: {
+            url: `${host}event/luna/sign`,// 国服绝区零签到
+            body: { lang: 'zh-cn', act_id: ' ', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/luna/info`,
+            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/luna/home`,
+            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
+          }
+        } : {
+          sign: {
+            url: `${host}event/luna/os/sign`,// 国际服绝区零签到
+            body: { lang: 'zh-cn', act_id: ' ', region: this.server, uid: this.uid },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/luna/os/info`,
+            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/luna/os/home`,
+            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
+          }
+        })
       }
-      // 删除bh3，待后续迭代zzz
+      */
     }
     return urlMap[this.game]
   }

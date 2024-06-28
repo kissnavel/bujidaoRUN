@@ -9,6 +9,14 @@
     - icon: paimon
       title: '(#/*)体力推送140'
       desc: '(体力/开拓力)推送阈值'
+- group: 寄·预估
+  list:
+    - icon: paimon
+      title: '#原石预估'
+      desc: '原神当期或下期可获取原石预估'
+    - icon: paimon
+      title: '*星琼预估'
+      desc: '星铁当期或下期可获取星琼预估'
 - group: 寄·崩坏：星穹铁道
   list:
     - icon: paimon
@@ -32,14 +40,11 @@
       title: '米游社(原神/··/全部)签到'
       desc: '社区签到'
     - icon: paimon
-      title: '(开启/关闭)崩三签到'
-      desc: '是否签到崩三'
-    - icon: paimon
       title: '设置社区签到(经验/米币)'
       desc: '社区签到模式'
     - icon: paimon
-      title: '(#/*/崩三)(禁用/解禁)114514'
-      desc: '(原神/星铁/崩三)禁用uid'
+      title: '(#/*/绝区零)(禁用/解禁)114514'
+      desc: '(原神/星铁/绝区零)(禁用/解禁)uid'
 - group: 寄·主人配置
   list:
     - icon: paimon

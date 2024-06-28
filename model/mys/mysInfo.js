@@ -160,11 +160,12 @@ export default class MysInfo {
     if (!mysInfo.uid || !mysInfo.ckInfo.ck) return false
     e.uid = mysInfo.uid
 
+    let user = e.user?.getMysUser()
     let mysApi
     if (ji)
-      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isSr ? 'sr' : 'gs')
+      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz ? 'zzz' : e.isSr ? 'sr' : 'gs')
     else
-      mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isSr)
+      mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz, e.isSr, user.device)
 
     let res
     if (_.isObject(api)) {
@@ -239,21 +240,24 @@ export default class MysInfo {
    */
   static async initCache(force = false, clearData = false) {
     // 检查缓存标记
-    let cache = DailyCache.create()
-    if (!force && await cache.get('cache-ready')) return true
+    const cache = DailyCache.create()
+    if (!force && await cache.get('cache-ready') || this.initing) 
+      return true
 
+    this.initing = true
     await DailyCache.clearOutdatedData()
 
-    if (clearData) await MysUser.clearCache()
+    if (clearData)
+      await MysUser.clearCache()
 
     // 先初始化用户CK，减少一些公共CK中ltuid无法识别的情况
     await MysInfo.initUserCk()
 
-    await cache.set('cache-ready', new Date() * 1)
-
     // 初始化公共ck
     await MysInfo.initPubCk()
 
+    await cache.set('cache-ready', new Date() * 1)
+    delete this.initing
     return true
   }
 
@@ -325,7 +329,7 @@ export default class MysInfo {
 
   async checkCode(res, type, mysApi = {}, data = {}, isTask = false) {
     if (!res) {
-      if (!isTask) this.e.reply('米游社接口请求失败，暂时无法查询')
+      if (!isTask) this.e.reply(`UID:${this.uid}，米游社接口请求失败，暂时无法查询`)
       return false
     }
 
@@ -343,31 +347,31 @@ export default class MysInfo {
       case 10103:
         if (/(登录|login)/i.test(res.message)) {
           if (this.ckInfo.uid) {
-            logger.mark(`[ck失效][uid:${this.uid}][qq:${this.userId}]`)
+            logger.mark(`[ck失效][UID:${this.uid}][qq:${this.userId}]`)
             if (!isTask) this.e.reply(`UID:${this.ckInfo.uid}，米游社cookie已失效`)
           } else {
             logger.mark(`[公共ck失效][ltuid:${this.ckInfo.ltuid}]`)
-            if (!isTask) this.e.reply('米游社查询失败，请稍后再试')
+            if (!isTask) this.e.reply(`UID:${this.uid}，米游社查询失败，请稍后再试`)
           }
           if (!isTask) await this.delCk()
         } else {
-          if (!isTask) this.e.reply(`米游社接口报错，暂时无法查询：${res.message}`)
+          if (!isTask) this.e.reply(`UID:${this.uid}，米游社接口报错，暂时无法查询：${res.message}`)
         }
         break
       case 1008:
-        if (!isTask) this.e.reply('\n请先去米游社绑定角色', false, { at: this.userId })
+        if (!isTask) this.e.reply(`\nUID:${this.uid}，请先去米游社绑定角色`, false, { at: this.userId })
         break
       case 10101:
         if (!isTask) {
           await this.disableToday(this.e)
-          this.e.reply('查询已达今日上限')
+          this.e.reply(`UID:${this.uid}，查询已达今日上限`)
         }
         break
       case 10102:
         if (res.message === 'Data is not public for the user') {
           if (!isTask) this.e.reply(`\nUID:${this.uid}，米游社数据未公开`, false, { at: this.userId })
         } else {
-          if (!isTask) this.e.reply(`uid:${this.uid}，请先去米游社绑定角色`)
+          if (!isTask) this.e.reply(`UID:${this.uid}，请先去米游社绑定角色`)
         }
         break
       // 伙伴不存在~
@@ -382,22 +386,25 @@ export default class MysInfo {
       case 10035:
         let retry = 0
         res = await this.geetest(type, mysApi, data)
-        while (res?.retcode == 1034 && retry < Cfg.getConfig('config').retrytime) {
+        while ((res?.retcode == 1034 || res?.retcode == 10035) && retry < Cfg.getConfig('config').retrytime) {
           res = await this.geetest(type, mysApi, data)
           retry++
         }
         if (!isTask)
           if (res?.retcode !== 0 && res.retcode !== 10103) {
-            logger.mark(`[米游社查询失败][uid:${this.uid}][qq:${this.userId}] 遇到验证码`)
+            logger.mark(`[米游社查询失败][UID:${this.uid}][qq:${this.userId}] 遇到验证码`)
             this.e.reply('米游社查询遇到验证码，请稍后再试')
           }
         break
+      case 10307:
+        if (!isTask) this.e.reply(`UID:${this.uid}，版本更新期间，数据维护中`)
+        break
       default:
-        if (!isTask) this.e.reply(`米游社接口报错，暂时无法查询：${res.message || 'error'}`)
+        if (!isTask) this.e.reply(`UID:${this.uid}，米游社接口报错，暂时无法查询：${res.message || 'error'}`)
         break
     }
     if (res.retcode !== 0) {
-      logger.mark(`[mys接口报错]${JSON.stringify(res)}，uid：${this.uid}`)
+      logger.mark(`[mys接口报错]${JSON.stringify(res)}，UID：${this.uid}`)
     }
     // 添加请求记录
     if (!isTask) await this.ckUser.addQueryUid(this.uid, this.e)
@@ -413,8 +420,11 @@ export default class MysInfo {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
       
       let headers = { 'x-rpc-device_fp': await this.getFp(vali) }
-      if (mysApi.isSr || mysApi.game == 'sr')
+      if (mysApi.isSr || mysApi.game == 'sr') {
         headers['x-rpc-challenge_game'] = '6'
+      } else if (mysApi.isZzz || mysApi.game == 'zzz') {
+        headers['x-rpc-challenge_game'] = '7'
+      }
 
       res = await vali.getData("createVerification", { headers })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }

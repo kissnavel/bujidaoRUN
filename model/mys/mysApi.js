@@ -7,8 +7,6 @@ import md5 from 'md5'
 
 let HttpsProxyAgent = ''
 const _bbs = "fdv0fY9My9eA7MR0NpjGP9RjueFvjUSQ"
-const _sr = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
-const _gs = 'fdv0fY9My9eA7MR0NpjGP9RjueFvjUSQ'
 export default class MysApi {
   constructor(uid, cookie, option = {}, game = 'gs', Server = '') {
     this.uid = uid
@@ -225,7 +223,7 @@ export default class MysApi {
 
   getDs (q = '', b = '') {
     let n = ''
-    if (['cn_gf01', 'cn_qd01', 'prod_gf_cn', 'prod_qd_cn'].includes(this.server)) {
+    if (/cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
     } else if (/os_|official/.test(this.server)) {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'

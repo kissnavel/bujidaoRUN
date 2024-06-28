@@ -12,9 +12,9 @@ export function supportGuoba() {
     pluginInfo: {
       name: 'bujidao',
       title: 'bujidao',
-      author: '@RebateafeqaR',
-      authorLink: 'https://github.com/babanbang',
-      link: 'https://github.com/babanbang/bujidaoRUN',
+      author: '@kissnavel',
+      authorLink: 'https://github.com/kissnavel',
+      link: 'https://github.com/kissnavel/bujidaoRUN',
       isV3: true,
       isV2: false,
       description: '寄·寄·寄',
@@ -78,7 +78,7 @@ export function supportGuoba() {
         {
           field: 'config.game',
           label: '签到游戏',
-          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；崩三: bh3',
+          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；绝区零: zzz',
           component: 'GTags',
           componentProps: {
             allowAdd: true,

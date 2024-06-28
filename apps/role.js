@@ -13,7 +13,7 @@ export class ji_role extends plugin {
       priority: Cfg.getConfig('config').priority ?? -114514,
       rule: [
         {
-          reg: '^(#(星铁)(角色|查询|查询角色|角色查询|人物|卡片)[ |0-9]*$)|(^(#*(星铁)uid|#*(星铁)UID)\\+*([1-9]|18)[0-9]{8}$)|(^#(星铁)[\\+|＋]*([1-9]|18)[0-9]{8})',
+          reg: `^#星铁${command.roleIndex}[ |0-9]*$`,
           fnc: 'roleIndex'
         },
         {

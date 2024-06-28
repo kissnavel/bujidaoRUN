@@ -1,5 +1,4 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import MysApi from '../model/mys/mysApi.js'
 import Cfg from '../model/Cfg.js'
 import fs from 'node:fs'
 import _ from 'lodash'
@@ -18,15 +17,11 @@ export class ji_config extends plugin {
                     fnc: 'setwhite'
                 },
                 {
-                    reg: '^#?(开启|关闭)崩三签到$',
-                    fnc: 'setbh3'
-                },
-                {
                     reg: '^#?设置社区签到(经验|米币)$',
                     fnc: 'setbbs'
                 },
                 {
-                    reg: '^#?(原神|星铁|崩三)?(禁用|解禁)(uid)?\\s*([1-9]|18)[0-9]{8}$',
+                    reg: '^#?(原神|星铁|绝区零)?(禁用|解禁)(uid)?\\s*([1-9]|18)[0-9]{8}$',
                     fnc: 'banUid'
                 },
                 {
@@ -78,59 +73,6 @@ export class ji_config extends plugin {
         }
     }
 
-    async setbh3(e) {
-        let id = Number(e.user_id) || String(e.user_id)
-        let config = Cfg.getConfig('config')
-        let white = Cfg.getConfig('white')
-        if (!config.game?.includes('bh3'))
-            return e.reply('主人未启用崩坏三签到')
-
-        let { cks, uids } = await Cfg.getcks(false, e.user_id)
-
-        if (_.every(cks, _.isEmpty))
-            return e.reply('\n请【#扫码登录】或【#刷新ck】后再开启', false, { at: true })
-
-        let msgs = []; let cknum = 0
-
-        for (let i = 0; i < uids.bh3.length; i++) {
-            let uid = uids.bh3[i]; let ck = cks.bh3[uid]
-            let mysApi = new MysApi(ck.uid, ck.ck, { log: false }, 'bh3', ck.region)
-            let signInfo = await mysApi.getData('sign_info')
-            if ((signInfo?.retcode == -100 && signInfo?.message == '尚未登录') || signInfo?.message.includes('请登录后重试')) {
-                msgs.push(`\n崩三uid:${ck.uid}，ck失效`)
-                cknum++
-            }
-            await common.sleep(500)
-        }
-        msgs.push('\n请【#扫码登录】或【#刷新ck】')
-        if (cknum > 0) return e.reply(msgs, false, { at: true })
-
-        let action = e.msg.includes('开启') ? '开启' : '关闭'
-        let set = white.bh3QQ
-
-        if (action === '开启') {
-            if (set?.includes(id))
-                return e.reply(`\n你已开启过崩坏三签到${white['QQ']?.includes(id) ? '' : '\n如需自动签到请【#开启自动签到】'}`, false, { at: true })
-
-            set.push(id)
-            Cfg.setConfig('white', white)
-            return e.reply(`\n已开启崩坏三签到${white['QQ']?.includes(id) ? '' : '\n如需自动签到请【#开启自动签到】'}`, false, { at: true })
-        } else if (action === '关闭') {
-            if (set.length === 0)
-                return e.reply(`还没有人开启崩坏三签到哦...`)
-
-            let index = set.findIndex(q => q == id)
-            if (index !== -1) {
-                set.splice(index, 1)
-                Cfg.setConfig('white', white)
-                e.reply(`已关闭崩坏三签到...`, false, { at: true })
-            } else {
-                e.reply(`你还没有开启崩坏三签到哦...`, false, { at: true })
-            }
-            return
-        }
-    }
-
     async setbbs(e) {
         let white = Cfg.getConfig('white')
         let id = Number(e.user_id) || String(e.user_id)
@@ -159,16 +101,16 @@ export class ji_config extends plugin {
     }
 
     async banUid(e) {
-        let uid = Number(e.msg.replace(/#?(原神|星铁|崩三)?(禁用|解禁)(uid)?\s*/i, '').trim())
+        let uid = Number(e.msg.replace(/#?(原神|星铁|绝区零)?(禁用|解禁)(uid)?\s*/i, '').trim())
 
         if (!uid) return e.reply('未输入UID')
 
         let Uid = Cfg.getConfig('banuid')
 
-        let name = e.msg.includes('星铁') ? '星铁' : e.msg.includes('崩三') ? '崩三' : '原神'
-        let set = Uid[e.msg.includes('星铁') ? 'sr' : e.msg.includes('崩三') ? 'bh3' : 'gs']
+        let name = e.msg.includes('原神') ? '原神' : e.msg.includes('星铁') ? '星铁' : '绝区零'
+        let set = Uid[e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : 'zzz']
         let action = e.msg.includes('禁用') ? '禁用' : '解禁'
-        let g = e.msg.includes('星铁') ? 'sr' : e.msg.includes('崩三') ? 'bh3' : 'gs'
+        let g = e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : 'zzz'
 
         if (!e.isMaster) {
             let { cks } = await Cfg.getcks(false, e.user_id)

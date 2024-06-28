@@ -29,7 +29,7 @@ export default class MysSign extends base {
 
         let msg = []; let res
         for (let g of mysSign.set.game) {
-            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '崩三'
+            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '绝区零'
             for (let i = 0; i < uids[g].length; i++) {
                 mysSign.ckNum = Number(i) + 1
                 if (i >= 1) await common.sleep(5000)
@@ -272,7 +272,7 @@ export default class MysSign extends base {
 
         let smsg = `\n`
         for (let game of this.set.game)
-            smsg += `${game == 'gs' ? '原神' : game == 'sr' ? '星铁' : '崩三'}：${uids[game].length}|`
+            smsg += `${game == 'gs' ? '原神' : game == 'sr' ? '星铁' : '绝区零'}：${uids[game].length}|`
         tips.push(smsg)
 
         tips.push(`\n未签：${noSignNum}个`)
@@ -293,7 +293,7 @@ export default class MysSign extends base {
         let invalidqq = []
 
         for (let g of this.set.game) {
-            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '崩三'
+            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '绝区零'
             for (let i = 0; i < uids[g].length; i++) {
                 this.ckNum = Number(i) + 1
                 let uid = uids[g][i]
@@ -336,12 +336,12 @@ export default class MysSign extends base {
         const END = moment().unix()
         let msg = `【签到任务完成】\n总耗时：${Cfg.countTime(END - START)}`
         for (let game of this.set.game)
-            msg += `\n${game == 'gs' ? '原神' : game == 'sr' ? '崩坏：星穹铁道' : '崩坏三'}：\n成功：${sucNum[game]} | 已签：${finshNum[game]} | 失败：${failNum[game]}`
+            msg += `\n${game == 'gs' ? '原神' : game == 'sr' ? '崩坏：星穹铁道' : '绝区零'}：\n成功：${sucNum[game]} | 已签：${finshNum[game]} | 失败：${failNum[game]}`
 
         msg += `\n失效ck：\n`
         for (let game of this.set.game)
             if (invalidNum[game] > 0)
-                msg += `${game == 'gs' ? '原神' : game == 'sr' ? '星铁' : '崩三'}：${invalidNum[game]}|`
+                msg += `${game == 'gs' ? '原神' : game == 'sr' ? '星铁' : '绝区零'}：${invalidNum[game]}|`
 
         msg += '\n'
         let qq = invalidqq.slice()

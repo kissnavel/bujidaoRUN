@@ -18,6 +18,7 @@
     "name": "原神",
     "url": "https://bbs.mihoyo.com/ys/",
     "otherName": [
+      "gs",
       "原神"
     ]
   },
@@ -40,9 +41,9 @@
     "name": "未定事件簿",
     "url": "https://bbs.mihoyo.com/wd/",
     "otherName": [
+      "未定",
       "事件簿",
-      "未定事件簿",
-      "未定"
+      "未定事件簿"
     ]
   },
   {
@@ -64,7 +65,6 @@
     "otherName": [
       "sr",
       "星铁",
-      "穹轨",
       "崩坏星穹铁道"
     ]
   },
@@ -75,8 +75,8 @@
     "name": "绝区零",
     "url": "https://bbs.mihoyo.com/zzz/",
     "otherName": [
-      "绝区零",
-      "zzz"
+      "zzz",
+      "绝区零"
     ]
   }
 ]

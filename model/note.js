@@ -158,7 +158,8 @@ export default class Note extends base {
       quality: 80,
       ...screenData,
       ...data,
-      ...res.User
+      ...res.User,
+      ...res.Sign
     }
     let img = await puppeteer.screenshot(`${data.srtempFile}dailyNote`, data)
     if (img) return await this.e.reply(img)
@@ -178,7 +179,10 @@ export default class Note extends base {
       if (resUser?.retcode !== 0) return false
     }
 
-    return { Data, User: resUser?.data || {} }
+    let signInfo = await mysApi.getData('sign_info')
+    if (!signInfo) return false
+
+    return { Data, User: resUser?.data?.list[0], Sign: signInfo?.data || {} }
   }
 
   noteSr(res, uid) {
