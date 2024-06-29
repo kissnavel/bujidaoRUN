@@ -130,6 +130,10 @@ export default class apiTool {
             url: `${host}event/luna/home`,
             query: 'lang=zh-cn&act_id=e202311201442471',
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}game_record/genshin/aapi/widget/v2`,
+            types: 'widget'
           }
         } : {
           sign: {
@@ -146,6 +150,10 @@ export default class apiTool {
             url: `${host_hk4e}event/sol/home`,
             query: 'lang=zh-cn&act_id=e202102251931481',
             types: 'sign'
+          },
+          widget: {
+            url: `${hostRecord}community/apihub/api/widget/data?game_id=2`,
+            types: 'widget'
           }
         }),
         dailyNote: {
@@ -155,6 +163,10 @@ export default class apiTool {
       },
       sr: {
         ...(['prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=hkrpg_cn&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host}event/luna/sign`,// 国服星铁签到
             body: { act_id: 'e202304121516551', region: this.server, uid: this.uid, lang: 'zh-cn' },
@@ -170,11 +182,15 @@ export default class apiTool {
             query: 'lang=zh-cn&act_id=e202304121516551',
             types: 'sign'
           },
-          UserGame: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz=hkrpg_cn&region=${this.server}&game_uid=${this.uid}`
+          widget: {
+            url: `${hostRecord}game_record/app/hkrpg/aapi/widget`,
+            types: 'widget'
           }
         } : {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=hkrpg_global&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host}event/luna/os/sign`,// 国际服星铁签到
             body: { act_id: 'e202303301540311', lang: 'zh-cn' },
@@ -190,9 +206,9 @@ export default class apiTool {
             query: 'lang=zh-cn&act_id=e202303301540311',
             types: 'sign'
           },
-          UserGame: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz=hkrpg_global&region=${this.server}&game_uid=${this.uid}`
+          widget: {
+            url: `${hostRecord}community/apihub/api/hsr_widget`,
+            types: 'widget'
           }
         }),
         dailyNote: {
@@ -231,6 +247,10 @@ export default class apiTool {
       /* 待游戏上线后添加参数测试
       zzz: {
         ...([' ', ' '].includes(this.server) ? {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host}event/luna/sign`,// 国服绝区零签到
             body: { act_id: ' ', region: this.server, uid: this.uid, lang: 'zh-cn' },
@@ -245,12 +265,12 @@ export default class apiTool {
             url: `${host}event/luna/home`,
             query: 'lang=zh-cn&act_id= ',
             types: 'sign'
-          },
+          }
+        } : {
           UserGame: {
             url: `${host}binding/api/getUserGameRolesByCookie`,
             query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
-          }
-        } : {
+          },
           sign: {
             url: `${host}event/luna/os/sign`,// 国际服绝区零签到
             body: { act_id: ' ', lang: 'zh-cn' },
@@ -265,10 +285,6 @@ export default class apiTool {
             url: `${host}event/luna/os/home`,
             query: 'lang=zh-cn&act_id= ',
             types: 'sign'
-          },
-          UserGame: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
           }
         })
       }
