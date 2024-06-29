@@ -109,7 +109,7 @@ export class ji_note extends plugin {
                         Notes[e.self_id][e.user_id][e.group_id] = { gs: g === 'gs' ? [uid] : [], sr: g === 'sr' ? [uid] : [], gs_Resin: this.set.gs_Resin, sr_Resin: this.set.sr_Resin }
                     } else {
                         if (Notes[e.self_id][e.user_id][e.group_id][g].includes(uid))
-                            return e.reply(`\n${game}UID:${uid}已开启本群体力推送\n当体力大于${g === 'gs' ? '【140】' : '【160】'}时将提醒`, false, { at: true })
+                            return e.reply(`\n${game}UID:${uid}本群体力推送已开启\n当体力大于${g === 'gs' ? '【160】' : '【200】'}时将提醒`, false, { at: true })
                         Notes[e.self_id][e.user_id][e.group_id][g].push(uid)
                     }
                 }
