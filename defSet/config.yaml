@@ -33,7 +33,7 @@ TaskTime: 0 0/30 * * * ?
 #体力推送CD(小时)
 sendCD: 12
 #默认推送阈值
-gs_Resin: 140
+gs_Resin: 160
 sr_Resin: 200
 #合并转发
 forward: 2
