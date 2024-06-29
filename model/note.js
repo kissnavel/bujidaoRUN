@@ -105,8 +105,8 @@ export default class Note extends base {
               if (!cks[g][uid]) continue
               let ck = cks[g][uid]
 
-              let { Data, User } = await this.noteData(ck, g)
-              if (Data?.retcode !== 0 || _.isEmpty(User)) continue
+              let { Data, User, Sign } = await this.noteData(ck, g)
+              if (Data?.retcode !== 0 || _.isEmpty(User) || _.isEmpty(Sign)) continue
 
               Resins[`${g}_${uid}`] = Data?.data[`current_${this.e.isSr ? 'stamina' : 'resin'}`]
               if (Number(Resins[`${g}_${uid}`]) >= Number(Resin)) {
@@ -117,7 +117,8 @@ export default class Note extends base {
                   quality: 80,
                   ...this.screenData,
                   ...data,
-                  ...User
+                  ...User,
+                  ...Sign
                 }
                 imgs[`${g}_${uid}`] = await puppeteer.screenshot(`${data.srtempFile}dailyNote`, data)
               }
@@ -140,7 +141,7 @@ export default class Note extends base {
 
   async getData(ck, game) {
     let res = await this.noteData(ck, game)
-    if (res?.Data?.retcode !== 0 || (_.isEmpty(res?.User) && game == 'sr')) return false
+    if (res?.Data?.retcode !== 0 || (_.isEmpty(res?.User) && game == 'sr') || _.isEmpty(res?.Sign)) return false
 
     if (game == 'gs')
       return await new note(this.e).getNote(ck.ck, ck.uid, res.Data, { render })
