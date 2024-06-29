@@ -7,7 +7,7 @@ import _ from 'lodash'
 export class ji_notetask extends plugin {
     constructor() {
         super({
-            name: '寄·推送',
+            name: '寄·体力推送',
             dsc: '',
             event: 'message',
             priority: Cfg.getConfig('config').priority ?? -114514,
