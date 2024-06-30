@@ -161,7 +161,7 @@ export function supportGuoba() {
         {
           field: 'config.NoteTask',
           label: '体力推送',
-          bottomHelpMessage: '是否开启体力推送，体力推送仅使用小组件查询',
+          bottomHelpMessage: '是否开启体力推送',
           component: 'Switch',
         },
         {

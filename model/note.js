@@ -1,6 +1,4 @@
-import { render } from '../../xiaoyao-cvs-plugin/adapter/render.js'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
-import note from "../../xiaoyao-cvs-plugin/model/note.js"
 import common from '../../../lib/common/common.js'
 import MysInfo from './mys/mysInfo.js'
 import MysApi from './mys/mysApi.js'
@@ -120,7 +118,7 @@ export default class Note extends base {
                   ...User,
                   ...Sign
                 }
-                imgs[`${g}_${uid}`] = await puppeteer.screenshot(`${data.srtempFile}dailyNote`, data)
+                imgs[`${g}_${uid}`] = await puppeteer.screenshot(this.screenData.tplFile, data)
               }
 
               if (imgs[`${g}_${uid}`]) {
@@ -143,14 +141,14 @@ export default class Note extends base {
     let res = await this.noteData(ck, game)
     if (res?.Data?.retcode !== 0 || (_.isEmpty(res?.User) && game == 'sr') || _.isEmpty(res?.Sign)) return false
 
-    if (game == 'gs')
-      return await new note(this.e).getNote(ck.ck, ck.uid, res.Data, { render })
-
     let data = game == 'sr' ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
     this.e.isSr = game == 'sr' ? true : false
     let screenData = this.screenData
 
-    if (game == 'sr') {
+    if (game == 'gs') {
+      screenData.tplFile = `${this._path}/plugins/bujidao/resources/genshin/html/dailyNote/dailyNote.html`
+      screenData.pluResPath = `${this._path}/plugins/bujidao/resources/genshin/`
+    } else if (game == 'sr') {
       screenData.tplFile = `${this._path}/plugins/bujidao/resources/StarRail/html/dailyNote/dailyNote.html`
       screenData.pluResPath = `${this._path}/plugins/bujidao/resources/StarRail/`
     }
@@ -162,26 +160,24 @@ export default class Note extends base {
       ...res.User,
       ...res.Sign
     }
-    let img = await puppeteer.screenshot(`${data.srtempFile}dailyNote`, data)
+    let img = await puppeteer.screenshot(screenData.tplFile, data)
     if (img) return await this.e.reply(img)
   }
 
   async noteData(ck, game) {
     let mysApi = new MysApi(ck.uid, ck.ck, {}, game)
-    let resUser = {}
 
     let Data = await mysApi.getData('dailyNote')
     Data = await new MysInfo(this.e).checkCode(Data, 'dailyNote', mysApi, {}, true)
     if (Data?.retcode !== 0) return false
 
-    if (mysApi.game == 'sr') {
-      resUser = await mysApi.getData('UserGame')
-      resUser = await new MysInfo(this.e).checkCode(resUser, 'UserGame', mysApi, {}, true)
-      if (resUser?.retcode !== 0) return false
-    }
+    let resUser = await mysApi.getData('UserGame')
+    resUser = await new MysInfo(this.e).checkCode(resUser, 'UserGame', mysApi, {}, true)
+    if (resUser?.retcode !== 0) return false
 
     let signInfo = await mysApi.getData('sign_info')
-    if (!signInfo) return false
+    signInfo = await new MysInfo(this.e).checkCode(signInfo, 'sign_info', mysApi, {}, true)
+    if (signInfo?.retcode !== 0) return false
 
     return { Data, User: resUser?.data?.list[0], Sign: signInfo?.data || {} }
   }
