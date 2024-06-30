@@ -118,7 +118,7 @@ export default class Note extends base {
                   ...User,
                   ...Sign
                 }
-                imgs[`${g}_${uid}`] = await puppeteer.screenshot(this.screenData.tplFile, data)
+                imgs[`${g}_${uid}`] = await puppeteer.screenshot(game == 'sr' ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
               }
 
               if (imgs[`${g}_${uid}`]) {
@@ -160,14 +160,19 @@ export default class Note extends base {
       ...res.User,
       ...res.Sign
     }
-    let img = await puppeteer.screenshot(screenData.tplFile, data)
+    let img = await puppeteer.screenshot(game == 'sr' ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
     if (img) return await this.e.reply(img)
   }
 
   async noteData(ck, game) {
     let mysApi = new MysApi(ck.uid, ck.ck, {}, game)
 
-    let Data = await mysApi.getData('dailyNote')
+    let device_fp = await mysApi.getData('getFp')
+    device_fp = await new MysInfo(this.e).checkCode(device_fp, 'getFp', mysApi, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let Data = await mysApi.getData('dailyNote', { headers })
     Data = await new MysInfo(this.e).checkCode(Data, 'dailyNote', mysApi, {}, true)
     if (Data?.retcode !== 0) return false
 

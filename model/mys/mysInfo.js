@@ -169,6 +169,7 @@ export default class MysInfo {
 
     let res
     if (_.isObject(api)) {
+      await mysApi.getData('getFp')
       let all = []
       /** 同步请求 */
       if (e.apiSync) {

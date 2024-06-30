@@ -65,6 +65,14 @@ export default class MysApi {
   }
 
   async getData(type, data = {}, game = '', cached = false) {
+    if (!this._device_fp && !data?.Getfp && !data?.headers?.['x-rpc-device_fp']) {
+      this._device_fp = await this.getData('getFp', {
+        seed_id: this.generateSeed(16),
+        Getfp: true
+      })
+    }
+    if (type === 'getFp' && !data?.Getfp) return this._device_fp
+
     if (game) this.game = game
     let { url, headers, body } = this.getUrl(type, data)
 
@@ -85,6 +93,10 @@ export default class MysApi {
       headers["x-rpc-challenge"] = data.challenge
       headers["x-rpc-validate"] = data.validate
       headers["x-rpc-seccode"] = `${data.validate}|jordan`
+    }
+
+    if (type !== 'getFp' && !headers['x-rpc-device_fp'] && this._device_fp.data?.device_fp) {
+      headers['x-rpc-device_fp'] = this._device_fp.data.device_fp
     }
 
     let param = {
@@ -284,4 +296,23 @@ export default class MysApi {
 
     return null
   }
+
+  generateSeed(length = 16) {
+    const characters = '0123456789abcdef'
+    let result = ''
+    for (let i = 0; i < length; i++) {
+      result += characters[Math.floor(Math.random() * characters.length)]
+    }
+    return result
+  }
+}
+
+export function randomRange() {
+  let randomStr = ''
+  let charStr = 'abcdef0123456789'
+  for (let i = 0; i < 64; i++) {
+    let index = Math.round(Math.random() * (charStr.length - 1))
+    randomStr += charStr.substring(index, index + 1)
+  }
+  return randomStr
 }
