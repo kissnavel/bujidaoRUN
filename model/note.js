@@ -139,7 +139,7 @@ export default class Note extends base {
 
   async getData(ck, game) {
     let res = await this.noteData(ck, game)
-    if (res?.Data?.retcode !== 0 || (_.isEmpty(res?.User) && game == 'sr') || _.isEmpty(res?.Sign)) return false
+    if (res?.Data?.retcode !== 0 || _.isEmpty(res?.User) || _.isEmpty(res?.Sign)) return false
 
     let data = game == 'sr' ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
     this.e.isSr = game == 'sr' ? true : false
