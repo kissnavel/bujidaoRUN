@@ -153,9 +153,7 @@ class Cfg {
           }
           if (!note)
             if (this.white.zzzQQ?.includes(Number(row.qq) || String(row.qq)))
-              cks = await this.otherck_cn(row, cks)
-            if (cks?.retcode !== 0)
-              cks = await this.otherck_os(row, cks)
+              cks = await this.otherck(row, cks)
         }
       }
       for (let game of this.Game)
@@ -171,43 +169,14 @@ class Cfg {
 
   }
 
-  async otherck_cn(row, cks) {
+  async otherck(row, cks) {
     let ck = this.setCk(row.ck, row.device)
     for (let game of this.Game) {
       if (['gs', 'sr'].includes(game)) continue
       let mysApi = new MysApi('', ck, { log: false }, game)
       let res = await mysApi.getData('userGame_cn')
-      if (res?.retcode !== 0) return cks
-      if (res?.data?.list.length == 0) continue
-
-      for (let data of res?.data?.list) {
-        if (this.banUid.zzz?.includes(Number(data.game_uid))) continue
-        let uid = String(data.game_uid)
-        let CK = {
-          [uid]: {
-            qq: row.qq,
-            uid: uid,
-            ck: ck,
-            skid: `${row.ltuid}_${row.qq}`,
-            region: data.region,
-            device_id: row.device,
-            ltuid: row.ltuid
-          }
-        }
-        cks[game] = Object.assign({}, cks[game], CK)
-      }
-    }
-    await common.sleep(_.random(500, 1000))
-    return cks
-  }
-
-  async otherck_os(row, cks) {
-    let ck = this.setCk(row.ck, row.device)
-    for (let game of this.Game) {
-      if (['gs', 'sr'].includes(game)) continue
-      let mysApi = new MysApi('', ck, { log: false }, game)
-      let res = await mysApi.getData('userGame_os')
-      if (res?.retcode !== 0) return cks
+      if (res?.retcode !== 0)
+        res = await mysApi.getData('userGame_os')
       if (res?.data?.list.length == 0) continue
 
       for (let data of res?.data?.list) {
