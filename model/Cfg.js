@@ -177,7 +177,6 @@ class Cfg {
       let res = await mysApi.getData('userGame_cn')
       if (res?.retcode !== 0)
         res = await mysApi.getData('userGame_os')
-      if (res?.data?.list.length == 0) continue
 
       for (let data of res?.data?.list) {
         if (this.banUid.zzz?.includes(Number(data.game_uid))) continue
