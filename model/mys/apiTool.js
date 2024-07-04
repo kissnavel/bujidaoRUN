@@ -11,15 +11,17 @@ export default class apiTool {
   }
 
   getUrlMap = (data = {}) => {
-    let host, host_hk4e, bbs_api, hostRecord, hostPublicData
+    let host, host_hk4e, host_nap, bbs_api, hostRecord, hostPublicData
     if (/cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
+      host_nap = 'https://act-nap-api.mihoyo.com/'
       bbs_api = 'https://bbs-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
       hostPublicData = 'https://public-data-api.mihoyo.com/'
-    } else if (/os_|official/.test(this.server)) {
+    } else if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
       host = 'https://sg-public-api.hoyolab.com/'
       host_hk4e = 'https://sg-hk4e-api.hoyolab.com/'
+      host_nap = 'https://sg-act-nap-api.hoyolab.com/'
       hostRecord = 'https://bbs-api-os.hoyolab.com/'
       hostPublicData = 'https://sg-public-data-api.hoyoverse.com/'
     }
@@ -292,51 +294,49 @@ export default class apiTool {
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
         }
       },
-      /* 待游戏上线后添加参数测试
       zzz: {
-        ...([' ', ' '].includes(this.server) ? {
-          UserGame: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
-          },
+        userGame_cn: {
+          url: 'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=nap_cn'
+        },
+        userGame_os: {
+          url: 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=nap_global'
+        },
+        ...(['prod_gf_cn'].includes(this.server) ? {
           sign: {
-            url: `${host}event/luna/sign`,// 国服绝区零签到
-            body: { act_id: ' ', region: this.server, uid: this.uid, lang: 'zh-cn' },
+            url: `${host_nap}event/luna/zzz/sign`,// 国服绝区零签到
+            body: { act_id: 'e202406242138391', region: this.server, uid: this.uid, lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
-            url: `${host}event/luna/info`,
-            query: `lang=zh-cn&act_id= &region=${this.server}&uid=${this.uid}`,
+            url: `${host_nap}event/luna/zzz/info`,
+            query: `lang=zh-cn&act_id=e202406242138391&region=${this.server}&uid=${this.uid}`,
             types: 'sign'
           },
           sign_home: {
-            url: `${host}event/luna/home`,
-            query: 'lang=zh-cn&act_id= ',
+            url: `${host_nap}event/luna/zzz/home`,
+            query: 'lang=zh-cn&act_id=e202406242138391',
             types: 'sign'
           }
         } : {
-          UserGame: {
-            url: `${host}binding/api/getUserGameRolesByCookie`,
-            query: `game_biz= &region=${this.server}&game_uid=${this.uid}`
-          },
           sign: {
-            url: `${host}event/luna/os/sign`,// 国际服绝区零签到
-            body: { act_id: ' ', lang: 'zh-cn' },
+            url: `${host_nap}event/luna/zzz/os/sign`,// 国际服绝区零签到
+            body: { act_id: 'e202406031448091', lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
-            url: `${host}event/luna/os/info`,
-            query: 'lang=zh-cn&act_id= ',
+            url: `${host_nap}event/luna/zzz/os/info`,
+            query: 'lang=zh-cn&act_id=e202406031448091',
             types: 'sign'
           },
           sign_home: {
-            url: `${host}event/luna/os/home`,
-            query: 'lang=zh-cn&act_id= ',
+            url: `${host_nap}event/luna/zzz/os/home`,
+            query: 'lang=zh-cn&act_id=e202406031448091',
             types: 'sign'
           }
         })
       }
-      */
     }
     return urlMap[this.game]
   }

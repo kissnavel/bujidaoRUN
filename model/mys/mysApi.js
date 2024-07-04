@@ -14,6 +14,9 @@ export default class MysApi {
     this.game = game
     this.set = Cfg.getConfig('config')
     this.server = Server || this.getServer()
+    if (this.game == 'zzz') {
+      this.server = Server || this.getServ()
+    }
     this.device_id = this.getGuid()
     /** 5分钟缓存 */
     this.cacheCd = 300
@@ -62,6 +65,20 @@ export default class MysApi {
         return this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
     }
     return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
+  }
+
+  getServ() {
+    switch (String(this.uid).slice(0, -8)) {
+      case '10':
+        return 'prod_gf_us'
+      case '13':
+        return 'prod_gf_jp'
+      case '15':
+        return 'prod_gf_eu'
+      case '17':
+        return 'prod_gf_sg'
+    }
+    return 'prod_gf_cn'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
@@ -180,7 +197,7 @@ export default class MysApi {
     }
 
     let client
-    if (/os_|official/.test(this.server)) {
+    if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
       client = header_os
     } else {
       client = {
@@ -195,11 +212,11 @@ export default class MysApi {
           return {
             ...header,
             ...(['cn_gf01', 'cn_qd01'].includes(this.server) ? {
-              'x-rpc-signgame': 'hk4e',
-              Referer: 'https://act.mihoyo.com/'
-            } : {
-              Referer: 'https://act.mihoyo.com/'
-            }),
+              'x-rpc-signgame': 'hk4e'
+            } : this.game == 'zzz' ? {
+              'x-rpc-signgame': 'zzz'
+            } : {}),
+            Referer: 'https://act.mihoyo.com/',
             'X-Requested-With': 'com.mihoyo.hyperion',
             'x-rpc-platform': 'android',
             'x-rpc-device_model': 'J9110',
@@ -211,6 +228,9 @@ export default class MysApi {
         else
           return {
             ...header_os,
+            ...(this.game == 'zzz' ? {
+              'x-rpc-signgame': 'zzz'
+            } : {}),
             'X-Requested-With': 'com.mihoyo.hoyolab',
             'x-rpc-platform': 'android',
             'x-rpc-device_model': 'J9110',
@@ -237,7 +257,7 @@ export default class MysApi {
     let n = ''
     if (/cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
-    } else if (/os_|official/.test(this.server)) {
+    } else if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
     }
     let t = Math.round(new Date().getTime() / 1000)
@@ -281,7 +301,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (!/os_|official/.test(this.server)) return null
+    if (!/os_|official|_us|_jp|_eu|_sg/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
