@@ -228,6 +228,40 @@ export function supportGuoba() {
         },
         {
           component: 'Divider',
+          label: '禁用/解禁UID设置'
+        },
+        {
+          field: 'banuid.gs',
+          label: '禁用/解禁原神UID',
+          bottomHelpMessage: '禁用/解禁原神UID，依次添加或删除',
+          component: 'GTags',
+          componentProps: {
+            allowAdd: true,
+            allowDel: true,
+          },
+        },
+        {
+          field: 'banuid.sr',
+          label: '禁用/解禁星铁UID',
+          bottomHelpMessage: '禁用/解禁星铁UID，依次添加或删除',
+          component: 'GTags',
+          componentProps: {
+            allowAdd: true,
+            allowDel: true,
+          },
+        },
+        {
+          field: 'banuid.zzz',
+          label: '禁用/解禁绝区零UID',
+          bottomHelpMessage: '禁用/解禁绝区零UID，依次添加或删除',
+          component: 'GTags',
+          componentProps: {
+            allowAdd: true,
+            allowDel: true,
+          },
+        },
+        {
+          component: 'Divider',
           label: '白名单设置'
         },
         {
@@ -322,7 +356,8 @@ export function supportGuoba() {
         return {
           api: Cfg.getConfig('api'),
           white: Cfg.getConfig('white'),
-          config: Cfg.getConfig('config')
+          config: Cfg.getConfig('config'),
+          banuid: Cfg.getConfig('banuid')
         }
       },
       // 设置配置的方法（前端点确定后调用的方法）
