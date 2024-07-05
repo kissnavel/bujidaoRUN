@@ -14,9 +14,6 @@ export default class MysApi {
     this.game = game
     this.set = Cfg.getConfig('config')
     this.server = Server || this.getServer()
-    if (this.game == 'zzz') {
-      this.server = Server || this.getServ()
-    }
     this.device_id = this.getGuid()
     /** 5分钟缓存 */
     this.cacheCd = 300
@@ -48,37 +45,37 @@ export default class MysApi {
   }
 
   getServer() {
-    switch (String(this.uid).slice(0, -8)) {
-      case '1':
-      case '2':
-        return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
-      case '5':
-        return this.game == 'sr' ? 'prod_qd_cn' : 'cn_qd01'
-      case '6':
-        return this.game == 'sr' ? 'prod_official_usa' : 'os_usa'
-      case '7':
-        return this.game == 'sr' ? 'prod_official_euro' : 'os_euro'
-      case '8':
-      case '18':
-        return this.game == 'sr' ? 'prod_official_asia' : 'os_asia'
-      case '9':
-        return this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
+    if (this.game == 'zzz') {
+      switch (String(this.uid).slice(0, -8)) {
+        case '10':
+          return 'prod_gf_us'
+        case '13':
+          return 'prod_gf_jp'
+        case '15':
+          return 'prod_gf_eu'
+        case '17':
+          return 'prod_gf_sg'
+      }
+    } else {
+      switch (String(this.uid).slice(0, -8)) {
+        case '1':
+        case '2':
+        case '3':
+          return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
+        case '5':
+          return this.game == 'sr' ? 'prod_qd_cn' : 'cn_qd01'
+        case '6':
+          return this.game == 'sr' ? 'prod_official_usa' : 'os_usa'
+        case '7':
+          return this.game == 'sr' ? 'prod_official_euro' : 'os_euro'
+        case '8':
+        case '18':
+          return this.game == 'sr' ? 'prod_official_asia' : 'os_asia'
+        case '9':
+          return this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
+      }
     }
-    return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
-  }
-
-  getServ() {
-    switch (String(this.uid).slice(0, -8)) {
-      case '10':
-        return 'prod_gf_us'
-      case '13':
-        return 'prod_gf_jp'
-      case '15':
-        return 'prod_gf_eu'
-      case '17':
-        return 'prod_gf_sg'
-    }
-    return 'prod_gf_cn'
+    return this.game == 'zzz' ? 'prod_gf_cn' : this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
