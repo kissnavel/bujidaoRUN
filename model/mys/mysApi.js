@@ -45,37 +45,28 @@ export default class MysApi {
   }
 
   getServer() {
-    if (this.game == 'zzz') {
-      switch (String(this.uid).slice(0, -8)) {
-        case '10':
-          return 'prod_gf_us'
-        case '13':
-          return 'prod_gf_jp'
-        case '15':
-          return 'prod_gf_eu'
-        case '17':
-          return 'prod_gf_sg'
-      }
-    } else {
-      switch (String(this.uid).slice(0, -8)) {
-        case '1':
-        case '2':
-        case '3':
-          return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
-        case '5':
-          return this.game == 'sr' ? 'prod_qd_cn' : 'cn_qd01'
-        case '6':
-          return this.game == 'sr' ? 'prod_official_usa' : 'os_usa'
-        case '7':
-          return this.game == 'sr' ? 'prod_official_euro' : 'os_euro'
-        case '8':
-        case '18':
-          return this.game == 'sr' ? 'prod_official_asia' : 'os_asia'
-        case '9':
-          return this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
-      }
+    switch (String(this.uid).slice(0, -8)) {
+      case '1':
+      case '2':
+      case '3':
+        return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
+      case '5':
+        return this.game == 'sr' ? 'prod_qd_cn' : 'cn_qd01'
+      case '6':
+      case '10':
+        return this.game == 'zzz' ? 'prod_gf_us' : this.game == 'sr' ? 'prod_official_usa' : 'os_usa'
+      case '7':
+      case '15':
+        return this.game == 'zzz' ? 'prod_gf_eu' : this.game == 'sr' ? 'prod_official_euro' : 'os_euro'
+      case '8':
+      case '13':
+      case '18':
+        return this.game == 'zzz' ? 'prod_gf_jp' : this.game == 'sr' ? 'prod_official_asia' : 'os_asia'
+      case '9':
+      case '17':
+        return this.game == 'zzz' ? 'prod_gf_sg' : this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
     }
-    return this.game == 'zzz' ? 'prod_gf_cn' : this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
+    return 'prod_gf_cn'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
