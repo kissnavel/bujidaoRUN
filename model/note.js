@@ -118,7 +118,7 @@ export default class Note extends base {
                   ...User,
                   ...Sign
                 }
-                imgs[`${g}_${uid}`] = await puppeteer.screenshot(game == 'sr' ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
+                imgs[`${g}_${uid}`] = await puppeteer.screenshot(this.e.isSr ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
               }
 
               if (imgs[`${g}_${uid}`]) {
@@ -145,10 +145,9 @@ export default class Note extends base {
     this.e.isSr = game == 'sr' ? true : false
     let screenData = this.screenData
 
-    if (game == 'gs') {
-      screenData.tplFile = `${this._path}/plugins/bujidao/resources/genshin/html/dailyNote/dailyNote.html`
-      screenData.pluResPath = `${this._path}/plugins/bujidao/resources/genshin/`
-    } else if (game == 'sr') {
+    screenData.tplFile = `${this._path}/plugins/bujidao/resources/genshin/html/dailyNote/dailyNote.html`
+    screenData.pluResPath = `${this._path}/plugins/bujidao/resources/genshin/`
+    if (this.e.isSr) {
       screenData.tplFile = `${this._path}/plugins/bujidao/resources/StarRail/html/dailyNote/dailyNote.html`
       screenData.pluResPath = `${this._path}/plugins/bujidao/resources/StarRail/`
     }
@@ -160,7 +159,7 @@ export default class Note extends base {
       ...res.User,
       ...res.Sign
     }
-    let img = await puppeteer.screenshot(game == 'sr' ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
+    let img = await puppeteer.screenshot(this.e.isSr ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
     if (img) return await this.e.reply(img)
   }
 
