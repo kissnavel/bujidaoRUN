@@ -52,11 +52,11 @@ export default class MysInfo {
       return false
     }
 
-    if (!['1', '2', '3', '5', '6', '7', '8', '18', '9'].includes(String(mysInfo.uid).slice(0, -8))) {
+    if (!/(10|13|15|17|18|[1-9])?[0-9]{8}/i.test(mysInfo.uid)) {
       // e.reply('只支持查询国服uid')
       return false
     }
-    if (!['6', '7', '8', '18', '9'].includes(String(mysInfo.uid).slice(0, -8)) && api === 'useCdk') {
+    if (!/(10|13|15|17|18|[6-9])[0-9]{8}/i.test(mysInfo.uid) && api === 'useCdk') {
       e.reply('兑换码使用只支持国际服uid')
       return false
     }
@@ -98,7 +98,7 @@ export default class MysInfo {
     }
 
     let matchUid = (msg = '') => {
-      let ret = /([1-9]|18)[0-9]{8}/g.exec(msg)
+      let ret = /(10|13|15|17|18|[1-9])?[0-9]{8}/g.exec(msg)
       if (!ret) return false
       return ret[0]
     }
