@@ -66,7 +66,7 @@ export default class MysApi {
       case '17':
         return this.game == 'zzz' ? 'prod_gf_sg' : this.game == 'sr' ? 'prod_official_cht' : 'os_cht'
     }
-    return this.game == 'zzz' || this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
+    return (this.game == 'zzz' || this.game == 'sr') ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
