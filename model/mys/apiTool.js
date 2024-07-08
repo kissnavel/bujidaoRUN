@@ -18,7 +18,7 @@ export default class apiTool {
       bbs_api = 'https://bbs-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
       hostPublicData = 'https://public-data-api.mihoyo.com/'
-    } else if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
+    } else {
       host = 'https://sg-public-api.hoyolab.com/'
       host_hk4e = 'https://sg-hk4e-api.hoyolab.com/'
       host_nap = 'https://sg-act-nap-api.hoyolab.com/'
@@ -295,14 +295,6 @@ export default class apiTool {
         }
       },
       zzz: {
-        userGame_cn: {
-          url: 'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie',
-          query: 'game_biz=nap_cn'
-        },
-        userGame_os: {
-          url: 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie',
-          query: 'game_biz=nap_global'
-        },
         ...(['prod_gf_cn'].includes(this.server) ? {
           sign: {
             url: `${host_nap}event/luna/zzz/sign`,// 国服绝区零签到

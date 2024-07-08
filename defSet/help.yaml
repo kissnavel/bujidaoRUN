@@ -40,9 +40,6 @@
       title: '米游社(原神/··/全部)签到'
       desc: '社区签到'
     - icon: paimon
-      title: '(开启/关闭)绝区零签到'
-      desc: '是否签到绝区零'
-    - icon: paimon
       title: '设置社区签到(经验/米币)'
       desc: '社区签到模式'
     - icon: paimon

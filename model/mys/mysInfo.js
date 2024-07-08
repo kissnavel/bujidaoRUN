@@ -52,12 +52,8 @@ export default class MysInfo {
       return false
     }
 
-    if (!/(10|13|15|17|18|[1-9])?[0-9]{8}/i.test(mysInfo.uid)) {
-      // e.reply('只支持查询国服uid')
-      return false
-    }
-    if (!/(10|13|15|17|18|[6-9])[0-9]{8}/i.test(mysInfo.uid) && api === 'useCdk') {
-      e.reply('兑换码使用只支持国际服uid')
+    if (!/(18|[6-9])[0-9]{8}/i.test(mysInfo.uid) && api === 'useCdk') {
+      e.reply('兑换码使用只支持原神、星铁国际服uid')
       return false
     }
 

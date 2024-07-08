@@ -19,10 +19,6 @@ export class ji_config extends plugin {
                     fnc: 'setwhite'
                 },
                 {
-                    reg: '^#?(开启|关闭)绝区零签到$',
-                    fnc: 'setzzz'
-                },
-                {
                     reg: '^#?设置社区签到(经验|米币)$',
                     fnc: 'setbbs'
                 },
@@ -76,59 +72,6 @@ export class ji_config extends plugin {
             let msg = set.slice()
             msg = msg.map((e, i) => `${i + 1}. ${e}`).join(', ')
             return e.reply(msg, false)
-        }
-    }
-
-    async setzzz(e) {
-        let id = Number(e.user_id) || String(e.user_id)
-        let config = Cfg.getConfig('config')
-        let white = Cfg.getConfig('white')
-        if (!config.game?.includes('zzz'))
-            return e.reply('主人未启用绝区零签到')
-
-        let { cks, uids } = await Cfg.getcks(false, e.user_id)
-
-        if (_.every(cks, _.isEmpty))
-            return e.reply('\n请【#扫码登录】或【#刷新ck】后再开启', false, { at: true })
-
-        let msgs = []; let cknum = 0
-
-        for (let i = 0; i < uids.zzz.length; i++) {
-            let uid = uids.zzz[i]; let ck = cks.zzz[uid]
-            let mysApi = new MysApi(ck.uid, ck.ck, { log: false }, 'zzz', ck.region)
-            let signInfo = await mysApi.getData('sign_info')
-            if ((signInfo?.retcode == -100 && signInfo?.message == '尚未登录') || signInfo?.message.includes('请登录后重试')) {
-                msgs.push(`\n绝区零uid:${ck.uid}，ck失效`)
-                cknum++
-            }
-            await common.sleep(500)
-        }
-        msgs.push('\n请【#扫码登录】或【#刷新ck】')
-        if (cknum > 0) return e.reply(msgs, false, { at: true })
-
-        let action = e.msg.includes('开启') ? '开启' : '关闭'
-        let set = white.zzzQQ
-
-        if (action === '开启') {
-            if (set?.includes(id))
-                return e.reply(`\n你已开启过绝区零签到${white['QQ']?.includes(id) ? '' : '\n如需自动签到请【#开启自动签到】'}`, false, { at: true })
-
-            set.push(id)
-            Cfg.setConfig('white', white)
-            return e.reply(`\n已开启绝区零签到${white['QQ']?.includes(id) ? '' : '\n如需自动签到请【#开启自动签到】'}`, false, { at: true })
-        } else if (action === '关闭') {
-            if (set.length === 0)
-                return e.reply(`还没有人开启绝区零签到哦...`)
-
-            let index = set.findIndex(q => q == id)
-            if (index !== -1) {
-                set.splice(index, 1)
-                Cfg.setConfig('white', white)
-                e.reply(`已关闭绝区零签到...`, false, { at: true })
-            } else {
-                e.reply(`你还没有开启绝区零签到哦...`, false, { at: true })
-            }
-            return
         }
     }
 

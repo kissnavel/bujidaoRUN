@@ -161,7 +161,7 @@ export default class MysApi {
       'x-rpc-app_version': '2.71.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.71.1',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.71.1'
     }
 
     const header_os = {
@@ -185,13 +185,13 @@ export default class MysApi {
     }
 
     let client
-    if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
-      client = header_os
-    } else {
+    if (/cn_|_cn/.test(this.server)) {
       client = {
         ...header,
         Referer: 'https://webstatic.mihoyo.com/'
       }
+    } else {
+      client = header_os
     }
 
     switch (types) {
@@ -245,7 +245,7 @@ export default class MysApi {
     let n = ''
     if (/cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
-    } else if (/os_|official|_us|_jp|_eu|_sg/.test(this.server)) {
+    } else {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
     }
     let t = Math.round(new Date().getTime() / 1000)
@@ -289,7 +289,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (!/os_|official|_us|_jp|_eu|_sg/.test(this.server)) return null
+    if (/cn_|_cn/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
