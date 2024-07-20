@@ -1,6 +1,4 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import common from '../../../lib/common/common.js'
-import MysApi from '../model/mys/mysApi.js'
 import Cfg from '../model/Cfg.js'
 import fs from 'node:fs'
 import _ from 'lodash'
@@ -23,7 +21,7 @@ export class ji_config extends plugin {
                     fnc: 'setbbs'
                 },
                 {
-                    reg: '^#?(原神|星铁|绝区零)?(禁用|解禁)(uid)?\\s*(10|13|15|17|18|[1-9])?[0-9]{8}$',
+                    reg: '^#?(原神|星铁|绝区零)?(禁用|解禁)(uid)?\\s*(1[0-9]|[1-9])?[0-9]{8}$',
                     fnc: 'banUid'
                 },
                 {
