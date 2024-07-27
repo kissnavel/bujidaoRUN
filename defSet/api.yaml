@@ -1,2 +1,6 @@
-# www.rrocr.com
-apikey: 114514
+#使用的api，例：https://api.example.com/geetest
+api: 
+#api对应的token(若参数不为token不填)
+token: 
+#api需要的除“token、gt、challenge”以外的其他参数，例: appkey=***&referer=***
+query: 

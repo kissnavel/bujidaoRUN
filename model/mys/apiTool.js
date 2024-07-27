@@ -41,8 +41,8 @@ export default class apiTool {
           }
         },
         validate: {
-          url: 'http://api.rrocr.com/api/recognize.html',
-          query: `appkey=${this.api.apikey}&gt=${data.gt}&challenge=${data.challenge}&referer=https://webstatic.mihoyo.com&ip=&host=`
+          url: `${this.api.api}`,
+          query: `${this.api.token ? `token=${this.api.token}` : ''}${this.api.query || ''}&gt=${data.gt}&challenge=${data.challenge}`
         }
       },
       bbs: {

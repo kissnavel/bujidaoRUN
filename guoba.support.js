@@ -317,11 +317,28 @@ export function supportGuoba() {
           label: 'api设置'
         },
         {
-          field: 'api.apikey',
-          label: '人人',
+          field: 'api.api',
+          label: '使用的api',
           component: 'Input',
           componentProps: {
-            placeholder: '请输入token',
+            placeholder: '例：https://api.example.com/geetest',
+          },
+        },
+        {
+          field: 'api.token',
+          label: 'api对应的token',
+          component: 'Input',
+          componentProps: {
+            placeholder: '若参数不为token不填',
+          },
+        },
+        {
+          field: 'api.query',
+          label: 'api需要的其他参数',
+          bottomHelpMessage: '除“token、gt、challenge”以外的',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例: appkey=***&referer=***',
           },
         },
         {
