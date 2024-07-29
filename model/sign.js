@@ -69,7 +69,7 @@ export default class MysSign extends base {
 
         let signInfo = await this.mysApi.getData('sign_info')
 
-        await common.sleep(100)
+        await common.sleep(15000)
 
         if (!signInfo) return false
 
