@@ -6,7 +6,7 @@ import _ from 'lodash'
 import md5 from 'md5'
 
 let HttpsProxyAgent = ''
-const _bbs = "fdv0fY9My9eA7MR0NpjGP9RjueFvjUSQ"
+const _bbs = "rtvTthKxEyreVXQCnhluFgLXPOFKPHlA"
 const game_region = {
   gs: ['cn_gf01', 'cn_qd01', 'os_usa', 'os_euro', 'os_asia', 'os_cht'],
   sr: ['prod_gf_cn', 'prod_qd_cn', 'prod_official_usa', 'prod_official_euro', 'prod_official_asia', 'prod_official_cht'],
@@ -81,7 +81,6 @@ export default class MysApi {
           return game_region[this.game][5]
       }
     }
-    return game_region[this.game][0]
   }
 
   async getData(type, data = {}, game = '', cached = false) {

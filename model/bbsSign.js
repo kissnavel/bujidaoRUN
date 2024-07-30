@@ -83,6 +83,7 @@ export default class BBsSign extends base {
 
                 message += `\n**${forum.name}**\n`
                 res = await mysApi.getData("bbsSign", forum)
+                await common.sleep(15000)
                 if (res?.retcode == -100)
                     return { message: '登录失效，请【#扫码登录】', retcode: -100 }
 
@@ -326,11 +327,6 @@ export default class BBsSign extends base {
     }
 
     async bbsGeetest(mysApi, type = "", data = {}) {
-        let api = Cfg.getConfig('api')
-        if (!api.apikey) {
-            logger.error('未填写token')
-            return ""
-        }
         let vall = new MysApi(mysApi.uid, mysApi.cookie, {}, 'bbs')
         try {
             let res = await mysApi.getData('bbsGetCaptcha')
@@ -384,4 +380,3 @@ export default class BBsSign extends base {
         return this.ForumData
     }
 }
-

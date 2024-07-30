@@ -11,11 +11,12 @@ export default class apiTool {
   }
 
   getUrlMap = (data = {}) => {
-    let host, host_hk4e, host_nap, bbs_api, hostRecord, hostPublicData
+    let bbs_api = 'https://bbs-api.mihoyo.com/'
+
+    let host, host_hk4e, host_nap, hostRecord, hostPublicData
     if (/cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
       host_nap = 'https://act-nap-api.mihoyo.com/'
-      bbs_api = 'https://bbs-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
       hostPublicData = 'https://public-data-api.mihoyo.com/'
     } else {
