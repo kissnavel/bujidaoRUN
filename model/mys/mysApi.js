@@ -68,6 +68,10 @@ export default class MysApi {
       }
     } else {
       switch (_uid.slice(0, -8)) {
+        case '1':
+        case '2':
+        case '3':
+          return game_region[this.game][0]
         case '5':
           return game_region[this.game][1]
         case '6':
