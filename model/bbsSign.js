@@ -126,7 +126,6 @@ export default class BBsSign extends base {
 
                     if (trueDetail < detal) {
                         res = await mysApi.getData("bbsPostFull", { postId })
-                        await common.sleep(15000)
                         if (res?.retcode == 1034)
                             res = await this.bbsGeetest(mysApi, "bbsPostFull", { postId })
                         if (res?.message && res?.retcode == 0) trueDetail++
@@ -134,7 +133,6 @@ export default class BBsSign extends base {
 
                     if (Vote < time) {
                         res = await mysApi.getData("bbsVotePost", { postId })
-                        await common.sleep(15000)
                         if (res?.retcode == 1034)
                             res = await this.bbsGeetest(mysApi, "bbsVotePost", { postId })
                         if (res?.message && res?.retcode == 0) Vote++
