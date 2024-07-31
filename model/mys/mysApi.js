@@ -68,10 +68,6 @@ export default class MysApi {
       }
     } else {
       switch (_uid.slice(0, -8)) {
-        case '1':
-        case '2':
-        case '3':
-          return game_region[this.game][0]
         case '5':
           return game_region[this.game][1]
         case '6':
@@ -85,6 +81,7 @@ export default class MysApi {
           return game_region[this.game][5]
       }
     }
+    return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
