@@ -12,7 +12,6 @@ export default class apiTool {
 
   getUrlMap = (data = {}) => {
     let bbs_api = 'https://bbs-api.mihoyo.com/'
-
     let host, host_hk4e, host_nap, hostRecord, hostPublicData
     if (/cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
@@ -103,20 +102,6 @@ export default class apiTool {
           body: {
             "post_id": data.postId,
             "is_cancel": false
-          },
-          types: 'bbs'
-        },
-        bbsGetCaptcha: {
-          url: `${bbs_api}misc/api/createVerification`,
-          query: 'is_high=false',
-          types: 'bbs'
-        },
-        bbsCaptchaVerify: {
-          url: `${bbs_api}misc/api/verifyVerification`,
-          body: {
-            "geetest_challenge": data.challenge,
-            "geetest_validate": data.validate,
-            "geetest_seccode": `${data.validate}|jordan`
           },
           types: 'bbs'
         }

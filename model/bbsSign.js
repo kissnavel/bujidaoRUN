@@ -83,7 +83,6 @@ export default class BBsSign extends base {
 
                 message += `\n**${forum.name}**\n`
                 res = await mysApi.getData("bbsSign", forum)
-                await common.sleep(15000)
                 if (res?.retcode == -100)
                     return { message: '登录失效，请【#扫码登录】', retcode: -100 }
 
@@ -97,6 +96,7 @@ export default class BBsSign extends base {
                     if (challenge) {
                         forum["headers"] = { "x-rpc-challenge": challenge }
                         res = await mysApi.getData("bbsSign", forum)
+                        await common.sleep(15000)
                         message += `社区签到: 验证码${res?.retcode == 1034 ? '失败' : '成功'}\n`
                     } else {
                         message += `社区签到: 验证码失败\n`
@@ -126,6 +126,7 @@ export default class BBsSign extends base {
 
                     if (trueDetail < detal) {
                         res = await mysApi.getData("bbsPostFull", { postId })
+                        await common.sleep(15000)
                         if (res?.retcode == 1034)
                             res = await this.bbsGeetest(mysApi, "bbsPostFull", { postId })
                         if (res?.message && res?.retcode == 0) trueDetail++
@@ -133,6 +134,7 @@ export default class BBsSign extends base {
 
                     if (Vote < time) {
                         res = await mysApi.getData("bbsVotePost", { postId })
+                        await common.sleep(15000)
                         if (res?.retcode == 1034)
                             res = await this.bbsGeetest(mysApi, "bbsVotePost", { postId })
                         if (res?.message && res?.retcode == 0) Vote++
