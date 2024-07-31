@@ -32,7 +32,7 @@ export default class MysSign extends base {
             let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : '绝区零'
             for (let i = 0; i < uids[g].length; i++) {
                 mysSign.ckNum = Number(i) + 1
-                if (i >= 1) await common.sleep(15000)
+                if (i >= 1) await common.sleep(5000)
                 let uid = uids[g][i]; let ck = cks[g][uid]; let retry = 0
 
                 logger.mark(`[${name}签到]QQ: ${e.user_id}${name}UID: ${uid}`)
@@ -197,6 +197,7 @@ export default class MysSign extends base {
             try {
                 if (res?.data?.validate) {
                     sign = await this.mysApi.getData('sign', res.data, game)
+                    await common.sleep(10000)
 
                     if (sign.data?.gt) {
                         logger.mark(`[${name}签到失败]${this.log}：${sign.message} 第${this.ckNum}个`)
@@ -217,6 +218,7 @@ export default class MysSign extends base {
         }
 
         if (sign.retcode === 0 && (sign?.data?.success === 0 || sign?.message === 'OK')) {
+            await common.sleep(10000)
             logger.mark(`[${name}签到成功]${this.log} 第${this.ckNum}个`)
             return true
         }
