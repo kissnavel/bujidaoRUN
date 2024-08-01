@@ -7,11 +7,6 @@ import md5 from 'md5'
 
 let HttpsProxyAgent = ''
 const _bbs = "rtvTthKxEyreVXQCnhluFgLXPOFKPHlA"
-const game_region = {
-  gs: ['cn_gf01', 'cn_qd01', 'os_usa', 'os_euro', 'os_asia', 'os_cht'],
-  sr: ['prod_gf_cn', 'prod_qd_cn', 'prod_official_usa', 'prod_official_euro', 'prod_official_asia', 'prod_official_cht'],
-  zzz: ['prod_gf_cn', 'prod_gf_cn', 'prod_gf_us', 'prod_gf_eu', 'prod_gf_jp', 'prod_gf_sg']
-}
 export default class MysApi {
   constructor(uid, cookie, option = {}, game = 'gs', Server = '') {
     this.uid = uid
@@ -51,40 +46,30 @@ export default class MysApi {
 
   getServer() {
     const _uid = String(this.uid)
-    if (this.game == 'zzz') {
-      if (_uid.length < 10) {
-        return game_region[this.game][0]
-      }
-
-      switch (_uid.slice(0, -8)) {
-        case '10':
-          return game_region[this.game][2]
-        case '15':
-          return game_region[this.game][3]
-        case '13':
-          return game_region[this.game][4]
-        case '17':
-          return game_region[this.game][5]
-      }
-    } else {
-      if (['1', '2', '3'].includes(String(_uid).slice(0, -8))) {
-        return game_region[this.game][0]
-      }
-
-      switch (_uid.slice(0, -8)) {
-        case '5':
-          return game_region[this.game][1]
-        case '6':
-          return game_region[this.game][2]
-        case '7':
-          return game_region[this.game][3]
-        case '8':
-        case '18':
-          return game_region[this.game][4]
-        case '9':
-          return game_region[this.game][5]
-      }
+    const isSr = this.game == 'sr'
+    const isZzz = this.game == 'zzz'
+    switch (_uid.slice(0, -8)) {
+      case '1':
+      case '2':
+      case '3':
+        return isSr ? 'prod_gf_cn' : 'cn_gf01'
+      case '5':
+        return isSr ? 'prod_qd_cn' : 'cn_qd01'
+      case '6':
+      case '10':
+        return isZzz ? 'prod_gf_us' : isSr ? 'prod_official_usa' : 'os_usa'
+      case '7':
+      case '15':
+        return isZzz ? 'prod_gf_eu' : isSr ? 'prod_official_euro' : 'os_euro'
+      case '8':
+      case '13':
+      case '18':
+        return isZzz ? 'prod_gf_jp' : isSr ? 'prod_official_asia' : 'os_asia'
+      case '9':
+      case '17':
+        return isZzz ? 'prod_gf_sg' : isSr ? 'prod_official_cht' : 'os_cht'
     }
+    return (isZzz || isSr) ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
