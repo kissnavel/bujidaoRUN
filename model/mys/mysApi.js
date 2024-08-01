@@ -67,6 +67,10 @@ export default class MysApi {
           return game_region[this.game][5]
       }
     } else {
+      if (/(1-3)[0-9]{8}/i.test(_uid)) {
+        return game_region[this.game][0]
+      }
+
       switch (_uid.slice(0, -8)) {
         case '5':
           return game_region[this.game][1]
@@ -81,7 +85,6 @@ export default class MysApi {
           return game_region[this.game][5]
       }
     }
-    return this.game == 'sr' ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {

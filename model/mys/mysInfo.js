@@ -52,7 +52,8 @@ export default class MysInfo {
       return false
     }
 
-    if (!/(18|[6-9])[0-9]{8}/i.test(mysInfo.uid) && api === 'useCdk') {
+    const game = e?.game || (e?.isSr ? 'sr' : 'gs')
+    if ((game == 'zzz' || !['6', '7', '8', '18', '9'].includes(String(mysInfo.uid).slice(0, -8))) && api === 'useCdk') {
       e.reply('兑换码使用只支持原神、星铁国际服uid')
       return false
     }
@@ -94,7 +95,7 @@ export default class MysInfo {
     }
 
     let matchUid = (msg = '') => {
-      let ret = /(10|13|15|17|18|[1-9])?[0-9]{8}/g.exec(msg)
+      let ret = /(1[0-9]|[1-9])?[0-9]{8}/g.exec(msg)
       if (!ret) return false
       return ret[0]
     }
