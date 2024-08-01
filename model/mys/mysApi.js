@@ -67,7 +67,7 @@ export default class MysApi {
           return game_region[this.game][5]
       }
     } else {
-      if (/(1-3)[0-9]{8}/i.test(_uid)) {
+      if (['1', '2', '3'].includes(String(_uid).slice(0, -8))) {
         return game_region[this.game][0]
       }
 
