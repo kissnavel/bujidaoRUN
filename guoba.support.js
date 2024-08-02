@@ -367,6 +367,18 @@ export function supportGuoba() {
             placeholder: '请输入数字',
           },
         },
+        {
+          field: 'config.Autodelck',
+          label: '自动删除ck',
+          bottomHelpMessage: '是否开启自动删除ck',
+          component: 'Switch',
+        },
+        {
+          field: 'config.Autodelsk',
+          label: '自动删除sk',
+          bottomHelpMessage: '是否开启自动删除sk',
+          component: 'Switch',
+        }
       ],
       // 获取配置数据方法（用于前端填充显示数据）
       getConfigData() {

@@ -51,7 +51,7 @@ export default class BBsSign extends base {
         let message = '', points = 1
         if (!res?.data) {
             message = '登录失效，请【#扫码登录】'
-            if (res.retcode == -100)
+            if (res.retcode == -100 && this.set.Autodelsk)
                 await Cfg.delsk(userId, mysApi.uid)
         } else {
             message = `当前米游币数量为：${res.data.total_points},今日剩余可获取：${res.data.can_get_points}`

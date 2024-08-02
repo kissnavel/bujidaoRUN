@@ -53,3 +53,8 @@ retrytime: 2
 isLog: false
 #显示所有返回日志
 resLog: false
+
+#是否自动删除ck
+Autodelck: false
+#是否自动删除sk
+Autodelsk: false
