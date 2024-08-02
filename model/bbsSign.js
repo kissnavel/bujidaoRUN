@@ -69,13 +69,14 @@ export default class BBsSign extends base {
 
         try {
             res = await this.bbsSeachSign(mysApi, sk.userId)
-            if (res.retcode == -100)
+            if (res.retcode == -100) {
+                await common.sleep(15000)
                 return { message: res.message, retcode: -100 }
-            else
-                if (res.points == 0) {
-                    await this.setCache(key)
-                    return { message: res.message, retcode: 100 }
-                }
+            }
+            if (res.points == 0) {
+                await this.setCache(key)
+                return { message: res.message, retcode: 100 }
+            }
 
             for (let forum of forumData) {
                 let trueDetail = 0; let trueReply = 0; let Vote = 0; let Share = 0; let detal = 3
@@ -89,6 +90,7 @@ export default class BBsSign extends base {
                 if (res?.retcode == 1034) {
                     let retry = 0
                     challenge = await this.bbsGeetest(mysApi)
+                    await common.sleep(15000)
                     while (!challenge && retry < this.set.bbsRetry) {
                         challenge = await this.bbsGeetest(mysApi)
                         retry++
@@ -96,7 +98,6 @@ export default class BBsSign extends base {
                     if (challenge) {
                         forum["headers"] = { "x-rpc-challenge": challenge }
                         res = await mysApi.getData("bbsSign", forum)
-                        await common.sleep(15000)
                         message += `社区签到: 验证码${res?.retcode == 1034 ? '失败' : '成功'}\n`
                     } else {
                         message += `社区签到: 验证码失败\n`
