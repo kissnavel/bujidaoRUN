@@ -108,6 +108,12 @@ export function supportGuoba() {
           },
         },
         {
+          field: 'config.Autodelck',
+          label: '自动删除ck',
+          bottomHelpMessage: '是否开启签到失败ck失效自动删除ck',
+          component: 'Switch',
+        },
+        {
           component: 'Divider',
           label: '社区签到设置'
         },
@@ -153,6 +159,12 @@ export function supportGuoba() {
             min: 0,
             placeholder: '请输入并发数',
           },
+        },
+        {
+          field: 'config.Autodelsk',
+          label: '自动删除sk',
+          bottomHelpMessage: '是否开启签到失败sk失效自动删除sk',
+          component: 'Switch',
         },
         {
           component: 'Divider',
@@ -366,18 +378,6 @@ export function supportGuoba() {
             min: 1,
             placeholder: '请输入数字',
           },
-        },
-        {
-          field: 'config.Autodelck',
-          label: '自动删除ck',
-          bottomHelpMessage: '是否开启自动删除ck',
-          component: 'Switch',
-        },
-        {
-          field: 'config.Autodelsk',
-          label: '自动删除sk',
-          bottomHelpMessage: '是否开启自动删除sk',
-          component: 'Switch',
         }
       ],
       // 获取配置数据方法（用于前端填充显示数据）

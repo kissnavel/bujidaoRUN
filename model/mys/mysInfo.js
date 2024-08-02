@@ -470,10 +470,8 @@ export default class MysInfo {
   }
   /** 删除失效ck */
   async delCk() {
-    if (this.set.Autodelck) {
-      await Cfg.delck(this.ckInfo.ltuid, this.ckInfo.qq)
-      await MysInfo.initCache(true, true)
-    }
+    await Cfg.delck(this.ckInfo.ltuid, this.ckInfo.qq)
+    await MysInfo.initCache(true, true)
   }
 
   /** 查询次数满，今日内标记失效 */
