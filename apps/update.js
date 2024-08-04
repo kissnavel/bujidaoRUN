@@ -1,5 +1,6 @@
 import plugin from '../../../lib/plugins/plugin.js'
 import common from '../../../lib/common/common.js'
+import Cfg from '../model/Cfg.js'
 import { Restart } from '../../other/restart.js'
 import { createRequire } from 'module'
 import lodash from 'lodash'
@@ -15,7 +16,7 @@ export class update extends plugin {
             name: '[寄] 插件更新',
             dsc: '[寄] 插件更新',
             event: 'message',
-            priority: 1,
+            priority: Cfg.getConfig('config').priority ?? -114514,
             rule: [
                 {
                     reg: '^#寄(插件)?(强制)?更新$',

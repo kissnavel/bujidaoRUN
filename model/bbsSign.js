@@ -69,8 +69,8 @@ export default class BBsSign extends base {
 
         try {
             res = await this.bbsSeachSign(mysApi, sk.userId)
+            await common.sleep(15000)
             if (res.retcode == -100) {
-                await common.sleep(15000)
                 return { message: res.message, retcode: -100 }
             }
             if (res.points == 0) {
@@ -84,13 +84,13 @@ export default class BBsSign extends base {
 
                 message += `\n**${forum.name}**\n`
                 res = await mysApi.getData("bbsSign", forum)
+                await common.sleep(15000)
                 if (res?.retcode == -100)
                     return { message: '登录失效，请【#扫码登录】', retcode: -100 }
 
                 if (res?.retcode == 1034) {
                     let retry = 0
                     challenge = await this.bbsGeetest(mysApi)
-                    await common.sleep(15000)
                     while (!challenge && retry < this.set.bbsRetry) {
                         challenge = await this.bbsGeetest(mysApi)
                         retry++

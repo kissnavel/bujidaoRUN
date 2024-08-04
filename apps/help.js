@@ -12,7 +12,7 @@ export class help extends plugin {
       name: '寄帮助·设置',
       dsc: '',
       event: 'message.private',
-      priority: 500,
+      priority: Cfg.getConfig('config').priority ?? -114514,
       rule: [
         {
           reg: '^#?寄(命令|帮助|菜单|help|说明|功能|指令|使用说明)$',

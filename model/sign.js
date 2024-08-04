@@ -177,6 +177,7 @@ export default class MysSign extends base {
         this.signApi = true
         let sign = await this.mysApi.getData('sign')
         this.signMsg = sign?.message ?? 'Too Many Requests'
+        await common.sleep(15000)
 
         if (!sign || this.signMsg == 'Too Many Requests') {
             logger.mark(`[${name}签到失败]${this.log}：${sign.message || this.signMsg}`)
@@ -198,7 +199,6 @@ export default class MysSign extends base {
             try {
                 if (res?.data?.validate) {
                     sign = await this.mysApi.getData('sign', res.data, game)
-                    await common.sleep(15000)
 
                     if (sign.data?.gt) {
                         logger.mark(`[${name}签到失败]${this.log}：${sign.message} 第${this.ckNum}个`)
@@ -219,7 +219,6 @@ export default class MysSign extends base {
         }
 
         if (sign.retcode === 0 && (sign?.data?.success === 0 || sign?.message === 'OK')) {
-            await common.sleep(15000)
             logger.mark(`[${name}签到成功]${this.log} 第${this.ckNum}个`)
             return true
         }
