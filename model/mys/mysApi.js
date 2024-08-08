@@ -6,7 +6,7 @@ import _ from 'lodash'
 import md5 from 'md5'
 
 let HttpsProxyAgent = ''
-const _bbs = "rtvTthKxEyreVXQCnhluFgLXPOFKPHlA"
+const _bbs = "WGtruoQrwczmsjLOPXzJLnaAYycsLavx"
 export default class MysApi {
   constructor(uid, cookie, option = {}, game = 'gs', Server = '') {
     this.uid = uid
@@ -161,17 +161,17 @@ export default class MysApi {
 
   getHeaders(types, query = '', body = '', sign = false) {
     const header = {
-      'x-rpc-app_version': '2.71.1',
+      'x-rpc-app_version': '2.73.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.71.1'
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.73.1'
     }
 
     const header_os = {
-      'x-rpc-app_version': '2.55.0',
+      'x-rpc-app_version': '2.57.1',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBSOversea/2.55.0',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBSOversea/2.57.1',
       Referer: 'https://act.hoyolab.com/'
     }
 
