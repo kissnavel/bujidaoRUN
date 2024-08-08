@@ -13,7 +13,7 @@ export default class MysApi {
     this.cookie = cookie
     this.game = game
     this.set = Cfg.getConfig('config')
-    this.server = Server || this.getServer()
+    this.server = Server || this.getServer(this.uid, this.game)
     this.device_id = this.getGuid()
     /** 5分钟缓存 */
     this.cacheCd = 300
