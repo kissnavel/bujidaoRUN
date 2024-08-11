@@ -157,16 +157,18 @@ export default class MysInfo {
     e.uid = mysInfo.uid
 
     let user = e.user?.getMysUser()
+    option.device = user.device
+    option.game = e?.game || (e?.isSr ? 'sr' : 'gs')
     let mysApi
     if (ji)
       mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz ? 'zzz' : e.isSr ? 'sr' : 'gs')
     else
-      mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz, e.isSr, user.device)
+      mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option)
 
     let res
     if (_.isObject(api)) {
-      await mysApi.getData('getFp')
       let all = []
+      await mysApi.getData('getFp')
       /** 同步请求 */
       if (e.apiSync) {
         res = []
