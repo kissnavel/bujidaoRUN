@@ -459,8 +459,7 @@ export default class MysInfo {
     let key = `${game}_DEVICE_FP:${mysApi.uid}`
     let deviceFp = await redis.get(key)
     if (!deviceFp) {
-      let seed_id = _.sample('abcdefghijklmnopqrstuvwxyz0123456789', 16).replace(/,/g, '')
-      deviceFp = await mysApi.getData('getFp', { seed_id }, 'all')
+      deviceFp = await mysApi.getData('getFp', {}, 'all')
       mysApi.game = game
       deviceFp = deviceFp?.data?.device_fp
       try {
