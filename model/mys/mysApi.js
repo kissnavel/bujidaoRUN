@@ -74,10 +74,7 @@ export default class MysApi {
 
   async getData(type, data = {}, game = '', cached = false) {
     if (!this._device_fp && !data?.Getfp && !data?.headers?.['x-rpc-device_fp']) {
-      this._device_fp = await this.getData('getFp', {
-        seed_id: this.generateSeed(16),
-        Getfp: true
-      })
+      this._device_fp = await this.getData('getFp', { Getfp: true })
     }
     if (type === 'getFp' && !data?.Getfp) return this._device_fp
 
@@ -306,14 +303,5 @@ export default class MysApi {
       return new HttpsProxyAgent(proxyAddress)
 
     return null
-  }
-
-  generateSeed(length = 16) {
-    const characters = '0123456789abcdef'
-    let result = ''
-    for (let i = 0; i < length; i++) {
-      result += characters[Math.floor(Math.random() * characters.length)]
-    }
-    return result
   }
 }
