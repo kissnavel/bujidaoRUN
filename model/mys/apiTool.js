@@ -8,6 +8,7 @@ export default class apiTool {
     this.game = game
     this.api = Cfg.getConfig('api')
     this.uuid = crypto.randomUUID()
+    this.app_key = game == 'sr' ? 'hkrpg_game_record' : ''
   }
 
   getUrlMap = (data = {}) => {
@@ -28,6 +29,19 @@ export default class apiTool {
 
     let urlMap = {
       all: {
+        createGeetest: {
+          url: `${host}event/toolcomsrv/risk/createGeetest`,
+          query: `is_high=true&app_key=${this.app_key}`
+        },
+        verifyGeetest: {
+          url: `${host}event/toolcomsrv/risk/verifyGeetest`,
+          body: {
+            geetest_challenge: data.challenge,
+            geetest_validate: data.validate,
+            geetest_seccode: `${data.validate}|jordan`,
+            app_key: this.app_key
+          }
+        },
         createVerification: {
           url: `${hostRecord}game_record/app/card/wapi/createVerification`,
           query: 'is_high=true'
@@ -35,9 +49,9 @@ export default class apiTool {
         verifyVerification: {
           url: `${hostRecord}game_record/app/card/wapi/verifyVerification`,
           body: {
-            "geetest_challenge": data.challenge,
-            "geetest_validate": data.validate,
-            "geetest_seccode": `${data.validate}|jordan`
+            geetest_challenge: data.geetest_challenge || data.challenge,
+            geetest_validate: data.geetest_validate || data.validate,
+            geetest_seccode: data.geetest_seccode || `${data.validate}|jordan`
           }
         },
         validate: {

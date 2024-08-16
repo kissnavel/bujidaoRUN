@@ -410,7 +410,7 @@ export default class MysInfo {
     return res
   }
 
-  async geetest(type, mysApi, data) {
+  async geetest(type, mysApi, data, retcode = 1034) {
     let res = await mysApi.getData(type, data)
     if (res?.retcode == 0 || (type == 'detail' && res?.retcode == -1002)) return res
 
@@ -421,17 +421,18 @@ export default class MysInfo {
       let headers = { 'x-rpc-device_fp': await this.getFp(vali) }
       if (mysApi.isSr || mysApi.game == 'sr') {
         headers['x-rpc-challenge_game'] = '6'
-      } else if (mysApi.isZzz || mysApi.game == 'zzz') {
-        headers['x-rpc-challenge_game'] = '7'
+      }
+      if (mysApi.isZzz || mysApi.game == 'zzz') {
+        headers['x-rpc-challenge_game'] = '8'
       }
 
-      res = await vali.getData("createVerification", { headers })
+      res = await vali.getData((retcode == 10035 && mysApi.game == 'sr') ? "createGeetest" : "createVerification", { headers })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
 
       res = await vali.getData("validate", res?.data)
       if (!res?.data?.validate) return { "data": null, "message": `${Cfg.getConfig('api').api}验证码失败`, "retcode": 1034 }
 
-      res = await vali.getData("verifyVerification", {
+      res = await vali.getData((retcode == 10035 && mysApi.game == 'sr') ? "verifyGeetest" : "verifyVerification", {
         ...res?.data,
         headers
       })
