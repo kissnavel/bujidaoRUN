@@ -173,7 +173,7 @@ export default class MysApi {
     }
 
     const header_bbs = {
-      'x-rpc-app_version': '2.71.1',
+      'x-rpc-app_version': '2.73.1',
       'x-rpc-device_model': 'J9110',
       'x-rpc-device_name': 'Sony J9110',
       'x-rpc-channel': 'miyousheluodi',
