@@ -49,9 +49,9 @@ export default class apiTool {
         verifyVerification: {
           url: `${hostRecord}game_record/app/card/wapi/verifyVerification`,
           body: {
-            geetest_challenge: data.geetest_challenge || data.challenge,
-            geetest_validate: data.geetest_validate || data.validate,
-            geetest_seccode: data.geetest_seccode || `${data.validate}|jordan`
+            geetest_challenge: data.challenge,
+            geetest_validate: data.validate,
+            geetest_seccode: `${data.validate}|jordan`
           }
         },
         validate: {
