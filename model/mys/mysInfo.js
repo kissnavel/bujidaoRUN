@@ -430,6 +430,8 @@ export default class MysInfo {
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
 
       res = await vali.getData("validate", res?.data)
+      if (res?.resultid)
+        res = await vali.getData("results", res.resultid)
       if (!res?.data?.validate) return { "data": null, "message": `${Cfg.getConfig('api').api}验证码失败`, "retcode": 1034 }
 
       res = await vali.getData(res?.retcode == 10035 ? "verifyGeetest" : "verifyVerification", {

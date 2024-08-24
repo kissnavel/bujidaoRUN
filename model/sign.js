@@ -177,7 +177,7 @@ export default class MysSign extends base {
         this.signApi = true
         let sign = await this.mysApi.getData('sign')
         this.signMsg = sign?.message ?? 'Too Many Requests'
-        await common.sleep(15000)
+        await common.sleep(10000)
 
         if (!sign || this.signMsg == 'Too Many Requests') {
             logger.mark(`[${name}签到失败]${this.log}：${sign.message || this.signMsg}`)
@@ -195,6 +195,8 @@ export default class MysSign extends base {
             sign.message = '验证码失败'
 
             let res = await this.mysApi.getData('validate', sign.data, 'all')
+            if (res?.resultid)
+                res = await this.mysApi.getData('results', res.resultid, 'all')
 
             try {
                 if (res?.data?.validate) {

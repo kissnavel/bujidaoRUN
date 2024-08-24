@@ -331,26 +331,37 @@ export function supportGuoba() {
         {
           field: 'api.api',
           label: '使用的api',
+          bottomHelpMessage: 'rrocr、ttocr',
           component: 'Input',
           componentProps: {
             placeholder: '例：https://api.example.com/geetest',
           },
         },
         {
-          field: 'api.token',
-          label: 'api对应的token',
+          field: 'api.resapi',
+          label: '查询结果使用的api',
+          bottomHelpMessage: '若无此参数不填',
           component: 'Input',
           componentProps: {
-            placeholder: '若参数不为token不填',
+            placeholder: '例：https://api.example.com/results',
+          },
+        },
+        {
+          field: 'api.key',
+          label: 'api、resapi需要的key',
+          bottomHelpMessage: 'rrocr、ttocr',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例：appkey=***',
           },
         },
         {
           field: 'api.query',
           label: 'api需要的其他参数',
-          bottomHelpMessage: '除“token、gt、challenge”以外的',
+          bottomHelpMessage: '除“key、gt、challenge”以外的',
           component: 'Input',
           componentProps: {
-            placeholder: '例: appkey=***&referer=***',
+            placeholder: '例: referer=***',
           },
         },
         {

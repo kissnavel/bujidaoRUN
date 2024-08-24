@@ -56,7 +56,11 @@ export default class apiTool {
         },
         validate: {
           url: `${this.api.api}`,
-          query: `${this.api.token ? `token=${this.api.token}` : ''}${this.api.query || ''}&gt=${data.gt}&challenge=${data.challenge}`
+          query: `${this.api.key}&${this.api.query}&gt=${data.gt}&challenge=${data.challenge}`
+        },
+        results: {
+          url: `${this.api.resapi}`,
+          query: `${this.api.key}&resultid=${data.resultid}`
         }
       },
       bbs: {

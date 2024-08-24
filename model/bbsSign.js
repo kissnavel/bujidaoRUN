@@ -69,7 +69,7 @@ export default class BBsSign extends base {
 
         try {
             res = await this.bbsSeachSign(mysApi, sk.userId)
-            await common.sleep(15000)
+            await common.sleep(10000)
             if (res.retcode == -100) {
                 return { message: res.message, retcode: -100 }
             }
@@ -84,7 +84,7 @@ export default class BBsSign extends base {
 
                 message += `\n**${forum.name}**\n`
                 res = await mysApi.getData("bbsSign", forum)
-                await common.sleep(15000)
+                await common.sleep(10000)
                 if (res?.retcode == -100)
                     return { message: '登录失效，请【#扫码登录】', retcode: -100 }
 
@@ -329,9 +329,11 @@ export default class BBsSign extends base {
 
     async bbsGeetest(mysApi, type = "", data = {}) {
         let vall = new MysApi(mysApi.uid, mysApi.cookie, {}, 'bbs')
+        let res = await mysApi.getData('bbsGetCaptcha')
+        res = await vall.getData("validate", res.data, 'all')
+        if (res?.resultid)
+            res = await vall.getData('results', res.resultid, 'all')
         try {
-            let res = await mysApi.getData('bbsGetCaptcha')
-            res = await vall.getData("validate", res.data, 'all')
             if (res?.data?.validate) {
                 res = await mysApi.getData("bbsCaptchaVerify", res.data)
                 if (type) {

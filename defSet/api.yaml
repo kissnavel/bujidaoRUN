@@ -1,6 +1,9 @@
+#rrocr、ttocr
 #使用的api，例：https://api.example.com/geetest
 api: 
-#api对应的token(若参数不为token不填)
-token: 
-#api需要的除“token、gt、challenge”以外的其他参数，例: appkey=***&referer=***
+#查询结果使用的api(若无此参数不填)，例：https://api.example.com/results
+resapi: 
+#api、resapi需要的key，例: appkey=***
+key: 
+#api需要的其他参数(除“key、gt、challenge”以外的)，例: referer=***
 query: 
