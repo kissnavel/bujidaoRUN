@@ -8,7 +8,7 @@ export default class apiTool {
     this.game = game
     this.api = Cfg.getConfig('api')
     this.uuid = crypto.randomUUID()
-    this.app_key = game == 'sr' ? 'hkrpg_game_record' : ''
+    this.app_key = game == 'zzz' ? 'game_record_zzz' : game == 'sr' ? 'hkrpg_game_record' : ''
   }
 
   getUrlMap = (data = {}) => {
