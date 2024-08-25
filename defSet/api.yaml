@@ -1,7 +1,7 @@
 #rrocr、ttocr
 #使用的api，例：https://api.example.com/geetest
 api: 
-#查询结果使用的api(若无此参数不填)，例：https://api.example.com/results
+#使用的resapi(rrocr不填，ttocr必填)，例：https://api.example.com/results
 resapi: 
 #api、resapi需要的key，例: appkey=***
 key: 

@@ -339,8 +339,8 @@ export function supportGuoba() {
         },
         {
           field: 'api.resapi',
-          label: '查询结果使用的api',
-          bottomHelpMessage: '若无此参数不填',
+          label: '使用的resapi',
+          bottomHelpMessage: 'rrocr不填，ttocr必填',
           component: 'Input',
           componentProps: {
             placeholder: '例：https://api.example.com/results',
