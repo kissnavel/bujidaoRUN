@@ -3,6 +3,7 @@ import NoteUser from '../../../genshin/model/mys/NoteUser.js'
 import MysUser from '../../../genshin/model/mys/MysUser.js'
 import MysApi from '../../../genshin/model/mys/mysApi.js'
 import GsCfg from '../../../genshin/model/gsCfg.js'
+import common from '../../../../lib/common/common.js'
 import Validate from './mysApi.js'
 import Cfg from '../Cfg.js'
 import _ from 'lodash'
@@ -431,6 +432,7 @@ export default class MysInfo {
 
       res = await vali.getData("validate", res?.data)
       if (res?.resultid) {
+        await common.sleep(5000)
         res = await vali.getData("results", res.resultid)
       }
       if (!res?.data?.validate) return { "data": null, "message": `${Cfg.getConfig('api').api}验证码失败`, "retcode": 1034 }

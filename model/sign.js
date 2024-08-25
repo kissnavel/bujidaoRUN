@@ -196,6 +196,7 @@ export default class MysSign extends base {
 
             let res = await this.mysApi.getData('validate', sign.data, 'all')
             if (res?.resultid) {
+                await common.sleep(5000)
                 res = await this.mysApi.getData('results', res.resultid, 'all')
             }
 

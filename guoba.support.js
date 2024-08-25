@@ -331,7 +331,7 @@ export function supportGuoba() {
         {
           field: 'api.api',
           label: '使用的api',
-          bottomHelpMessage: 'rrocr、ttocr',
+          bottomHelpMessage: 'www.rrocr.com、www.ttocr.com',
           component: 'Input',
           componentProps: {
             placeholder: '例：https://api.example.com/geetest',

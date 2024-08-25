@@ -332,6 +332,7 @@ export default class BBsSign extends base {
         let res = await mysApi.getData('bbsGetCaptcha')
         res = await vall.getData("validate", res.data, 'all')
         if (res?.resultid) {
+            await common.sleep(5000)
             res = await vall.getData("results", res.resultid, 'all')
         }
         try {
