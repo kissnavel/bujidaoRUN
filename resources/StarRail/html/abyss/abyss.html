@@ -27,7 +27,7 @@
       </div>
       <div class="room-list">
         {{ each list.all_floor_detail val}}
-
+        {{ if !val.is_fast}}
         <div class="floor">
           <div class="floor-header">
             <span class="index">{{val.name}}</span>
@@ -75,6 +75,7 @@
             </div>
           </div>
         </div>
+        {{/if}}
         {{/each}}
       </div>
     </div>
