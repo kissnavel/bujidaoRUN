@@ -17,7 +17,11 @@ export default class Abyss extends base {
     let scheduleType = '1'
     if (this.e.msg.includes('上期') || this.e.msg.includes('往期')) scheduleType = '2'
 
-    let res = await MysInfo.get(this.e, 'spiralAbyss', { schedule_type: scheduleType }, {}, true)
+    let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await MysInfo.get(this.e, 'spiralAbyss', { schedule_type: scheduleType, headers }, {}, true)
     if (res?.retcode !== 0) return false
 
     if (!res.data?.has_data) {
@@ -39,7 +43,11 @@ export default class Abyss extends base {
     let thisMonth = !(this.e.msg.includes('上期') || this.e.msg.includes('往期'))
     this.model = 'rogue'
 
-    let res = await MysInfo.get(this.e, 'rogue', {}, {}, true)
+    let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await MysInfo.get(this.e, 'rogue', { headers }, {}, true)
     if (res?.retcode !== 0) return false
 
     if (!res.data?.[`${thisMonth ? 'current' : 'last'}_record`]?.has_data) {
@@ -75,7 +83,12 @@ export default class Abyss extends base {
       spiralAbyss: { schedule_type: '1', },
       character: ''
     }
-    let res = await MysInfo.get(this.e, ApiData, {}, {}, true)
+
+    let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await MysInfo.get(this.e, ApiData, { headers }, {}, true)
 
     if (!res || res[0].retcode !== 0 || res[2].retcode !== 0) return false
 
@@ -167,7 +180,11 @@ export default class Abyss extends base {
     this.model = 'roleList'
     await this.e.reply('正在获取角色信息，请稍候...')
 
-    let res = await MysInfo.get(this.e, 'character', { }, {}, true)
+    let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await MysInfo.get(this.e, 'character', { headers }, {}, true)
     if (res?.retcode !== 0) return false
 
     let avatars = res.data.avatar_list
@@ -219,7 +236,11 @@ export default class Abyss extends base {
   }
 
   async getSkill(avatar) {
-    let res = await this.mysApi.getData('detail', { avatar_id: avatar.id }, '', true)
+    let device_fp = await this.mysApi.getData('getFp')
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await this.mysApi.getData('detail', { avatar_id: avatar.id, headers }, '', true)
     if (res?.retcode !== 0 || !res?.data?.skills) return false
 
     let skill = { id: avatar.id }
@@ -322,7 +343,12 @@ export default class Abyss extends base {
       detail_equip: '',
       detail_avatar: ''
     }
-    let res = await MysInfo.get(this.e, apiData, {}, {}, true)
+
+    let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
+    if (device_fp?.retcode !== 0) return false
+    let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+
+    let res = await MysInfo.get(this.e, apiData, { headers }, {}, true)
     if (res?.[0].data?.list.length == 0 || res?.[1].data?.list.length == 0) return false
 
     for (let item of res[0].data.list) {
