@@ -25,11 +25,11 @@ body {
   font-family: PingFangSC-Medium, PingFang SC, sans-serif;
   transform: scale(1.7);
   transform-origin: 0 0;
-  width: 465px;
+  width: 545px;
 }
 
 .container {
-  width: 465px;
+  width: 545px;
   padding: 20px 15px 10px 15px;
   background-color: #ececec;
 }
@@ -55,9 +55,11 @@ body {
   color: #e8ebee;
 }
 
-.head_box .day_text {
-  font-size: 20px;
-  color: #f3f6f8;
+.head_box .lable {
+  font-size: 14px;
+  color: #f5f7f9;
+  line-height: 1;
+  margin-top: 3px;
 }
 
 .head_box .genshin_logo {
@@ -129,20 +131,11 @@ body {
   font-size: 12px;
 }
 
-.data_box .lable {
-  font-size: 14px;
-  color: #f5f7f9;
-  line-height: 1;
-  margin-top: 3px;
-}
-
 .head_box {
   background-position-x: 42px;
   background-repeat: no-repeat;
   background-size: auto 101%;
 }
-
-.data_box {}
 
 .talent_list {
   display: table;
@@ -198,9 +191,8 @@ body {
 }
 
 .talent_list .avatar .name_cont {
-  width: 75px;
+  width: 90px;
 }
-
 
 .talent_list .avatar .star4 {
   background: rgba(137, 189, 233, .6);
@@ -213,7 +205,7 @@ body {
 .talent_list .avatar .name {
   text-align: left;
   display: flex;
-  width: 70px;
+  width: 90px;
 }
 
 .talent_list .th .name {
@@ -239,7 +231,7 @@ body {
 .talent_list .avatar .name .avatar_name {
   white-space: nowrap;
   overflow: hidden;
-  width: 48px;
+  width: 63px;
   font-family: "HYWenHei-55W";
 }
 
@@ -307,7 +299,7 @@ body {
 
 .talent_list .avatar .weapon {
   text-align: left;
-  width: 148px;
+  width: 193px;
 }
 
 .talent_list .avatar .weapon_1 {
@@ -344,7 +336,6 @@ body {
   text-align: center;
 }
 
-
 .talent_list .avatar .weapon_icon {
   width: 20px;
   height: 20px;
@@ -367,7 +358,6 @@ body {
   vertical-align: middle;
   margin-bottom: 2px;
 }
-
 
 .talent_list .weapon .weapon_box {
   display: flex;
@@ -421,10 +411,9 @@ body {
   color: #fff;
 }
 
-
 .talent_list .weapon .weapon_name {
   flex-grow: 1;
-  max-width: 75px;
+  max-width: 115px;
   overflow: hidden;
   white-space: nowrap;
   padding-left: 2px;
@@ -440,7 +429,6 @@ body {
   box-shadow: 0 0 4px 0 #deaf39 inset;
   background: #fff6dd;
 }
-
 
 .talent_list .talent {
   color: #333;
