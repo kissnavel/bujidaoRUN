@@ -47,7 +47,7 @@ export default class Note extends base {
     if (sendMsg.length > note.set.forward)
       await e._reply(await common.makeForwardMsg(e, sendMsg))
     else
-      await e._reply(sendMsg, false, { at: true })
+      await e._reply(sendMsg, false, { at: false })
 
     return
   }
