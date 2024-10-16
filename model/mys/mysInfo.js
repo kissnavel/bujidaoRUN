@@ -28,7 +28,7 @@ export default class MysInfo {
     }
     // ck对应MysUser对象
     this.ckUser = null
-    this.auth = ['dailyNote', 'bbs_sign_info', 'bbs_sign_home', 'bbs_sign', 'ys_ledger', 'compute', 'avatarSkill', 'detail', 'blueprint', 'UserGame', 'deckList', 'avatar_cardList', 'action_cardList', 'avatarInfo', 'detail_equip', 'detail_avatar']
+    this.auth = ['dailyNote', 'bbs_sign_info', 'bbs_sign_home', 'bbs_sign', 'ys_ledger', 'compute', 'avatarSkill', 'detail', 'blueprint', 'UserGame', 'deckList', 'avatar_cardList', 'action_cardList', 'avatarInfo', 'role_combat', 'detail_equip', 'detail_avatar']
   }
 
   static async init(e, api) {
@@ -406,6 +406,7 @@ export default class MysInfo {
     if (res.retcode !== 0) {
       logger.mark(`[mys接口报错]${JSON.stringify(res)}，UID：${this.uid}`)
     }
+    if (type === 'character' && res.data?.list) res.data.avatars = res.data?.list
     // 添加请求记录
     if (!isTask) await this.ckUser.addQueryUid(this.uid, this.e)
     return res
