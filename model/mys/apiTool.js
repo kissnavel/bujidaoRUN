@@ -54,13 +54,13 @@ export default class apiTool {
             geetest_seccode: `${data.validate}|jordan`
           }
         },
-        validate: {
+        recognize: {
           url: `${this.api.api}`,
-          query: `${this.api.key}&${this.api.query}&gt=${data.gt}&challenge=${data.challenge}`
+          config: `${this.api.key}&${this.api.query}&gt=${data.gt}&challenge=${data.challenge}`
         },
         results: {
           url: `${this.api.resapi}`,
-          query: `${this.api.key}&resultid=${data.resultid}`
+          config: `${this.api.key}&resultid=${data.resultid}`
         }
       },
       bbs: {

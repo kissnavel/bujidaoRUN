@@ -33,7 +33,7 @@ export default class MysApi {
     let urlMap = new apiTool(this.uid, this.server, this.game).getUrlMap({ ...data, deviceId: this.device_id })
     if (!urlMap[type]) return false
 
-    let { url, query = '', body = '', types = '', sign = '' } = urlMap[type]
+    let { url, query = '', body = '', config = '', types = '', sign = '' } = urlMap[type]
 
     if (query) url += `?${query}`
     if (body) body = JSON.stringify(body)
@@ -41,7 +41,7 @@ export default class MysApi {
     this.forumid = data.forumid || ''
     let headers = this.getHeaders(types, query, body, sign)
 
-    return { url, headers, body }
+    return { url, headers, body, config }
   }
 
   getServer() {
@@ -84,7 +84,7 @@ export default class MysApi {
     if (type === 'getFp' && !data?.Getfp) return this._device_fp
 
     if (game) this.game = game
-    let { url, headers, body } = this.getUrl(type, data)
+    let { url, headers, body, config } = this.getUrl(type, data)
 
     if (!url) return false
 
@@ -124,6 +124,16 @@ export default class MysApi {
 
     if (this.set.isLog)
       logger.error(`[米游社接口][${type}][${this.uid}] ${url} ${JSON.stringify(param)}`)
+
+    if (type == 'recognize' || type == 'results') {
+      param = {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: config
+      }
+    }
 
     try {
       response = await fetch(url, param)

@@ -1,5 +1,5 @@
 #www.rrocr.com、www.ttocr.com
-#使用的api，例：https://api.example.com/geetest
+#使用的api，例：https://api.example.com/recognize
 api: 
 #使用的resapi(rrocr不填，ttocr必填)，例：https://api.example.com/results
 resapi: 

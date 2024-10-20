@@ -194,10 +194,17 @@ export default class MysSign extends base {
             this.signMsg = '验证码失败'
             sign.message = '验证码失败'
 
-            let res = await this.mysApi.getData('validate', sign.data, 'all')
+            let res = await this.mysApi.getData('recognize', sign.data, 'all')
             if (res?.resultid) {
+                let results = res
+                let retry = 0
                 await common.sleep(5000)
-                res = await this.mysApi.getData('results', res.resultid, 'all')
+                res = await this.mysApi.getData('results', results, 'all')
+                while ((res?.status == 2) && retry < 10) {
+                    await common.sleep(5000)
+                    res = await this.mysApi.getData('results', results, 'all')
+                    retry++
+                }
             }
 
             try {
@@ -213,7 +220,7 @@ export default class MysSign extends base {
                         return true
                     }
                 } else {
-                    logger.mark(`[${name}签到失败]${this.log}：${sign.message} 第${this.ckNum}个`)
+                    logger.mark(`[${name}签到失败]${this.log}：${res.msg} 第${this.ckNum}个`)
                     return false
                 }
             } catch (error) {
