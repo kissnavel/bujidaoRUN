@@ -384,10 +384,11 @@ export default class MysInfo {
         break
       case 1034:
       case 10035:
+        let retcode = res.retcode
         let retry = 0
-        res = await this.geetest(type, mysApi, data)
+        res = await this.geetest(type, mysApi, data, retcode)
         while ((res?.retcode == 1034 || res?.retcode == 10035) && retry < Cfg.getConfig('config').retrytime) {
-          res = await this.geetest(type, mysApi, data)
+          res = await this.geetest(type, mysApi, data, res?.retcode)
           retry++
         }
         if (!isTask)

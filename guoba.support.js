@@ -334,7 +334,7 @@ export function supportGuoba() {
           bottomHelpMessage: 'www.rrocr.com、www.ttocr.com',
           component: 'Input',
           componentProps: {
-            placeholder: '例：https://api.example.com/geetest',
+            placeholder: '例：https://api.example.com/recognize',
           },
         },
         {
