@@ -422,14 +422,17 @@ export default class MysInfo {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
       
       let headers = { 'x-rpc-device_fp': await this.getFp(vali) }
+      let app_key = ''
       if (mysApi.isSr || mysApi.game == 'sr') {
         headers['x-rpc-challenge_game'] = '6'
+        app_key = 'hkrpg_game_record'
       }
       if (mysApi.isZzz || mysApi.game == 'zzz') {
         headers['x-rpc-challenge_game'] = '8'
+        app_key = 'game_record_zzz'
       }
 
-      res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers })
+      res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers, app_key })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
 
       res = await vali.getData("recognize", res?.data)
@@ -448,7 +451,8 @@ export default class MysInfo {
 
       res = await vali.getData(retcode == 10035 ? "verifyGeetest" : "verifyVerification", {
         ...res?.data,
-        headers
+        headers,
+        app_key
       })
 
       if (res?.data?.challenge) {
