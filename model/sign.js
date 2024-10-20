@@ -200,7 +200,7 @@ export default class MysSign extends base {
                 let retry = 0
                 await common.sleep(5000)
                 res = await this.mysApi.getData('results', results, 'all')
-                while ((res?.status == 2) && retry < 10) {
+                while ((res?.status == 2) && retry < 5) {
                     await common.sleep(5000)
                     res = await this.mysApi.getData('results', results, 'all')
                     retry++

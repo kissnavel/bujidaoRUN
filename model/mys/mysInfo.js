@@ -431,10 +431,17 @@ export default class MysInfo {
       res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
 
-      res = await vali.getData("validate", res?.data)
+      res = await vali.getData("recognize", res?.data)
       if (res?.resultid) {
+        let results = res
+        let retry = 0
         await common.sleep(5000)
-        res = await vali.getData("results", res.resultid)
+        res = await vali.getData("results", results)
+        while ((res?.status == 2) && retry < 5) {
+          await common.sleep(5000)
+          res = await vali.getData("results", results)
+          retry++
+        }
       }
       if (!res?.data?.validate) return { "data": null, "message": `${Cfg.getConfig('api').api}验证码失败`, "retcode": 1034 }
 
