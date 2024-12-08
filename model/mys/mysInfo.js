@@ -421,7 +421,10 @@ export default class MysInfo {
     try {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
       
-      let headers = { 'x-rpc-device_fp': await this.getFp(vali) }
+      let headers = { 
+        'x-rpc-device_fp': await this.getFp(vali),
+        'x-rpc-challenge_game': '2'
+      }
       let app_key = ''
       if (mysApi.isSr || mysApi.game == 'sr') {
         headers['x-rpc-challenge_game'] = '6'
