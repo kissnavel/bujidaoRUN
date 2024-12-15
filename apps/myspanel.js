@@ -18,6 +18,7 @@ export class ji_myspanel extends plugin {
                 fnc: 'mys'
             }, {
                 reg: '^#?(寄|米游社|mys)?面板文件(替换|还原)$',
+                permission: 'master',
                 fnc: 'mbwj'
             }, ]
         });
@@ -26,34 +27,29 @@ export class ji_myspanel extends plugin {
     async mys(e) {
        if (!fs.existsSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')) {
             if (!e.isMaster) return false
-            await e.reply('首次使用该功能，需要修改喵佬的models/avatar/ProfileAvatar.js文件,请发送：#寄面板文件替换\n\n后续更新miao-plugin，如果因为该文件引发冲突，可使用：#寄面板文件还原')
-            return false
+            return e.reply('首次使用米游社更新面板，需要修改miao-plugin的models/avatar/ProfileAvatar.js文件,请发送：#寄面板文件替换\n\n后续更新miao-plugin，如果因为该文件引发冲突，可使用：#寄面板文件还原')
         }
         let CD = Cfg.getConfig('config').myspanelCD
         if (!CD) {
             if (!e.isMaster) return false
-            await e.reply('米游社更新面板未设置CD，请确认已在配置文件中设置CD，建议不少于120秒')
-            return false
+            return e.reply('米游社更新面板未设置CD，请确认已在配置文件中设置CD，建议不少于120秒')
         }
-        if (!e.game) e.game = 'gs'
         let uid = e.user.getUid()
-        if (!uid) return e.reply('找不到uid,请：#刷新ck 或者：#扫码登录', true)
+        if (!uid) return e.reply('找不到uid，请：#刷新ck 或者：#扫码登录', true)
 
         let now
         if (CD > 0) {
             now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
             let time_ = await redis.get(`bujidao:myspanelCD:${e.game}:${uid}`);
-            if (time_ && !e.isMaster) {
+            if (time_) {
                 let seconds = moment(now).diff(moment(time_), 'seconds')
-                await e.reply(`UID：${uid}\n米游社更新面板cd中\n还需等待：${CD - seconds}秒`)
-                return true
+                return e.reply(`UID：${uid}\n米游社更新面板cd中\n还需等待：${CD - seconds}秒`, true)
             }
         }
 
         let device_fp = await MysInfo.get(e, 'getFp', {}, {}, true)
-        let headers = {
-            'x-rpc-device_fp': device_fp?.data?.device_fp
-        }
+        if (device_fp?.retcode !== 0) return false
+        let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
         let res, data
         if (e.game == 'gs') {
             await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
@@ -74,7 +70,7 @@ export class ji_myspanel extends plugin {
                 return false
             }
             await this.gs_mys(e, data, uid)
-        } else if (e.game == 'sr') {
+        } else {
             await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             data = await MysInfo.get(e, 'avatarInfo', { headers }, {}, true)
             if (!data.data) {
@@ -83,8 +79,6 @@ export class ji_myspanel extends plugin {
                 return false
             }
             await this.sr_mys(e, data, uid)
-        } else {
-            return false
         }
         //加载面板列表图
         await ProfileList.reload(e)
@@ -94,7 +88,6 @@ export class ji_myspanel extends plugin {
                 EX: CD
             })
         }
-        return true
     }
 
     /*原神*/
@@ -645,19 +638,17 @@ export class ji_myspanel extends plugin {
     }
 
     async mbwj(e) {
-        if (!e.isMaster) return false
-
         let avatar = './plugins/miao-plugin/models/avatar/ProfileAvatar.js'
         let ji_avatar = './plugins/bujidao/model/copy/ProfileAvatar.js'
         let ji_avatar_copy = './plugins/bujidao/model/copy/default/ProfileAvatar_copy.js'
+
         if (e.msg.includes('替换')) {
             fs.cpSync(avatar, ji_avatar_copy)
             fs.cpSync(ji_avatar, avatar)
             return e.reply('文件替换完成！重启后生效')
         } else {
             if (!fs.existsSync(ji_avatar_copy)) {
-            await e.reply('你还没有替换过，无法还原哦')
-            return true
+            return e.reply('你还没有替换过，无法还原哦')
             }
             fs.cpSync(ji_avatar_copy, avatar)
             fs.unlinkSync(ji_avatar_copy)
