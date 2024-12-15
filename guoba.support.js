@@ -85,7 +85,7 @@ export function supportGuoba() {
           required: true,
           componentProps: {
             min: 120,
-            placeholder: '请输入数字',
+            placeholder: '请输入CD',
           },
         },
         {

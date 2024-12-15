@@ -12,7 +12,7 @@ game:
  - zzz
 #签到重试次数
 retry: 2
-#签到成功消息撤回时间，0为不撤回
+#签到成功消息撤回时间，单位秒，0为不撤回
 recall: 60
 
 #社区是否自动签到
@@ -59,5 +59,5 @@ Autodelck: false
 #是否自动删除sk
 Autodelsk: false
 
-#米游社更新面板CD
+#米游社更新面板CD，单位秒，建议不低于120秒
 myspanelCD: 120

@@ -24,12 +24,17 @@ export class ji_myspanel extends plugin {
     }
 
     async mys(e) {
-       if(!fs.existsSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')){
+       if (!fs.existsSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')) {
             if (!e.isMaster) return false
             await e.reply('首次使用该功能，需要修改喵佬的models/avatar/ProfileAvatar.js文件,请发送：#寄面板文件替换\n\n后续更新miao-plugin，如果因为该文件引发冲突，可使用：#寄面板文件还原')
             return false
         }
         let CD = Cfg.getConfig('config').myspanelCD
+        if (!CD) {
+            if (!e.isMaster) return false
+            await e.reply('米游社更新面板未设置CD，请确认已在配置文件中设置CD，建议不少于120秒')
+            return false
+        }
         if (!e.game) e.game = 'gs'
         let uid = e.user.getUid()
         if (!uid) return e.reply('找不到uid,请：#刷新ck 或者：#扫码登录', true)
