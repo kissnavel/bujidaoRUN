@@ -33,7 +33,7 @@ export class ji_role extends plugin {
   async roleIndex() {
     this.reply('角色数据获取中...')
     let data = await new Abyss(this.e).getIndex()
-    if (!data) return
+    if (!data) return false
 
     let img = await puppeteer.screenshot('StarRail/roleIndex', data)
     if (img) await this.reply(img)
@@ -42,7 +42,7 @@ export class ji_role extends plugin {
   /** 练度统计 */
   async roleList() {
     let data = await new Abyss(this.e).roleList(this.e)
-    if (!data) return
+    if (!data) return false
 
     let img = await puppeteer.screenshot('StarRail/roleList', data)
     if (img) await this.reply(img)

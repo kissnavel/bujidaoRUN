@@ -58,3 +58,6 @@ resLog: false
 Autodelck: false
 #是否自动删除sk
 Autodelsk: false
+
+#米游社更新面板CD
+myspanelCD: 120

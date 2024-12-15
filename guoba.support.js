@@ -56,6 +56,16 @@ export function supportGuoba() {
           component: 'Switch',
         },
         {
+          field: 'config.myspanelCD',
+          label: '米游社更新面板CD',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            min: 120,
+            placeholder: '请输入数字',
+          },
+        },
+        {
           component: 'Divider',
           label: '游戏签到设置'
         },

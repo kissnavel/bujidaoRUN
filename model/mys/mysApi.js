@@ -39,7 +39,13 @@ export default class MysApi {
     if (body) body = JSON.stringify(body)
 
     this.forumid = data.forumid || ''
-    let headers = this.getHeaders(types, query, body, sign)
+    let headers
+    if (data.headers_) {
+      data.headers_['DS'] = this.getDs(query, body)
+      headers = data.headers_
+    } else {
+      headers = this.getHeaders(types, query, body, sign)
+    }
 
     return { url, headers, body, config }
   }
@@ -78,7 +84,7 @@ export default class MysApi {
   }
 
   async getData(type, data = {}, game = '', cached = false) {
-    if (!this._device_fp && !data?.Getfp && !data?.headers?.['x-rpc-device_fp']) {
+    if (!this._device_fp && !data?.Getfp && !data?.headers?.['x-rpc-device_fp'] && !data.headers_) {
       this._device_fp = await this.getData('getFp', { Getfp: true })
     }
     if (type === 'getFp' && !data?.Getfp) return this._device_fp
@@ -105,7 +111,7 @@ export default class MysApi {
       headers["x-rpc-seccode"] = `${data.validate}|jordan`
     }
 
-    if (type !== 'getFp' && !headers['x-rpc-device_fp'] && this._device_fp.data?.device_fp) {
+    if (type !== 'getFp' && !headers['x-rpc-device_fp'] && this._device_fp.data?.device_fp && !data.headers_) {
       headers['x-rpc-device_fp'] = this._device_fp.data.device_fp
     }
 

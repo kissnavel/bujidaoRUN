@@ -194,7 +194,15 @@ export default class apiTool {
         dailyNote: {
           url: `${hostRecord}game_record/app/genshin/api/dailyNote`,
           query: `role_id=${this.uid}&server=${this.server}`
-        }
+        },
+        character: {
+          url: `${hostRecord}game_record/app/genshin/api/character/list`,
+          body: { role_id: this.uid, server: this.server }
+        },
+        character_detail: {
+          url: `${hostRecord}game_record/app/genshin/api/character/detail`,
+          body: { role_id: this.uid, server: this.server, character_ids: data.ids }
+        },
       },
       sr: {
         ...(['prod_gf_cn', 'prod_qd_cn'].includes(this.server) ? {
@@ -276,7 +284,7 @@ export default class apiTool {
           url: `${hostRecord}game_record/app/hkrpg/api/challenge`,
           query: `isPrev=true&need_all=true&role_id=${this.uid}&schedule_type=${data.schedule_type}&server=${this.server}`
         },
-        character: {
+        avatarInfo: {
           url: `${hostRecord}game_record/app/hkrpg/api/avatar/info`,
           query: `need_wiki=true&role_id=${this.uid}&server=${this.server}`
         },

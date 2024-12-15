@@ -9,6 +9,20 @@
     - icon: paimon
       title: '(#/*)体力推送160'
       desc: '(体力/开拓力)推送阈值'
+- group: 寄·米游社更新面板
+  list:
+    - icon: paimon
+      title: '#寄面板文件替换'
+      desc: '使用米游社更新面板前需进行替换'
+    - icon: paimon
+      title: '#寄面板文件还原'
+      desc: 'miao-plugin更新冲突时使用'
+    - icon: paimon
+      title: '#寄更新面板'
+      desc: '原神米游社更新面板，需绑定ck'
+    - icon: paimon
+      title: '*寄更新面板'
+      desc: '星铁米游社更新面板，需绑定ck'
 - group: 寄·预估
   list:
     - icon: paimon
@@ -24,7 +38,7 @@
       desc: '查询角色详情'
     - icon: paimon
       title: '*(上期/往期)深渊(114514)'
-      desc: '查询混沌回忆数据 '
+      desc: '查询混沌回忆数据'
     - icon: paimon
       title: '*(上期/往期)模拟宇宙(114514)'
       desc: '查询模拟宇宙详情'

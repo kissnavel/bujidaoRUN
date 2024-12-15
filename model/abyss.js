@@ -81,7 +81,7 @@ export default class Abyss extends base {
     let ApiData = {
       index: '',
       spiralAbyss: { schedule_type: '1', },
-      character: ''
+      avatarInfo: ''
     }
 
     let device_fp = await MysInfo.get(this.e, 'getFp', {}, {}, true)
@@ -184,7 +184,7 @@ export default class Abyss extends base {
     if (device_fp?.retcode !== 0) return false
     let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
 
-    let res = await MysInfo.get(this.e, 'character', { headers }, {}, true)
+    let res = await MysInfo.get(this.e, 'avatarInfo', { headers }, {}, true)
     if (res?.retcode !== 0) return false
 
     let avatars = res.data.avatar_list

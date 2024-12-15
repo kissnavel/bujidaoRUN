@@ -28,7 +28,7 @@ export class ji_abyss extends plugin {
   async abyss() {
     this.reply('忘却之庭数据获取中...')
     let data = await new Abyss(this.e).getAbyss()
-    if (!data) return
+    if (!data) return false
 
     let img = await puppeteer.screenshot('StarRail/abyss', data)
     if (img) await this.reply(img)
@@ -38,7 +38,7 @@ export class ji_abyss extends plugin {
   async rogue() {
     this.reply('模拟宇宙数据获取中...')
     let data = await new Abyss(this.e).getRogue()
-    if (!data) return
+    if (!data) return false
 
     let img = await puppeteer.screenshot('StarRail/rogue', data)
     if (img) await this.reply(img)

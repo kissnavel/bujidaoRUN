@@ -28,7 +28,7 @@ export default class MysInfo {
     }
     // ck对应MysUser对象
     this.ckUser = null
-    this.auth = ['dailyNote', 'spiralAbyss', 'character', 'ys_ledger', 'compute', 'avatarSkill', 'detail', 'blueprint', 'UserGame', 'deckList', 'avatar_cardList', 'action_cardList', 'avatarInfo', 'role_combat', 'detail_equip', 'detail_avatar']
+    this.auth = ['dailyNote', 'spiralAbyss', 'character', 'character_detail', 'ys_ledger', 'compute', 'avatarSkill', 'detail', 'blueprint', 'UserGame', 'deckList', 'avatar_cardList', 'action_cardList', 'avatarInfo', 'role_combat', 'detail_equip', 'detail_avatar']
   }
 
   static async init(e, api) {
@@ -377,6 +377,13 @@ export default class MysInfo {
       // 伙伴不存在~
       case -1002:
         if (res.api === 'detail') res.retcode = 0
+        break
+      case 10104:
+        if (res.api == 'character_detail') {
+          this.e.reply(`UID:${this.uid}的米游社面板数据暂时无法查询，等过段时间再试吧～`)
+        } else {
+          if (!isTask) this.e.reply([`UID:${this.uid}，米游社接口报错，暂时无法查询：${res.message || 'error'}`, this.mysButton])
+        }
         break
       case 5003:
       case 10041:
