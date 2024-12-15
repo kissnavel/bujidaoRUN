@@ -34,6 +34,7 @@ export class ji_myspanel extends plugin {
             if (!e.isMaster) return false
             return e.reply('米游社更新面板未设置CD，请确认已在配置文件中设置CD，建议不少于120秒')
         }
+        if (!e.game) e.game = 'gs'
         let uid = e.user.getUid()
         if (!uid) return e.reply('找不到uid，请：#刷新ck 或者：#扫码登录', true)
 
