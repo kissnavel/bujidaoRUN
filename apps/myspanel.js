@@ -34,14 +34,13 @@ export class ji_myspanel extends plugin {
             if (!e.isMaster) return false
             return e.reply('米游社更新面板未设置CD，请确认已在配置文件中设置CD，建议不少于120秒')
         }
-        if (!e.game) e.game = 'gs'
         let uid = e.user.getUid()
         if (!uid) return e.reply('找不到uid，请：#刷新ck 或者：#扫码登录', true)
 
         let now
         if (CD > 0) {
             now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
-            let time_ = await redis.get(`bujidao:myspanelCD:${e.game}:${uid}`);
+            let time_ = await redis.get(`bujidao:myspanelCD:${e.user_id}:${uid}`);
             if (time_) {
                 let seconds = moment(now).diff(moment(time_), 'seconds')
                 return e.reply(`UID：${uid}\n米游社更新面板cd中\n还需等待：${CD - seconds}秒`, true)
@@ -52,7 +51,16 @@ export class ji_myspanel extends plugin {
         if (device_fp?.retcode !== 0) return false
         let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
         let res, data
-        if (e.game == 'gs') {
+        if (e.game == 'sr') {
+            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
+            data = await MysInfo.get(e, 'avatarInfo', { headers }, {}, true)
+            if (!data.data) {
+                logger.mark('米游社查询失败')
+                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
+                return false
+            }
+            await this.sr_mys(data, uid)
+        } else {
             await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             res = await MysInfo.get(e, 'character', { headers }, {}, true)
             if (!res.data) {
@@ -70,29 +78,20 @@ export class ji_myspanel extends plugin {
                 await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
-            await this.gs_mys(e, data, uid)
-        } else {
-            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
-            data = await MysInfo.get(e, 'avatarInfo', { headers }, {}, true)
-            if (!data.data) {
-                logger.mark('米游社查询失败')
-                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
-                return false
-            }
-            await this.sr_mys(e, data, uid)
+            await this.gs_mys(data, uid)
         }
         //加载面板列表图
         await ProfileList.reload(e)
         if (CD > 0) {
             now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-            await redis.set(`bujidao:myspanelCD:${e.game}:${uid}`, now, {
+            await redis.set(`bujidao:myspanelCD:${e.user_id}:${uid}`, now, {
                 EX: CD
             })
         }
     }
 
     /*原神*/
-    async gs_mys(e, data, uid) {
+    async gs_mys(data, uid) {
         let avatars = {}
         this.property_map = data.data.property_map
 
@@ -375,7 +374,7 @@ export class ji_myspanel extends plugin {
     }
 
     /*星铁*/
-    async sr_mys(e, data, uid) {
+    async sr_mys(data, uid) {
         let avatars = {}
         this.property_info = data.data.property_info
         let path = `./data/PlayerData/sr/${uid}.json`
