@@ -80,6 +80,7 @@ export function supportGuoba() {
         {
           field: 'config.myspanelCD',
           label: '米游社更新面板CD',
+          bottomHelpMessage: '米游社更新面板CD，单位秒',
           component: 'InputNumber',
           required: true,
           componentProps: {
