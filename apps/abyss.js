@@ -10,7 +10,7 @@ export class ji_abyss extends plugin {
       name: '[寄]深渊查询',
       dsc: '星铁深渊信息查询',
       event: 'message',
-      priority: Cfg.getConfig('config').priority ?? -114514,
+      priority: Cfg.getConfig('config').priority,
       rule: [
         {
           reg: `^#星铁[上期|往期|本期]*${command.abyss}[上期|往期|本期]*[ |0-9]*$`,

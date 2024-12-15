@@ -9,7 +9,7 @@ export class ji_config extends plugin {
             name: '寄·配置',
             dsc: '',
             event: 'message',
-            priority: Cfg.getConfig('config').priority ?? -114514,
+            priority: Cfg.getConfig('config').priority,
             rule: [
                 {
                     reg: /^#(社区)?签到(添加|删除)?(白名单|推送)(群)?.*$/i,
@@ -159,7 +159,7 @@ export class ji_config extends plugin {
                 return e.reply('你还没有替换过，无法还原哦')
             fs.copyFileSync(`${Cfg.resfile}temp/mysInfo.js`, info)
             fs.unlinkSync(`${Cfg.resfile}temp/mysInfo.js`)
-            return e.reply('还原成功')
+            return e.reply('还原成功，重启后生效')
         }
     }
 }

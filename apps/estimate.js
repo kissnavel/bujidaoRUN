@@ -10,7 +10,7 @@ export class ji_estimate extends plugin {
       name: '寄·预估',
       dsc: '',
       event: 'message',
-      priority: Cfg.getConfig('config').priority ?? -114514,
+      priority: Cfg.getConfig('config').priority,
       rule: [
         {
           reg: '^#?(原神|星铁)?(原石|星琼)?预估$',

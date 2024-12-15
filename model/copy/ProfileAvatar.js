@@ -1,4 +1,4 @@
-//该文件是bujidao插件替换过来的，如miao-plugin更新引发冲突。请使用：寄面板文件还原
+// 本文件是bujidao插件替换过来的，如miao-plugin插件更新引发冲突，请使用：#寄面板文件还原
 
 import AvatarUtil from './AvatarUtil.js'
 import lodash from 'lodash'

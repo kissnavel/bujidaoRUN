@@ -16,7 +16,7 @@ export class update extends plugin {
             name: '[寄] 插件更新',
             dsc: '[寄] 插件更新',
             event: 'message',
-            priority: Cfg.getConfig('config').priority ?? -114514,
+            priority: Cfg.getConfig('config').priority,
             rule: [
                 {
                     reg: '^#寄(插件)?(强制)?更新$',

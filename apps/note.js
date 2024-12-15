@@ -10,7 +10,7 @@ export class ji_note extends plugin {
             name: '寄·体力',
             dsc: '',
             event: 'message',
-            priority: Cfg.getConfig('config').priority ?? -114514,
+            priority: Cfg.getConfig('config').priority,
             rule: [
                 {
                     reg: '^#?(多|全|全部|原神|星铁)?(体力|开拓力|树脂|查询体力|便笺|便签)$',

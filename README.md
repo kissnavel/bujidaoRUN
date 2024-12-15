@@ -3,8 +3,8 @@
 ```
 git clone https://github.com/kissnavel/bujidaoRUN.git ./plugins/bujidao/
 ```
-2、<a href="https://github.com/babanbang/bujidaoRUN">原仓库</a>，本仓库修改并修复了部分功能。
+2、原仓库：<a href="https://github.com/babanbang/bujidaoRUN">bujidaoRUN</a>，本仓库修改并修复了部分功能。
 
 3、已添加国际服支持，建议仅保留签到功能，其他功能可按需保留，不需要保留的可用锅巴插件屏蔽。
 
-4、<a href="https://github.com/thisee/xiaokeli">原神、星铁米游社面板代码来源</a>，已修改适配本仓库。
+4、原神、星铁米游社面板代码来源：<a href="https://github.com/thisee/xiaokeli">xiaokeli</a>，已修改适配本仓库。

@@ -56,6 +56,28 @@ export function supportGuoba() {
           component: 'Switch',
         },
         {
+          field: 'config.retrytime',
+          label: '本体过码重试',
+          bottomHelpMessage: '本体过码重试次数，需已使用#寄替换才可本体过码',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            min: 0,
+            placeholder: '请输入数字',
+          },
+        },
+        {
+          field: 'config.invalid',
+          label: '失效QQ每行显示',
+          bottomHelpMessage: '(签到福利|社区)自动签到失效QQ每行显示个数',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            min: 1,
+            placeholder: '请输入数字',
+          },
+        },
+        {
           field: 'config.myspanelCD',
           label: '米游社更新面板CD',
           component: 'InputNumber',
@@ -63,6 +85,46 @@ export function supportGuoba() {
           componentProps: {
             min: 120,
             placeholder: '请输入数字',
+          },
+        },
+        {
+          component: 'Divider',
+          label: 'api设置'
+        },
+        {
+          field: 'api.api',
+          label: '使用的api',
+          bottomHelpMessage: 'www.rrocr.com、www.ttocr.com',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例：https://api.example.com/recognize',
+          },
+        },
+        {
+          field: 'api.resapi',
+          label: '使用的resapi',
+          bottomHelpMessage: 'rrocr不填，ttocr必填',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例：https://api.example.com/results',
+          },
+        },
+        {
+          field: 'api.key',
+          label: 'api、resapi需要的key',
+          bottomHelpMessage: 'rrocr、ttocr',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例：appkey=***',
+          },
+        },
+        {
+          field: 'api.query',
+          label: 'api需要的其他参数',
+          bottomHelpMessage: '除“key、gt、challenge”以外的',
+          component: 'Input',
+          componentProps: {
+            placeholder: '例: referer=***',
           },
         },
         {
@@ -333,72 +395,6 @@ export function supportGuoba() {
             mode: 'multiple',
             options: groupList
           }
-        },
-        {
-          component: 'Divider',
-          label: 'api设置'
-        },
-        {
-          field: 'api.api',
-          label: '使用的api',
-          bottomHelpMessage: 'www.rrocr.com、www.ttocr.com',
-          component: 'Input',
-          componentProps: {
-            placeholder: '例：https://api.example.com/recognize',
-          },
-        },
-        {
-          field: 'api.resapi',
-          label: '使用的resapi',
-          bottomHelpMessage: 'rrocr不填，ttocr必填',
-          component: 'Input',
-          componentProps: {
-            placeholder: '例：https://api.example.com/results',
-          },
-        },
-        {
-          field: 'api.key',
-          label: 'api、resapi需要的key',
-          bottomHelpMessage: 'rrocr、ttocr',
-          component: 'Input',
-          componentProps: {
-            placeholder: '例：appkey=***',
-          },
-        },
-        {
-          field: 'api.query',
-          label: 'api需要的其他参数',
-          bottomHelpMessage: '除“key、gt、challenge”以外的',
-          component: 'Input',
-          componentProps: {
-            placeholder: '例: referer=***',
-          },
-        },
-        {
-          component: 'Divider',
-          label: '其他设置'
-        },
-        {
-          field: 'config.retrytime',
-          label: '本体过码重试',
-          bottomHelpMessage: '本体过码重试次数，需已使用#寄替换才可本体过码',
-          component: 'InputNumber',
-          required: true,
-          componentProps: {
-            min: 0,
-            placeholder: '请输入数字',
-          },
-        },
-        {
-          field: 'config.invalid',
-          label: '失效QQ每行显示',
-          bottomHelpMessage: '(签到福利|社区)自动签到失效QQ每行显示个数',
-          component: 'InputNumber',
-          required: true,
-          componentProps: {
-            min: 1,
-            placeholder: '请输入数字',
-          },
         }
       ],
       // 获取配置数据方法（用于前端填充显示数据）

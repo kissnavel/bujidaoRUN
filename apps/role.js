@@ -10,7 +10,7 @@ export class ji_role extends plugin {
       name: '[寄]角色查询',
       dsc: '星铁角色信息查询',
       event: 'message',
-      priority: Cfg.getConfig('config').priority ?? -114514,
+      priority: Cfg.getConfig('config').priority,
       rule: [
         {
           reg: `^#星铁${command.roleIndex}[ |0-9]*$`,

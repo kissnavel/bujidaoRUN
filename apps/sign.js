@@ -13,7 +13,7 @@ export class ji_sign extends plugin {
             name: '寄·签到',
             dsc: '',
             event: 'message',
-            priority: Cfg.getConfig('config').priority ?? -114514,
+            priority: Cfg.getConfig('config').priority,
             rule: [
                 {
                     reg: '^#?(重新)?(全部签到|签到任务)$',//使用#重新全部签到时请确保同时没有正在进行的相同的签到任务

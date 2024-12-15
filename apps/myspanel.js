@@ -1,11 +1,10 @@
-//原神、星铁米游社面板代码来源：https://github.com/thisee/xiaokeli，已修改适配本仓库
-//2024-10-18 目前只写了原神和星铁的4星5星圣遗物(遗器)识别
+// 原神、星铁米游社面板代码来源：https://github.com/thisee/xiaokeli，已修改适配本仓库
+// 2024-10-18 目前只写了原神和星铁的4星5星圣遗物(遗器)识别
 import ProfileList from '../model/copy/ProfileList.js'
 import fs from 'node:fs'
 import MysInfo from '../model/mys/mysInfo.js'
 import Cfg from '../model/Cfg.js'
-import { Restart } from '../../other/restart.js'
-import moment from 'moment';
+import moment from 'moment'
 
 export class ji_myspanel extends plugin {
     constructor() {
@@ -13,7 +12,7 @@ export class ji_myspanel extends plugin {
             name: '寄·米游社更新面板',
             dsc: '',
             event: 'message',
-            priority: Cfg.getConfig('config').priority ?? -114514,
+            priority: Cfg.getConfig('config').priority,
             rule: [{
                 reg: '^#?(原神|星铁)?(寄|米游社|mys)?(全部面板更新|更新全部面板|获取游戏角色详情|更新面板|面板更新)$',
                 fnc: 'mys'
@@ -27,7 +26,7 @@ export class ji_myspanel extends plugin {
     async mys(e) {
        if(!fs.existsSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')){
             if (!e.isMaster) return false
-            e.reply('首次使用该功能，需要修改喵佬的models/avatar/ProfileAvatar.js文件,请发送：#寄面板文件替换\n\n后续更新miao-plugin，如果因为该文件引发冲突，可使用：#寄面板文件还原')
+            await e.reply('首次使用该功能，需要修改喵佬的models/avatar/ProfileAvatar.js文件,请发送：#寄面板文件替换\n\n后续更新miao-plugin，如果因为该文件引发冲突，可使用：#寄面板文件还原')
             return false
         }
         let CD = Cfg.getConfig('config').myspanelCD
@@ -40,9 +39,8 @@ export class ji_myspanel extends plugin {
             now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
             let time_ = await redis.get(`bujidao:myspanelCD:${e.game}:${uid}`);
             if (time_ && !e.isMaster) {
-                // if (time_) {
                 let seconds = moment(now).diff(moment(time_), 'seconds')
-                e.reply(`UID：${uid}\n米游社更新面板cd中\n还需等待：${CD - seconds}秒`)
+                await e.reply(`UID：${uid}\n米游社更新面板cd中\n还需等待：${CD - seconds}秒`)
                 return true
             }
         }
@@ -53,9 +51,11 @@ export class ji_myspanel extends plugin {
         }
         let res, data
         if (e.game == 'gs') {
+            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             res = await MysInfo.get(e, 'character', { headers }, {}, true)
             if (!res.data) {
                 logger.mark('米游社查询失败')
+                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
             let ids = []
@@ -65,13 +65,16 @@ export class ji_myspanel extends plugin {
             data = await MysInfo.get(e, 'character_detail', { headers, ids: ids }, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
+                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
             await this.gs_mys(e, data, uid)
         } else if (e.game == 'sr') {
-            data = await MysInfo.get(this.e, 'avatarInfo', { headers }, {}, true)
+            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
+            data = await MysInfo.get(e, 'avatarInfo', { headers }, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
+                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
             await this.sr_mys(e, data, uid)
@@ -639,22 +642,21 @@ export class ji_myspanel extends plugin {
     async mbwj(e) {
         if (!e.isMaster) return false
 
+        let avatar = './plugins/miao-plugin/models/avatar/ProfileAvatar.js'
+        let ji_avatar = './plugins/bujidao/model/copy/ProfileAvatar.js'
+        let ji_avatar_copy = './plugins/bujidao/model/copy/default/ProfileAvatar_copy.js'
         if (e.msg.includes('替换')) {
-            fs.cpSync('./plugins/miao-plugin/models/avatar/ProfileAvatar.js','./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')
-            fs.cpSync('./plugins/bujidao/model/copy/ProfileAvatar.js','./plugins/miao-plugin/models/avatar/ProfileAvatar.js')
-            await e.reply('文件替换完成！准备重启~', true)
-            new Restart(e).restart()
-            return true
+            fs.cpSync(avatar, ji_avatar_copy)
+            fs.cpSync(ji_avatar, avatar)
+            return e.reply('文件替换完成！重启后生效')
         } else {
-            if (!fs.existsSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')) {
-            await e.reply('没找到原文件。。。', true)
+            if (!fs.existsSync(ji_avatar_copy)) {
+            await e.reply('你还没有替换过，无法还原哦')
             return true
             }
-            fs.cpSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js','./plugins/miao-plugin/models/avatar/ProfileAvatar.js')
-            fs.unlinkSync('./plugins/bujidao/model/copy/default/ProfileAvatar_copy.js')
-            await e.reply('文件还原成功！准备重启~', true)
-            new Restart(e).restart()
-            return true
+            fs.cpSync(ji_avatar_copy, avatar)
+            fs.unlinkSync(ji_avatar_copy)
+            return e.reply('文件还原成功！重启后生效')
         }
     }
 }
