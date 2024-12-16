@@ -78,6 +78,12 @@ export function supportGuoba() {
           },
         },
         {
+          field: 'config.myspanel',
+          label: '米游社更新面板',
+          bottomHelpMessage: '是否开启米游社更新面板',
+          component: 'Switch',
+        },
+        {
           field: 'config.myspanelCD',
           label: '米游社更新面板CD',
           bottomHelpMessage: '米游社更新面板CD，单位秒',

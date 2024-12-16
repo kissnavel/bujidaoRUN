@@ -59,5 +59,7 @@ Autodelck: false
 #是否自动删除sk
 Autodelsk: false
 
+#是否开启米游社更新面板
+myspanel: false
 #米游社更新面板CD，单位秒，建议不低于120秒
 myspanelCD: 120
