@@ -19,7 +19,7 @@ export const cfgSchema = {
         title: '签到游戏设置',
         key: '签到游戏',
         type: 'cron',
-        def: ['gs', 'sr', 'zzz'],
+        def: ['gs', 'sr', 'zzz', 'bh3'],
         desc: '可使用锅巴修改'
       },
       retry: {
@@ -33,6 +33,12 @@ export const cfgSchema = {
         key: '签到撤回',
         type: 'num',
         def: 60
+      },
+      Autodelck: {
+        title: '自动删除ck设置',
+        key: '自动删除ck',
+        def: false,
+        desc: '是否开启签到失败ck失效自动删除ck'
       }
     }
   },
@@ -71,6 +77,12 @@ export const cfgSchema = {
         def: 10,
         desc: '每15~30秒同时签到多少个'
       },
+      Autodelsk: {
+        title: '自动删除sk设置',
+        key: '自动删除sk',
+        def: false,
+        desc: '是否开启签到失败sk失效自动删除sk'
+      }
     }
   },
   Note: {
@@ -99,7 +111,7 @@ export const cfgSchema = {
         title: '原神推送默认阈值',
         key: '原神推送',
         type: 'num',
-        def: 140
+        def: 160
       },
       sr_Resin: {
         title: '星铁推送默认阈值',
@@ -130,19 +142,6 @@ export const cfgSchema = {
         key: '白名单同时',
         def: true,
         desc: '(签到福利|社区)自动签到是否同时开启群和QQ白名单，关闭则仅使用QQ白名单'
-      },
-      retrytime: {
-        title: '本体过码重试次数',
-        key: '本体重试',
-        type: 'num',
-        def: 2,
-        desc: '需已使用#寄替换'
-      },
-      invalid: {
-        title: '失效QQ每行显示个数',
-        key: '失效QQ',
-        type: 'num',
-        def: 2,
       }
     }
   },
@@ -164,6 +163,30 @@ export const cfgSchema = {
         title: '显示所有返回日志',
         key: '返回日志',
         def: false
+      },
+      retrytime: {
+        title: '本体过码重试次数',
+        key: '本体重试',
+        type: 'num',
+        def: 2,
+        desc: '需已使用#寄替换'
+      },
+      invalid: {
+        title: '失效QQ每行显示个数',
+        key: '失效QQ',
+        type: 'num',
+        def: 2,
+      },
+      myspanel: {
+        title: '米游社更新面板',
+        key: '更新面板',
+        def: false
+      },
+      myspanelCD: {
+        title: '米游社更新面板CD',
+        key: '更新面板CD',
+        type: 'num',
+        def: 120
       }
     }
   }

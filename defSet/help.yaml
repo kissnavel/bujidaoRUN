@@ -48,11 +48,14 @@
       title: '米游社(原神/··/全部)签到'
       desc: '社区签到'
     - icon: paimon
+      title: '(开启/关闭)崩三签到'
+      desc: '是否签到崩三'
+    - icon: paimon
       title: '设置社区签到(经验/米币)'
       desc: '社区签到模式'
     - icon: paimon
-      title: '(#/*/绝区零)(禁用/解禁)114514'
-      desc: '(原神/星铁/绝区零)(禁用/解禁)uid'
+      title: '(#/*/%/崩三)(禁用/解禁)114514'
+      desc: '(原神/星铁/绝区零/崩三)(禁用/解禁)uid'
 - group: 寄·主人配置
   list:
     - icon: paimon

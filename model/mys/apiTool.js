@@ -2,10 +2,11 @@ import Cfg from '../Cfg.js'
 import crypto from 'crypto'
 
 export default class apiTool {
-  constructor(uid, server, game = 'gs') {
+  constructor(uid, server, game = 'gs', biz) {
     this.uid = uid
     this.server = server
     this.game = game
+    this.biz = biz
     this.api = Cfg.getConfig('api')
     this.uuid = crypto.randomUUID()
   }
@@ -13,7 +14,7 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let bbs_api = 'https://bbs-api.mihoyo.com/'
     let host, host_hk4e, host_nap, hostRecord, hostPublicData
-    if (/cn_|_cn/.test(this.server)) {
+    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
       host_nap = 'https://act-nap-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
@@ -336,6 +337,49 @@ export default class apiTool {
           sign_home: {
             url: `${host_nap}event/luna/zzz/os/home`,
             query: 'lang=zh-cn&act_id=e202406031448091',
+            types: 'sign'
+          }
+        })
+      },
+      bh3: {
+        userGame_cn: {
+          url: 'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=bh3_cn'
+        },
+        userGame_os: {
+          url: 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=bh3_global'
+        },
+        ...(['bh3_cn'].includes(this.biz) ? {
+          sign: {
+            url: `${host}event/luna/bh3/sign`,// 国服崩三签到
+            body: { act_id: 'e202306201626331', region: this.server, uid: this.uid, lang: 'zh-cn' },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/luna/bh3/info`,
+            query: `lang=zh-cn&act_id=e202306201626331&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/luna/bh3/home`,
+            query: 'lang=zh-cn&act_id=e202306201626331',
+            types: 'sign'
+          }
+        } : {
+          sign: {
+            url: `${host}event/mani/sign`,// 国际服崩三签到
+            body: { act_id: 'e202110291205111', lang: 'zh-cn' },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/mani/info`,
+            query: 'lang=zh-cn&act_id=e202110291205111',
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/mani/home`,
+            query: 'lang=zh-cn&act_id=e202110291205111',
             types: 'sign'
           }
         })
