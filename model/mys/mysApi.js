@@ -183,7 +183,8 @@ export default class MysApi {
       'x-rpc-app_version': '2.73.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.73.1'
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11; J9110 Build/55.2.A.4.332; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.179 Mobile Safari/537.36 miHoYoBBS/2.73.1',
+      Referer: 'https://webstatic.mihoyo.com/'
     }
 
     const header_os = {
@@ -196,71 +197,58 @@ export default class MysApi {
 
     const header_bbs = {
       'x-rpc-app_version': '2.73.1',
-      'x-rpc-device_model': 'J9110',
-      'x-rpc-device_name': 'Sony J9110',
       'x-rpc-channel': 'miyousheluodi',
       'x-rpc-client_type': '2',
       Referer: 'https://app.mihoyo.com/',
-      'x-rpc-sys_version': '11',
       'User-Agent': 'okhttp/4.9.3',
       'x-rpc-device_id': this.device_id
     }
 
-    let client
-    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
-      client = {
-        ...header,
-        Referer: 'https://webstatic.mihoyo.com/'
-      }
-    } else {
-      client = header_os
-    }
-
-    let signgame = {
-      ...(this.game == 'gs' ? {
-        'x-rpc-signgame': 'hk4e'
-      } : this.game == 'sr' ? {
-        'x-rpc-signgame': 'hkrpg'
-      } : this.game == 'zzz' ? {
-        'x-rpc-signgame': 'zzz'
-      } : {
-        'x-rpc-signgame': 'bh3'
-      })
-    }
-
-    let x_rpc = {
-      'x-rpc-platform': 'android',
+    const x_rpc = {
       'x-rpc-device_model': 'J9110',
       'x-rpc-device_name': 'Sony J9110',
       'x-rpc-sys_version': '11'
     }
+
+    let client
+    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+      client = header
+    } else {
+      client = header_os
+    }
+
+    let signgame = this.game == 'gs' ? 'hk4e' : this.game == 'sr' ? 'hkrpg' : this.game == 'zzz' ? 'zzz' : 'bh3'
 
     switch (types) {
       case 'sign':// 细分签到
         if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
           return {
             ...header,
-            ...signgame,
-            Referer: 'https://act.mihoyo.com/',
-            ...x_rpc,
             'X-Requested-With': 'com.mihoyo.hyperion',
+            ...x_rpc,
+            'x-rpc-signgame': signgame,
+            'x-rpc-platform': 'android',
             'x-rpc-channel': 'miyousheluodi',
             DS: this.SignDs()
           }
         else
           return {
             ...header_os,
-            ...(this.game == 'zzz' ? {
-              'x-rpc-signgame': 'zzz'
-            } : {}),
-            ...x_rpc,
             'X-Requested-With': 'com.mihoyo.hoyolab',
+            ...(this.game == 'zzz' ? {
+              ...x_rpc,
+              'x-rpc-signgame': 'zzz'
+            } : {
+              ...x_rpc
+            }),
+            'x-rpc-platform': 'android',
             'x-rpc-channel': 'google',
             DS: this.SignDs()
           }
       case 'bbs':
         return {
           ...header_bbs,
+          ...x_rpc,
           DS: (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
         }
       case 'noheader':
