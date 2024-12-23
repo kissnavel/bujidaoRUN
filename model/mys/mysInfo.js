@@ -159,7 +159,7 @@ export default class MysInfo {
 
     let user = e.user?.getMysUser()
     option.device = user.device
-    option.game = e?.game || (e?.isSr ? 'sr' : 'gs')
+    option.game = e?.game || (e.isZzz ? 'zzz' : e?.isSr ? 'sr' : 'gs')
     let mysApi
     if (ji)
       mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz ? 'zzz' : e.isSr ? 'sr' : 'gs')
@@ -428,19 +428,9 @@ export default class MysInfo {
     try {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
       
-      let headers = { 
-        'x-rpc-device_fp': await this.getFp(vali),
-        'x-rpc-challenge_game': '2'
-      }
-      let app_key = ''
-      if (mysApi.isSr || mysApi.game == 'sr') {
-        headers['x-rpc-challenge_game'] = '6'
-        app_key = 'hkrpg_game_record'
-      }
-      if (mysApi.isZzz || mysApi.game == 'zzz') {
-        headers['x-rpc-challenge_game'] = '8'
-        app_key = 'game_record_zzz'
-      }
+      let challenge_game = (mysApi.isZzz || mysApi.game == 'zzz') ? '8' : (mysApi.isSr || mysApi.game == 'sr') ? '6' : '2'
+      let headers = { 'x-rpc-device_fp': await this.getFp(vali), 'x-rpc-challenge_game': challenge_game }
+      let app_key = (mysApi.isZzz || mysApi.game == 'zzz') ? 'game_record_zzz' : (mysApi.isSr || mysApi.game == 'sr') ? 'hkrpg_game_record' : ''
 
       res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers, app_key })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
