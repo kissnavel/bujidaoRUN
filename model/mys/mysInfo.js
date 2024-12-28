@@ -28,7 +28,23 @@ export default class MysInfo {
     }
     // ck对应MysUser对象
     this.ckUser = null
-    this.auth = ['dailyNote', 'spiralAbyss', 'character', 'character_detail', 'ys_ledger', 'compute', 'avatarSkill', 'detail', 'blueprint', 'UserGame', 'deckList', 'avatar_cardList', 'action_cardList', 'avatarInfo', 'role_combat', 'detail_equip', 'detail_avatar']
+    this.auth = [
+      'dailyNote',
+      'ys_ledger',
+      'compute',
+      'avatarSkill',
+      'detail',
+      'blueprint',
+      'UserGame',
+      'deckList',
+      'avatar_cardList',
+      'action_cardList',
+      'avatarInfo',
+      'detail_equip',
+      'detail_avatar',
+      'role_combat',
+      'character_detail'
+    ]
   }
 
   static async init(e, api) {
