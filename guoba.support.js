@@ -189,7 +189,7 @@ export function supportGuoba() {
         {
           field: 'config.Autodelck',
           label: '自动删除ck',
-          bottomHelpMessage: '是否开启签到失败ck失效自动删除ck',
+          bottomHelpMessage: '是否开启自动删除ck',
           component: 'Switch',
         },
         {
@@ -242,7 +242,7 @@ export function supportGuoba() {
         {
           field: 'config.Autodelsk',
           label: '自动删除sk',
-          bottomHelpMessage: '是否开启签到失败sk失效自动删除sk',
+          bottomHelpMessage: '是否开启自动删除sk',
           component: 'Switch',
         },
         {

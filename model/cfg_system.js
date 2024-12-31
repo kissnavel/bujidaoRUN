@@ -38,7 +38,7 @@ export const cfgSchema = {
         title: '自动删除ck设置',
         key: '自动删除ck',
         def: false,
-        desc: '是否开启签到失败ck失效自动删除ck'
+        desc: '是否开启自动删除ck'
       }
     }
   },
@@ -81,7 +81,7 @@ export const cfgSchema = {
         title: '自动删除sk设置',
         key: '自动删除sk',
         def: false,
-        desc: '是否开启签到失败sk失效自动删除sk'
+        desc: '是否开启自动删除sk'
       }
     }
   },
