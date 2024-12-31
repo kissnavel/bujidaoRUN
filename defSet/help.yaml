@@ -65,12 +65,6 @@
       title: '#寄还原'
       desc: '本体更新冲突时还原后更新'
     - icon: paimon
-      title: '#寄面板文件替换'
-      desc: '使用米游社更新面板前需进行替换'
-    - icon: paimon
-      title: '#寄面板文件还原'
-      desc: 'miao-plugin更新冲突时使用'
-    - icon: paimon
       title: '*武器星级更新(@群友)'
       desc: '使用星铁功能前使用'
     - icon: paimon

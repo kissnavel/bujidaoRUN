@@ -342,11 +342,11 @@ export default class apiTool {
         })
       },
       bh3: {
-        userGame_cn: {
+        bh3_cn: {
           url: 'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie',
           query: 'game_biz=bh3_cn'
         },
-        userGame_os: {
+        bh3_global: {
           url: 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie',
           query: 'game_biz=bh3_global'
         },
