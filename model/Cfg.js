@@ -111,7 +111,7 @@ class Cfg {
     let config = this.getConfig('config')
     this.white = this.getConfig('white')
 
-    this.Game = note ? ['gs', 'sr', 'zzz'] : config.game
+    this.Game = note ? ['gs', 'sr'] : config.game
     let cks = _.fromPairs(this.Game.map((game) => [game, {}]))
     let uids = _.fromPairs(this.Game.map((game) => [game, {}]))
 
@@ -132,7 +132,7 @@ class Cfg {
         })
       })
 
-      for (let key of ['gs', 'sr', 'zzz']) {
+      for (let key of this.Game) {
         for (let row of rows) {
           const Data = JSON.parse(row.uids)
           for (let i in Data[key]) {
@@ -167,7 +167,6 @@ class Cfg {
     } finally {
       db.close()
     }
-
   }
 
   async otherck(row, cks) {
