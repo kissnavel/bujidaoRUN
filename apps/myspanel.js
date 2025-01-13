@@ -43,20 +43,17 @@ export class ji_myspanel extends plugin {
         let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
         let res, data
         if (e.game == 'sr') {
-            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             data = await MysInfo.get(e, 'avatarInfo', { headers }, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
-                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
+            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             await Myspanel.sr_mys(data, uid)
         } else {
-            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             res = await MysInfo.get(e, 'character', { headers }, {}, true)
             if (!res.data) {
                 logger.mark('米游社查询失败')
-                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
             let ids = []
@@ -66,9 +63,9 @@ export class ji_myspanel extends plugin {
             data = await MysInfo.get(e, 'character_detail', { headers, ids: ids }, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
-                await e.reply(`uid:${uid}的米游社面板数据查询失败，转为其他面板服务查询`, true)
                 return false
             }
+            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             await Myspanel.gs_mys(data, uid)
         }
         //加载面板列表图
