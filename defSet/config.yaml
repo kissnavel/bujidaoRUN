@@ -35,7 +35,7 @@ TaskTime: 0 0/30 * * * ?
 sendCD: 12
 #默认推送阈值
 gs_Resin: 160
-sr_Resin: 200
+sr_Resin: 260
 #合并转发
 forward: 2
 #推送文案

@@ -117,7 +117,7 @@ export const cfgSchema = {
         title: '星铁推送默认阈值',
         key: '星铁推送',
         type: 'num',
-        def: 200
+        def: 260
       },
       forward: {
         title: '合并转发',

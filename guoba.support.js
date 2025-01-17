@@ -302,8 +302,8 @@ export function supportGuoba() {
           component: 'InputNumber',
           required: true,
           componentProps: {
-            min: 120,
-            placeholder: '请输入阈值，最低120',
+            min: 150,
+            placeholder: '请输入阈值，最低150',
           },
         },
         {
