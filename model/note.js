@@ -47,15 +47,9 @@ export default class Note extends base {
     let config = Cfg.getConfig('config')
     let white = Cfg.getConfig('white')
     if (config.Notezzz && white.zzzQQ?.includes(id)) {
-      this.e = {
-        user_id: e.user_id,
-        qq: e.user_id,
-        runtime: e.runtime,
-        sender: e.sender,
-        game: "zzz",
-        msg: "#绝区零体力"
-      }
-      let data = await Notezzz.get(this.e)
+      e.game = "zzz"
+      e.msg = "#绝区零体力"
+      let data = await Notezzz.get(e)
       if (!data) return
 
       promises.push(data)
