@@ -318,6 +318,12 @@ export function supportGuoba() {
           },
         },
         {
+          field: 'config.Notezzz',
+          label: '绝区零体力',
+          bottomHelpMessage: '是否开启绝区零体力',
+          component: 'Switch',
+        },
+        {
           component: 'Divider',
           label: '禁用/解禁UID设置'
         },

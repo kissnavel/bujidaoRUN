@@ -125,6 +125,11 @@ export const cfgSchema = {
         type: 'num',
         def: 2,
         desc: '查询体力时发送的文字消息+图片大于几条时合并转发'
+      },
+      Notezzz: {
+        title: '绝区零体力',
+        key: '绝区零体力',
+        def: false
       }
     }
   },

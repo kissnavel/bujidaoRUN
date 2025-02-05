@@ -2,6 +2,7 @@ import puppeteer from '../../../lib/puppeteer/puppeteer.js'
 import common from '../../../lib/common/common.js'
 import MysInfo from './mys/mysInfo.js'
 import MysApi from './mys/mysApi.js'
+import Notezzz from './noteZzz.js'
 import base from './base.js'
 import moment from 'moment'
 import Cfg from './Cfg.js'
@@ -41,6 +42,24 @@ export default class Note extends base {
     for (let g of ['gs', 'sr'])
       if (!_.isEmpty(cks[g]))
         promises.push(note.ddos(cks[g], g))
+
+    let id = Number(e.user_id) || String(e.user_id)
+    let config = Cfg.getConfig('config')
+    let white = Cfg.getConfig('white')
+    if (config.Notezzz && white.zzzQQ?.includes(id)) {
+      this.e = {
+        user_id: e.user_id,
+        qq: e.user_id,
+        runtime: e.runtime,
+        sender: e.sender,
+        game: "zzz",
+        msg: "#绝区零体力"
+      }
+      let data = await Notezzz.get(this.e)
+      if (!data) return
+
+      promises.push(data)
+    }
 
     await Promise.all(promises)
 

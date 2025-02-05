@@ -64,3 +64,6 @@ Autodelsk: false
 myspanel: false
 #米游社更新面板CD，单位秒，建议不低于120秒
 myspanelCD: 120
+
+#是否开启绝区零体力
+Notezzz: false

@@ -8,3 +8,5 @@ git clone https://github.com/kissnavel/bujidaoRUN.git ./plugins/bujidao/
 3、已添加国际服支持，建议仅保留签到功能，其他功能可按需保留，不需要保留的可用锅巴插件屏蔽。
 
 4、原神、星铁米游社面板代码来源：<a href="https://github.com/thisee/xiaokeli">xiaokeli</a>，已修改适配本仓库。
+
+5、绝区零体力代码来源：genshin插件，已修改适配本仓库。

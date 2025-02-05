@@ -308,6 +308,10 @@ export default class apiTool {
       },
       zzz: {
         ...(['prod_gf_cn'].includes(this.server) ? {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=nap_cn&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host_nap}event/luna/zzz/sign`,// 国服绝区零签到
             body: { act_id: 'e202406242138391', region: this.server, uid: this.uid, lang: 'zh-cn' },
@@ -322,8 +326,16 @@ export default class apiTool {
             url: `${host_nap}event/luna/zzz/home`,
             query: 'lang=zh-cn&act_id=e202406242138391',
             types: 'sign'
-          }
+          },
+          dailyNote: {
+            url: `${hostRecord}event/game_record_zzz/api/zzz/note`,
+            query: `role_id=${this.uid}&server=${this.server}`
+          },
         } : {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=nap_global&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host_nap}event/luna/zzz/os/sign`,// 国际服绝区零签到
             body: { act_id: 'e202406031448091', lang: 'zh-cn' },
@@ -338,7 +350,11 @@ export default class apiTool {
             url: `${host_nap}event/luna/zzz/os/home`,
             query: 'lang=zh-cn&act_id=e202406031448091',
             types: 'sign'
-          }
+          },
+          dailyNote: {
+            url: `${host_nap}event/game_record_zzz/api/zzz/note`,
+            query: `role_id=${this.uid}&server=${this.server}`
+          },
         })
       },
       bh3: {

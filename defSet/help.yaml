@@ -9,14 +9,17 @@
     - icon: paimon
       title: '(#/*)体力推送160'
       desc: '(体力/开拓力)推送阈值'
+    - icon: paimon
+      title: '(开启/关闭)绝区零体力'
+      desc: '是否同时查询绝区零体力，需主人启用功能'
 - group: 寄·米游社更新面板
   list:
     - icon: paimon
       title: '#寄更新面板'
-      desc: '原神米游社更新面板，需绑定ck'
+      desc: '原神米游社更新面板，需绑定ck，需主人启用功能'
     - icon: paimon
       title: '*寄更新面板'
-      desc: '星铁米游社更新面板，需绑定ck'
+      desc: '星铁米游社更新面板，需绑定ck，需主人启用功能'
 - group: 寄·预估
   list:
     - icon: paimon
