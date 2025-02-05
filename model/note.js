@@ -1,8 +1,9 @@
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
+import Notezzz from '../../genshin/model/noteZzz.js'
 import common from '../../../lib/common/common.js'
 import MysInfo from './mys/mysInfo.js'
 import MysApi from './mys/mysApi.js'
-import Notezzz from './noteZzz.js'
+import { Common } from "#miao"
 import base from './base.js'
 import moment from 'moment'
 import Cfg from './Cfg.js'
@@ -52,7 +53,7 @@ export default class Note extends base {
       let data = await Notezzz.get(e)
       if (!data) return
 
-      promises.push(data)
+      promises.push(await Common.render('genshin', `ZZZero/html/dailyNote/note`, data, { e }))
     }
 
     await Promise.all(promises)
