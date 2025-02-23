@@ -1,9 +1,9 @@
+import { Common } from '../../miao-plugin/components/index.js'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
 import Notezzz from '../../genshin/model/noteZzz.js'
 import common from '../../../lib/common/common.js'
 import MysInfo from './mys/mysInfo.js'
 import MysApi from './mys/mysApi.js'
-import { Common } from "#miao"
 import base from './base.js'
 import moment from 'moment'
 import Cfg from './Cfg.js'
@@ -44,16 +44,15 @@ export default class Note extends base {
       if (!_.isEmpty(cks[g]))
         promises.push(note.ddos(cks[g], g))
 
-    let id = Number(e.user_id) || String(e.user_id)
     let config = Cfg.getConfig('config')
-    let white = Cfg.getConfig('white')
-    if (config.Notezzz && white.zzzQQ?.includes(id)) {
+    let banuid = Cfg.getConfig('banuid')
+    let uid = e.user?.getUid('zzz')
+    if (config.Notezzz && !banuid.zzz?.includes(Number(uid))) {
       e.game = "zzz"
       e.msg = "#绝区零体力"
       let data = await Notezzz.get(e)
-      if (!data) return
 
-      promises.push(await Common.render('genshin', `ZZZero/html/dailyNote/note`, data, { e }))
+      if (data) promises.push(await Common.render('genshin', `ZZZero/html/dailyNote/note`, data, { e }))
     }
 
     await Promise.all(promises)

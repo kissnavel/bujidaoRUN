@@ -28,11 +28,7 @@ export class ji_note extends plugin {
                     reg: '^#?体力推送格式转换$',//对8.30前的体力推送格式适配
                     permission: 'master',
                     fnc: 'copy'
-                },
-                {
-                    reg: '^#?(开启|关闭)绝区零体力$',
-                    fnc: 'zzznote'
-                },
+                }
             ]
         })
         this.set = Cfg.getConfig('config')
@@ -169,35 +165,5 @@ export class ji_note extends plugin {
         }
         Cfg.setConfig('defnote', Notes)
         return e.reply('转换完成')
-    }
-
-    async zzznote(e) {
-        let id = Number(e.user_id) || String(e.user_id)
-        let config = Cfg.getConfig('config')
-        let white = Cfg.getConfig('white')
-        if (!config.Notezzz)
-            return e.reply('主人未启用绝区零体力')
-
-        let action = e.msg.includes('开启') ? '开启' : '关闭'
-        let set = white.zzzQQ
-        if (action === '开启') {
-            if (set?.includes(id))
-                return e.reply(`\n你已开启过绝区零体力${white['QQ']?.includes(id) ? '' : '\n使用【#体力】时将同时查询绝区零体力'}`, false, { at: true })
-            set.push(id)
-            Cfg.setConfig('white', white)
-            return e.reply(`\n已开启绝区零体力${white['QQ']?.includes(id) ? '' : '\n使用【#体力】时将同时查询绝区零体力'}`, false, { at: true })
-        } else if (action === '关闭') {
-            if (set.length === 0)
-                return e.reply(`还没有人开启绝区零体力哦...`)
-            let index = set.findIndex(q => q == id)
-            if (index !== -1) {
-                set.splice(index, 1)
-                Cfg.setConfig('white', white)
-                e.reply(`已关闭绝区零体力...`, false, { at: true })
-            } else {
-                e.reply(`你还没有开启绝区零体力哦...`, false, { at: true })
-            }
-            return
-        }
     }
 }

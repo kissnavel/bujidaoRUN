@@ -9,9 +9,6 @@
     - icon: paimon
       title: '(#/*)体力推送160'
       desc: '(体力/开拓力)推送阈值'
-    - icon: paimon
-      title: '(开启/关闭)绝区零体力'
-      desc: '是否同时查询绝区零体力，需主人启用功能'
 - group: 寄·米游社更新面板
   list:
     - icon: paimon
