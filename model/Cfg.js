@@ -177,6 +177,7 @@ class Cfg {
       let res = await mysApi.getData('bh3_cn')
       if (res?.retcode !== 0)
         res = await mysApi.getData('bh3_global')
+      if (res?.retcode !== 0) return cks
       if (res?.data?.list.length == 0) continue
 
       for (let data of res?.data?.list) {
