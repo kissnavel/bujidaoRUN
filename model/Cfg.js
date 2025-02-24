@@ -153,8 +153,8 @@ class Cfg {
             cks[key] = Object.assign({}, cks[key], ck)
           }
           if (!note)
-            if (this.white.bh3QQ?.includes(Number(row.qq) || String(row.qq)))
-              cks = await this.otherck(row, cks)
+            if (this.Game.includes('bh3'))
+              cks = await this.bh3ck(row, cks)
         }
       }
       for (let game of this.Game)
@@ -169,7 +169,7 @@ class Cfg {
     }
   }
 
-  async otherck(row, cks) {
+  async bh3ck(row, cks) {
     let ck = this.setCk(row.ck, row.device)
     for (let game of this.Game) {
       if (['gs', 'sr', 'zzz'].includes(game)) continue
