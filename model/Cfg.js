@@ -181,7 +181,7 @@ class Cfg {
       if (res?.data?.list.length == 0) continue
 
       for (let data of res?.data?.list) {
-        if (this.banUid.bh3?.includes(Number(data.game_uid))) continue
+        if (this.banUid[game]?.includes(Number(data.game_uid))) continue
         let uid = String(data.game_uid)
         let CK = {
           [uid]: {
