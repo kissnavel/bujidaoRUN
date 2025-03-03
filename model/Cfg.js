@@ -152,9 +152,7 @@ class Cfg {
             }
             cks[key] = Object.assign({}, cks[key], ck)
           }
-          if (!note)
-            if (this.Game.includes('bh3'))
-              cks = await this.bh3ck(row, cks)
+          if (!note) cks = await this.otherck(row, cks)
         }
       }
       for (let game of this.Game)
@@ -169,14 +167,16 @@ class Cfg {
     }
   }
 
-  async bh3ck(row, cks) {
+  async otherck(row, cks) {
     let ck = this.setCk(row.ck, row.device)
     for (let game of this.Game) {
       if (['gs', 'sr', 'zzz'].includes(game)) continue
       let mysApi = new MysApi('', ck, { log: false }, game)
-      let res = await mysApi.getData('bh3_cn')
+      let _cn = game == 'bh3' ? 'bh3_cn' : ''
+      let _global = game == 'bh3' ? 'bh3_global' : ''
+      let res = await mysApi.getData(_cn)
       if (res?.retcode !== 0)
-        res = await mysApi.getData('bh3_global')
+        res = await mysApi.getData(_global)
       if (res?.retcode !== 0) return cks
       if (res?.data?.list.length == 0) continue
 
