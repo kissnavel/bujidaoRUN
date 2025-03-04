@@ -21,7 +21,7 @@ export class ji_config extends plugin {
                     fnc: 'setbbs'
                 },
                 {
-                    reg: '^#?(原神|星铁|绝区零|崩三)?(禁用|解禁)(uid)?\\s*(1[0-9]|[1-9])?[0-9]{8}$',
+                    reg: '^#?(原神|星铁|绝区零|崩三|未定)?(禁用|解禁)(uid)?\\s*(1[0-9]|[1-9])?[0-9]{8}$',
                     fnc: 'banUid'
                 },
                 {
@@ -101,16 +101,16 @@ export class ji_config extends plugin {
     }
 
     async banUid(e) {
-        let uid = Number(e.msg.replace(/#?(原神|星铁|绝区零|崩三)?(禁用|解禁)(uid)?\s*/i, '').trim())
+        let uid = Number(e.msg.replace(/#?(原神|星铁|绝区零|崩三|未定)?(禁用|解禁)(uid)?\s*/i, '').trim())
 
         if (!uid) return e.reply('未输入UID')
 
         let Uid = Cfg.getConfig('banuid')
 
-        let name = e.msg.includes('原神') ? '原神' : e.msg.includes('星铁') ? '星铁' : e.msg.includes('绝区零') ? '绝区零' : '崩三'
-        let set = Uid[e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : 'bh3']
+        let name = e.msg.includes('原神') ? '原神' : e.msg.includes('星铁') ? '星铁' : e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('崩三') ? '崩三' : '未定'
+        let set = Uid[e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('崩三') ? 'bh3' : 'wd']
         let action = e.msg.includes('禁用') ? '禁用' : '解禁'
-        let g = e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : 'bh3'
+        let g = e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('崩三') ? 'bh3' : 'wd'
 
         if (!e.isMaster) {
             let { cks } = await Cfg.getcks(false, e.user_id)
