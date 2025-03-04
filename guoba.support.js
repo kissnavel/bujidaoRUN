@@ -157,7 +157,7 @@ export function supportGuoba() {
         {
           field: 'config.game',
           label: '签到游戏',
-          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；绝区零: zzz；崩三: bh3',
+          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；绝区零: zzz；崩三: bh3；未定: wd',
           component: 'GTags',
           componentProps: {
             allowAdd: true,

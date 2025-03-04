@@ -19,7 +19,7 @@ export const cfgSchema = {
         title: '签到游戏设置',
         key: '签到游戏',
         type: 'cron',
-        def: ['gs', 'sr', 'zzz', 'bh3'],
+        def: ['gs', 'sr', 'zzz', 'bh3', 'wd'],
         desc: '可使用锅巴修改'
       },
       retry: {

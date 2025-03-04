@@ -172,8 +172,8 @@ class Cfg {
     for (let game of this.Game) {
       if (['gs', 'sr', 'zzz'].includes(game)) continue
       let mysApi = new MysApi('', ck, { log: false }, game)
-      let _cn = game == 'bh3' ? 'bh3_cn' : ''
-      let _global = game == 'bh3' ? 'bh3_global' : ''
+      let _cn = game == 'bh3' ? 'bh3_cn' : 'nxx_cn'
+      let _global = game == 'bh3' ? 'bh3_global' : 'nxx_global'
       let res = await mysApi.getData(_cn)
       if (res?.retcode !== 0)
         res = await mysApi.getData(_global)

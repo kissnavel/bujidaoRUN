@@ -14,7 +14,7 @@ export default class apiTool {
   getUrlMap = (data = {}) => {
     let bbs_api = 'https://bbs-api.mihoyo.com/'
     let host, host_hk4e, host_nap, hostRecord, hostPublicData
-    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       host = 'https://api-takumi.mihoyo.com/'
       host_nap = 'https://act-nap-api.mihoyo.com/'
       hostRecord = 'https://api-takumi-record.mihoyo.com/'
@@ -380,6 +380,49 @@ export default class apiTool {
           sign_home: {
             url: `${host}event/mani/home`,
             query: 'lang=zh-cn&act_id=e202110291205111',
+            types: 'sign'
+          }
+        })
+      },
+      wd: {
+        nxx_cn: {
+          url: 'https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=nxx_cn'
+        },
+        nxx_global: {
+          url: 'https://sg-public-api.hoyolab.com/binding/api/getUserGameRolesByCookie',
+          query: 'game_biz=nxx_global'
+        },
+        ...(['nxx_cn'].includes(this.biz) ? {
+          sign: {
+            url: `${host}event/luna/sign`,// 国服未定签到
+            body: { act_id: 'e202202251749321', region: this.server, uid: this.uid, lang: 'zh-cn' },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/luna/info`,
+            query: `lang=zh-cn&act_id=e202202251749321&region=${this.server}&uid=${this.uid}`,
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/luna/home`,
+            query: 'lang=zh-cn&act_id=e202202251749321',
+            types: 'sign'
+          }
+        } : {
+          sign: {
+            url: `${host}event/luna/os/sign`,// 国际服未定签到
+            body: { act_id: 'e202202281857121', lang: 'zh-cn' },
+            types: 'sign'
+          },
+          sign_info: {
+            url: `${host}event/luna/os/info`,
+            query: 'lang=zh-cn&act_id=e202202281857121',
+            types: 'sign'
+          },
+          sign_home: {
+            url: `${host}event/luna/os/home`,
+            query: 'lang=zh-cn&act_id=e202202281857121',
             types: 'sign'
           }
         })

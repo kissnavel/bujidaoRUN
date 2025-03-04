@@ -201,54 +201,53 @@ export default class MysApi {
       'x-rpc-client_type': '2',
       Referer: 'https://app.mihoyo.com/',
       'User-Agent': 'okhttp/4.9.3',
-      'x-rpc-device_id': this.device_id
-    }
-
-    const x_rpc = {
+      'x-rpc-device_id': this.device_id,
       'x-rpc-device_model': 'J9110',
       'x-rpc-device_name': 'Sony J9110',
       'x-rpc-sys_version': '11'
     }
 
     let client
-    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       client = header
     } else {
       client = header_os
     }
 
-    let signgame = this.game == 'gs' ? 'hk4e' : this.game == 'sr' ? 'hkrpg' : this.game == 'zzz' ? 'zzz' : 'bh3'
+    const isGs = this.game == 'gs'
+    const isSr = this.game == 'sr'
+    const isZzz = this.game == 'zzz'
+    const isBh3 = this.game == 'bh3'
+    let signgame = isGs ? 'hk4e' : isSr ? 'hkrpg' : isZzz ? 'zzz' : isBh3 ? 'bh3' : 'nxx'
+    let x_rpc = {
+      'x-rpc-device_model': 'J9110',
+      'x-rpc-device_name': 'Sony J9110',
+      'x-rpc-sys_version': '11',
+      'x-rpc-signgame': signgame,
+      'x-rpc-platform': 'android'
+    }
 
     switch (types) {
       case 'sign':// 细分签到
-        if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
+        if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
           return {
             ...header,
-            'X-Requested-With': 'com.mihoyo.hyperion',
             ...x_rpc,
-            'x-rpc-signgame': signgame,
-            'x-rpc-platform': 'android',
+            'X-Requested-With': 'com.mihoyo.hyperion',
             'x-rpc-channel': 'miyousheluodi',
             DS: this.SignDs()
           }
         else
           return {
             ...header_os,
+            ...x_rpc,
             'X-Requested-With': 'com.mihoyo.hoyolab',
-            ...(this.game == 'zzz' ? {
-              ...x_rpc,
-              'x-rpc-signgame': 'zzz'
-            } : {
-              ...x_rpc
-            }),
-            'x-rpc-platform': 'android',
             'x-rpc-channel': 'google',
             DS: this.SignDs()
           }
       case 'bbs':
         return {
           ...header_bbs,
-          ...x_rpc,
           DS: (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
         }
       case 'noheader':
@@ -262,7 +261,7 @@ export default class MysApi {
 
   getDs (q = '', b = '') {
     let n = ''
-    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
     } else {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
@@ -308,7 +307,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (['bh3_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
+    if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
