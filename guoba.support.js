@@ -368,6 +368,16 @@ export function supportGuoba() {
           },
         },
         {
+          field: 'banuid.wd',
+          label: '禁用/解禁未定UID',
+          bottomHelpMessage: '禁用/解禁未定UID，依次添加或删除',
+          component: 'GTags',
+          componentProps: {
+            allowAdd: true,
+            allowDel: true,
+          },
+        },
+        {
           component: 'Divider',
           label: '白名单设置'
         },
