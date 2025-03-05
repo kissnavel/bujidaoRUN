@@ -390,7 +390,7 @@ export default class apiTool {
           query: 'game_biz=bh2_cn'
         },
         sign: {
-          url: `${host}event/luna/sign`,// 国服未定签到
+          url: `${host}event/luna/sign`,// 国服崩二签到
           body: { act_id: 'e202203291431091', region: this.server, uid: this.uid, lang: 'zh-cn' },
           types: 'sign'
         },
