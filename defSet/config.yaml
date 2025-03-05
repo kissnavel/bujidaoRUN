@@ -11,6 +11,7 @@ game:
  - sr
  - zzz
  - bh3
+ - bh2
  - wd
 #签到重试次数
 retry: 2

@@ -208,17 +208,13 @@ export default class MysApi {
     }
 
     let client
-    if (['bh3_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       client = header
     } else {
       client = header_os
     }
 
-    const isGs = this.game == 'gs'
-    const isSr = this.game == 'sr'
-    const isZzz = this.game == 'zzz'
-    const isBh3 = this.game == 'bh3'
-    let signgame = isGs ? 'hk4e' : isSr ? 'hkrpg' : isZzz ? 'zzz' : isBh3 ? 'bh3' : 'nxx'
+    let signgame = this.game == 'gs' ? 'hk4e' : this.game == 'sr' ? 'hkrpg' : this.game == 'zzz' ? 'zzz' : this.game == 'bh3' ? 'bh3' : this.game == 'bh2' ? 'bh2' : 'nxx'
     let x_rpc = {
       'x-rpc-device_model': 'J9110',
       'x-rpc-device_name': 'Sony J9110',
@@ -229,7 +225,7 @@ export default class MysApi {
 
     switch (types) {
       case 'sign':// 细分签到
-        if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
+        if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
           return {
             ...header,
             ...x_rpc,
@@ -261,7 +257,7 @@ export default class MysApi {
 
   getDs (q = '', b = '') {
     let n = ''
-    if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
     } else {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
@@ -307,7 +303,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (['bh3_cn','nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
+    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {

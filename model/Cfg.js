@@ -172,13 +172,19 @@ class Cfg {
     for (let game of this.Game) {
       if (['gs', 'sr', 'zzz'].includes(game)) continue
       let mysApi = new MysApi('', ck, { log: false }, game)
-      let _cn = game == 'bh3' ? 'bh3_cn' : 'nxx_cn'
-      let _global = game == 'bh3' ? 'bh3_global' : 'nxx_global'
-      let res = await mysApi.getData(_cn)
-      if (res?.retcode !== 0)
-        res = await mysApi.getData(_global)
-      if (res?.retcode !== 0) return cks
-      if (res?.data?.list.length == 0) continue
+      let res
+      if (game == 'bh2') {
+        res = await mysApi.getData('bh2_cn')
+        if (res?.retcode !== 0) return cks
+        if (res?.data?.list.length == 0) continue
+      } else {
+        let _cn = game == 'bh3' ? 'bh3_cn' : 'nxx_cn'
+        let _global = game == 'bh3' ? 'bh3_global' : 'nxx_global'
+        res = await mysApi.getData(_cn)
+        if (res?.retcode !== 0) res = await mysApi.getData(_global)
+        if (res?.retcode !== 0) return cks
+        if (res?.data?.list.length == 0) continue
+      }
 
       for (let data of res?.data?.list) {
         if (this.banUid[game]?.includes(Number(data.game_uid))) continue

@@ -157,7 +157,7 @@ export function supportGuoba() {
         {
           field: 'config.game',
           label: '签到游戏',
-          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；绝区零: zzz；崩三: bh3；未定: wd',
+          bottomHelpMessage: '可签到游戏设置，原神: gs；星铁: sr；绝区零: zzz；崩三: bh3；崩二: bh2；未定: wd',
           component: 'GTags',
           componentProps: {
             allowAdd: true,
@@ -361,6 +361,16 @@ export function supportGuoba() {
           field: 'banuid.bh3',
           label: '禁用/解禁崩三UID',
           bottomHelpMessage: '禁用/解禁崩三UID，依次添加或删除',
+          component: 'GTags',
+          componentProps: {
+            allowAdd: true,
+            allowDel: true,
+          },
+        },
+        {
+          field: 'banuid.bh2',
+          label: '禁用/解禁崩二UID',
+          bottomHelpMessage: '禁用/解禁崩二UID，依次添加或删除',
           component: 'GTags',
           componentProps: {
             allowAdd: true,
