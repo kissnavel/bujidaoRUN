@@ -170,7 +170,7 @@ class Cfg {
   async otherck(row, cks) {
     let ck = this.setCk(row.ck, row.device)
     for (let game of this.Game) {
-      if (['gs', 'sr', 'zzz'].includes(game)) continue
+      if (['gs', 'sr', 'zzz', 'wd'].includes(game)) continue
       let mysApi = new MysApi('', ck, { log: false }, game)
       let res
       if (game == 'bh2') {
@@ -178,10 +178,8 @@ class Cfg {
         if (res?.retcode !== 0) return cks
         if (res?.data?.list.length == 0) continue
       } else {
-        let _cn = game == 'bh3' ? 'bh3_cn' : 'nxx_cn'
-        let _global = game == 'bh3' ? 'bh3_global' : 'nxx_global'
-        res = await mysApi.getData(_cn)
-        if (res?.retcode !== 0) res = await mysApi.getData(_global)
+        res = await mysApi.getData('bh3_cn')
+        if (res?.retcode !== 0) res = await mysApi.getData('bh3_global')
         if (res?.retcode !== 0) return cks
         if (res?.data?.list.length == 0) continue
       }

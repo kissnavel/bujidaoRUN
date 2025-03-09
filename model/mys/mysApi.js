@@ -13,7 +13,7 @@ export default class MysApi {
     this.cookie = cookie
     this.game = game
     this.set = Cfg.getConfig('config')
-    this.server = Server || this.getServer(this.uid, this.game)
+    this.server = Server || this.getServer()
     this.biz = Biz
     this.device_id = this.getGuid()
     /** 5分钟缓存 */
@@ -55,7 +55,19 @@ export default class MysApi {
     const _uid = String(this.uid)
     const isSr = this.game == 'sr'
     const isZzz = this.game == 'zzz'
-    if (isZzz) {
+    const isWd = this.game == 'wd'
+    if (isWd) {
+      switch (_uid.slice(0, -7)) {
+        case '11':
+          return 'cn_prod_bb01'
+        case '21':
+          return 'cn_prod_mix01'
+        case '10':
+          return 'tw_prod_wd01'
+        case '20':
+          return 'glb_prod_wd01'
+      }
+    } else if (isZzz) {
       switch (_uid.slice(0, -8)) {
         case '10':
           return 'prod_gf_us'
@@ -81,7 +93,7 @@ export default class MysApi {
           return isSr ? 'prod_official_cht' : 'os_cht'
       }
     }
-    return (isZzz || isSr) ? 'prod_gf_cn' : 'cn_gf01'
+    return isWd ? 'cn_prod_gf01' : (isZzz || isSr) ? 'prod_gf_cn' : 'cn_gf01'
   }
 
   async getData(type, data = {}, game = '', cached = false) {
@@ -208,7 +220,7 @@ export default class MysApi {
     }
 
     let client
-    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'bh2_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       client = header
     } else {
       client = header_os
@@ -225,7 +237,7 @@ export default class MysApi {
 
     switch (types) {
       case 'sign':// 细分签到
-        if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
+        if (['bh3_cn', 'bh2_cn'].includes(this.biz) || /cn_|_cn/.test(this.server))
           return {
             ...header,
             ...x_rpc,
@@ -257,7 +269,7 @@ export default class MysApi {
 
   getDs (q = '', b = '') {
     let n = ''
-    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
+    if (['bh3_cn', 'bh2_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
       n = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
     } else {
       n = 'okr4obncj8bw5a65hbnn5oo6ixjc3l9w'
@@ -303,7 +315,7 @@ export default class MysApi {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    if (['bh3_cn', 'bh2_cn', 'nxx_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
+    if (['bh3_cn', 'bh2_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) return null
 
     if (HttpsProxyAgent === '') {
       HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
