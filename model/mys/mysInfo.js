@@ -92,9 +92,10 @@ export default class MysInfo {
    */
   static async getUid(e, matchMsgUid = true) {
     let user = await NoteUser.create(e)
+    const game = e?.game || (e.isZzz ? 'zzz' : e?.isSr ? 'sr' : 'gs')
     if (e.uid && matchMsgUid) {
       /** 没有绑定的自动绑定 */
-      return user.autoRegUid(e.uid, e)
+      return user.autoRegUid(e.uid, game)
     }
 
     let { msg = '', at = '' } = e
@@ -104,24 +105,24 @@ export default class MysInfo {
     /** at用户 */
     if (at) {
       let atUser = await NoteUser.create(at)
-      uid = atUser.getUid(e)
+      uid = atUser.getUid(game)
       if (uid) return String(uid)
       if (e.noTips !== true) e.reply('尚未绑定uid', false, { at })
       return false
     }
 
     let matchUid = (msg = '') => {
-      let ret = /(1[0-9]|[1-9])?[0-9]{8}/g.exec(msg)
+      let ret = (game == 'wd' ? /[1-9][0-9]{8}|[1-9][0-9]{7}/g : game == 'zzz' ? /(1[0-9]|[1-9])[0-9]{8}|[1-9][0-9]{7}/g : /(18|[1-9])[0-9]{8}/g).exec(msg)
       if (!ret) return false
       return ret[0]
     }
 
     // 消息携带UID、当前用户UID、群名片携带UID 依次获取
-    uid = matchUid(msg) || user.getUid(e) || matchUid(e.sender.card)
-    if (!matchMsgUid) uid = user.getUid(e)
+    uid = matchUid(msg) || user.getUid(game) || matchUid(e.sender.card)
+    if (!matchMsgUid) uid = user.getUid(game)
     if (uid) {
       /** 没有绑定的自动绑定 */
-      return user.autoRegUid(uid, e)
+      return user.autoRegUid(uid, game)
     }
 
     if (e.noTips !== true) e.reply('请先#绑定uid', false, { at })
@@ -398,7 +399,7 @@ export default class MysInfo {
         if (res.api == 'character_detail') {
           this.e.reply(`UID:${this.uid}的米游社面板数据暂时无法查询，等过段时间再试吧～`)
         } else {
-          if (!isTask) this.e.reply([`UID:${this.uid}，米游社接口报错，暂时无法查询：${res.message || 'error'}`, this.mysButton])
+          if (!isTask) this.e.reply(`UID:${this.uid}，米游社接口报错，暂时无法查询：${res.message || 'error'}`)
         }
         break
       case 5003:
