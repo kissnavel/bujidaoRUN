@@ -422,36 +422,20 @@ export default class apiTool {
             query: 'lang=zh-cn&act_id=e202202251749321',
             types: 'sign'
           }
-        } : ['glb_prod_wd01'].includes(this.server) ? {
-          sign: {
-            url: `${host}event/luna/os/sign`,// 国际服未定签到
-            body: { act_id: 'e202202281857121', lang: 'zh-cn' },
-            types: 'sign'
-          },
-          sign_info: {
-            url: `${host}event/luna/os/info`,
-            query: 'lang=zh-cn&act_id=e202202281857121',
-            types: 'sign'
-          },
-          sign_home: {
-            url: `${host}event/luna/os/home`,
-            query: 'lang=zh-cn&act_id=e202202281857121',
-            types: 'sign'
-          }
         } : {
           sign: {
-            url: `${host}event/luna/os/sign`,// 台服未定签到
-            body: { act_id: 'e202308141137581', lang: 'zh-tw' },
+            url: `${host}event/luna/os/sign`,// 国际服未定签到
+            body: ['tw_prod_wd01'].includes(this.server) ? { act_id: 'e202308141137581', lang: 'zh-tw' } : { act_id: 'e202202281857121', lang: 'zh-cn' },
             types: 'sign'
           },
           sign_info: {
             url: `${host}event/luna/os/info`,
-            query: 'lang=zh-tw&act_id=e202308141137581',
+            query: ['tw_prod_wd01'].includes(this.server) ? 'lang=zh-tw&act_id=e202308141137581' : 'lang=zh-cn&act_id=e202202281857121',
             types: 'sign'
           },
           sign_home: {
             url: `${host}event/luna/os/home`,
-            query: 'lang=zh-tw&act_id=e202308141137581',
+            query: ['tw_prod_wd01'].includes(this.server) ? 'lang=zh-tw&act_id=e202308141137581' : 'lang=zh-cn&act_id=e202202281857121',
             types: 'sign'
           }
         })
