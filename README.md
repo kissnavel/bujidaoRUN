@@ -11,4 +11,4 @@ git clone https://github.com/kissnavel/bujidaoRUN.git ./plugins/bujidao/
 
 5、绝区零体力代码来源：<a href="https://github.com/kissnavel/genshin">genshin</a>，已修改适配本仓库。
 
-6、未定签到需配合<a href="https://github.com/kissnavel/genshin">genshin</a>使用。
+6、绑定设备、未定签到等需配合<a href="https://github.com/kissnavel/genshin">genshin</a>使用。
