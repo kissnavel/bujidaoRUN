@@ -4,6 +4,7 @@ import MysUser from '../../../genshin/model/mys/MysUser.js'
 import MysApi from '../../../genshin/model/mys/mysApi.js'
 import GsCfg from '../../../genshin/model/gsCfg.js'
 import common from '../../../../lib/common/common.js'
+import getDeviceFp from '../getDeviceFp.js'
 import Validate from './mysApi.js'
 import Cfg from '../Cfg.js'
 import _ from 'lodash'
@@ -444,9 +445,10 @@ export default class MysInfo {
     if (data?.headers) delete data.headers
     try {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
-      
+
       let challenge_game = (mysApi.isZzz || mysApi.game == 'zzz') ? '8' : (mysApi.isSr || mysApi.game == 'sr') ? '6' : '2'
-      let headers = { 'x-rpc-device_fp': await this.getFp(vali), 'x-rpc-challenge_game': challenge_game }
+      let deviceFp = await getDeviceFp.Fp(mysApi.uid, mysApi.cookie, mysApi.game)
+      let headers = { 'x-rpc-device_fp': deviceFp?.data?.device_fp, 'x-rpc-challenge_game': challenge_game }
       let app_key = (mysApi.isZzz || mysApi.game == 'zzz') ? 'game_record_zzz' : (mysApi.isSr || mysApi.game == 'sr') ? 'hkrpg_game_record' : ''
 
       res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers, app_key })
@@ -458,7 +460,7 @@ export default class MysInfo {
         let retry = 0
         await common.sleep(5000)
         res = await vali.getData("results", results)
-        while ((res?.status == 2) && retry < 5) {
+        while ((res?.status == 2) && retry < 10) {
           await common.sleep(5000)
           res = await vali.getData("results", results)
           retry++
@@ -489,20 +491,6 @@ export default class MysInfo {
       return { "data": null, "message": "", "retcode": 1034 }
     }
     return res
-  }
-  async getFp(mysApi) {
-    let game = mysApi.game
-    let key = `${game}_DEVICE_FP:${mysApi.uid}`
-    let deviceFp = await redis.get(key)
-    if (!deviceFp) {
-      deviceFp = await mysApi.getData('getFp', {}, 'all')
-      mysApi.game = game
-      deviceFp = deviceFp?.data?.device_fp
-      try {
-        if (deviceFp) await redis.set(key, deviceFp, { EX: 86400 * 1 })
-      } catch (error) { }
-    }
-    return deviceFp
   }
   /** 删除失效ck */
   async delCk() {
