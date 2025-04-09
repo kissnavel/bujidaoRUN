@@ -336,7 +336,7 @@ export default class BBsSign extends base {
             let retry = 0
             await common.sleep(5000)
             res = await vall.getData("results", results, 'all')
-            while ((res?.status == 2) && retry < 5) {
+            while ((res?.status == 2) && retry < 10) {
                 await common.sleep(5000)
                 res = await vall.getData("results", results, 'all')
                 retry++
