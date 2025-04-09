@@ -38,6 +38,7 @@ export class ji_myspanel extends plugin {
             }
         }
 
+        await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
         let device_fp = await MysInfo.get(e, 'getFp', {}, {}, true)
         if (device_fp?.retcode !== 0) return false
         let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
@@ -48,7 +49,6 @@ export class ji_myspanel extends plugin {
                 logger.mark('米游社查询失败')
                 return false
             }
-            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             await Myspanel.sr_mys(data, uid)
         } else {
             res = await MysInfo.get(e, 'character', { headers }, {}, true)
@@ -65,7 +65,6 @@ export class ji_myspanel extends plugin {
                 logger.mark('米游社查询失败')
                 return false
             }
-            await e.reply(`开始查询uid:${uid}的米游社面板数据，可能会需要一定时间~`, true)
             await Myspanel.gs_mys(data, uid)
         }
         //加载面板列表图
