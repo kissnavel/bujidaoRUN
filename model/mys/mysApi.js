@@ -12,7 +12,7 @@ export default class MysApi {
   constructor(uid, cookie, option = {}, game = 'gs', Server = '', Biz = '') {
     this.uid = uid
     this.cookie = cookie
-    this.game = game
+    this.game = option.game || game
     this.set = Cfg.getConfig('config')
     this.server = Server || this.getServer()
     this.biz = Biz
