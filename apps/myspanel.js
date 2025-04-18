@@ -24,6 +24,8 @@ export class ji_myspanel extends plugin {
     async mys(e) {
         let panel = Cfg.getConfig('config').myspanel
         if (!panel) return false
+        let User = await MysInfo.get(e, 'UserGame', {}, {}, true)
+        if (User?.retcode !== 0) return false
         let CD = Cfg.getConfig('config').myspanelCD
         let uid = e.user.getUid()
         if (!uid) return e.reply('找不到uid，请：#刷新ck 或者：#扫码登录', true)
