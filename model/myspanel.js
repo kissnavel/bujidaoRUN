@@ -309,7 +309,7 @@ export default class Myspanel {
             else if (v.level > 20) pro = 1
             else if (v.level > 0) pro = 0
             //光锥promote
-            if(v.equip){
+            if (v.equip) {
             if (v.equip.level > 70) gzpro = 6
             else if (v.equip.level > 60) gzpro = 5
             else if (v.equip.level > 50) gzpro = 4
@@ -351,23 +351,21 @@ export default class Myspanel {
                 mt = servant[1].level
             }
             for (let x in ava.talentCons) {
-                if (v.rank > 4 && ava.talentCons[x] == 5) {
-                    switch (x) {
-                        case 'a':
-                            a = a - 1
-                            break
-                        case 'e':
-                            e = e - 2
-                            break
-                        case 'q':
-                            q = q - 2
-                            break
-                        case 't':
-                            t = t - 2
-                            break
-                    }
+                if ((v.rank > 4 && ava.talentCons[x] == 5) || (v.rank > 2 && ava.talentCons[x] == 3)) {
                     if (servant.length !== 0) {
                         switch (x) {
+                            case 'a':
+                                a = a - 1
+                                break
+                            case 'e':
+                                e = e - 2
+                                break
+                            case 'q':
+                                q = q - 2
+                                break
+                            case 't':
+                                t = t - 2
+                                break
                             case 'me':
                                 me = me - 1
                                 break
@@ -375,30 +373,19 @@ export default class Myspanel {
                                 mt = mt - 1
                                 break
                         }
-                    }
-                }
-                if (v.rank > 2 && ava.talentCons[x] == 3) {
-                    switch (x) {
-                        case 'a':
-                            a = a - 1
-                            break
-                        case 'e':
-                            e = e - 2
-                            break
-                        case 'q':
-                            q = q - 2
-                            break
-                        case 't':
-                            t = t - 2
-                            break
-                    }
-                    if (servant.length !== 0) {
+                    } else {
                         switch (x) {
-                            case 'me':
-                                me = me - 1
+                            case 'a':
+                                a = a - 1
                                 break
-                            case 'mt':
-                                mt = mt - 1
+                            case 'e':
+                                e = e - 2
+                                break
+                            case 'q':
+                                q = q - 2
+                                break
+                            case 't':
+                                t = t - 2
                                 break
                         }
                     }
@@ -533,7 +520,7 @@ export default class Myspanel {
                             }
                         }
                         //由于米游社面板的副词条速度，全被向下取整了，所以遇到能被2整除的速度，采取+0.45速度，减少面板总体误差(5星遗器)
-                        if(at[0]==7&&at[1]==2&&p==0) {p=1.5}
+                        if (at[0]==7&&at[1]==2&&p==0) {p=1.5}
                         attrIds.push(`${at[0]},${v_.times},${p}`)
                     }
                     artis[yq.pos] = {
@@ -553,20 +540,18 @@ export default class Myspanel {
                 'level': v.level,
                 'promote': pro,
                 'cons': v.rank,
-                'talent': {
-                    ...((servant.length !== 0) ? {
-                        'a': a,
-                        'e': e,
-                        'q': q,
-                        't': t,
-                        'me': me,
-                        'mt': mt
-                    } : {
-                        'a': a,
-                        'e': e,
-                        'q': q,
-                        't': t
-                    })
+                'talent': servant.length !== 0 ? {
+                    'a': a,
+                    'e': e,
+                    'q': q,
+                    't': t,
+                    'me': me,
+                    'mt': mt
+                } : {
+                    'a': a,
+                    'e': e,
+                    'q': q,
+                    't': t
                 },
                 'trees': trees,
                 'weapon': v.equip ? {
