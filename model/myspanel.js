@@ -344,6 +344,12 @@ export default class Myspanel {
             let e = v.skills[1].level
             let q = v.skills[2].level
             let t = v.skills[3].level
+            let servant = v.servant_detail.servant_skills
+            let me, mt
+            if (servant.length !== 0) {
+                me = servant[0].level
+                mt = servant[1].level
+            }
             for (let x in ava.talentCons) {
                 if (v.rank > 4 && ava.talentCons[x] == 5) {
                     switch (x) {
@@ -360,6 +366,16 @@ export default class Myspanel {
                             t = t - 2
                             break
                     }
+                    if (servant.length !== 0) {
+                        switch (x) {
+                            case 'me':
+                                me = me - 1
+                                break
+                            case 'mt':
+                                mt = mt - 1
+                                break
+                        }
+                    }
                 }
                 if (v.rank > 2 && ava.talentCons[x] == 3) {
                     switch (x) {
@@ -375,6 +391,16 @@ export default class Myspanel {
                         case 't':
                             t = t - 2
                             break
+                    }
+                    if (servant.length !== 0) {
+                        switch (x) {
+                            case 'me':
+                                me = me - 1
+                                break
+                            case 'mt':
+                                mt = mt - 1
+                                break
+                        }
                     }
                 }
             }
@@ -528,10 +554,19 @@ export default class Myspanel {
                 'promote': pro,
                 'cons': v.rank,
                 'talent': {
-                    'a': a,
-                    'e': e,
-                    'q': q,
-                    't': t
+                    ...((servant.length !== 0) ? {
+                        'a': a,
+                        'e': e,
+                        'q': q,
+                        't': t,
+                        'me': me,
+                        'mt': mt
+                    } : {
+                        'a': a,
+                        'e': e,
+                        'q': q,
+                        't': t
+                    })
                 },
                 'trees': trees,
                 'weapon': v.equip ? {
