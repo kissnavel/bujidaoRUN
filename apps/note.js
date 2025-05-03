@@ -44,8 +44,8 @@ export class ji_note extends plugin {
     }
 
     async note() {
-        let Note = Cfg.getConfig('config').Note
-        if (!Note) return false
+        let ji_note = Cfg.getConfig('config').Note
+        if (!ji_note) return false
         await Note.get(this.e)
     }
 
