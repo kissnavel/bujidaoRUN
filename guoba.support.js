@@ -95,6 +95,18 @@ export function supportGuoba() {
           },
         },
         {
+          field: 'config.abyss',
+          label: '星铁深渊',
+          bottomHelpMessage: '是否开启星铁深渊',
+          component: 'Switch',
+        },
+        {
+          field: 'config.role',
+          label: '星铁角色',
+          bottomHelpMessage: '是否开启星铁角色',
+          component: 'Switch',
+        },
+        {
           component: 'Divider',
           label: 'api设置'
         },
@@ -248,6 +260,12 @@ export function supportGuoba() {
         {
           component: 'Divider',
           label: '体力查询·推送设置'
+        },
+        {
+          field: 'config.Note',
+          label: '体力查询',
+          bottomHelpMessage: '是否开启体力查询',
+          component: 'Switch',
         },
         {
           field: 'config.NoteTask',

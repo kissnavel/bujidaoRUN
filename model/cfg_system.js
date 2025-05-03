@@ -88,11 +88,17 @@ export const cfgSchema = {
   Note: {
     title: '体力查询·推送设置',
     cfg: {
+      Note: {
+        title: '体力查询',
+        key: '体力查询',
+        def: false,
+        desc: '是否开启体力查询'
+      },
       NoteTask: {
         title: '体力推送设置',
         key: '体力推送',
         def: false,
-        desc: '体力推送仅使用小组件查询'
+        desc: '是否开启体力推送'
       },
       TaskTime: {
         title: '体力推送定时任务',
@@ -192,6 +198,16 @@ export const cfgSchema = {
         key: '更新面板CD',
         type: 'num',
         def: 120
+      },
+      abyss: {
+        title: '星铁深渊',
+        key: '深渊',
+        def: false
+      },
+      myspanel: {
+        title: '星铁角色',
+        key: '角色',
+        def: false
       }
     }
   }

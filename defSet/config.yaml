@@ -29,6 +29,8 @@ ddos: false
 #每次签到sk数(不建议太高嗷，小心429捏！)
 ddostime: 10
 
+#是否开启体力查询
+Note: false
 #是否开启体力推送
 NoteTask: false
 #体力推送查询间隔，默认30分钟
@@ -69,3 +71,9 @@ myspanelCD: 120
 
 #是否开启绝区零体力
 Notezzz: false
+
+#是否开启深渊
+abyss: false
+
+#是否开启角色
+role: false

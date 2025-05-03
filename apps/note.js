@@ -44,10 +44,14 @@ export class ji_note extends plugin {
     }
 
     async note() {
+        let Note = Cfg.getConfig('config').Note
+        if (!Note) return false
         await Note.get(this.e)
     }
 
     async noteResin(e) {
+        let Note = Cfg.getConfig('config').Note
+        if (!Note) return false
         if (!e.isGroup) return
         if (!this.set.NoteTask) return e.reply(`主人未开启体力推送`)
 
@@ -65,6 +69,8 @@ export class ji_note extends plugin {
     }
 
     async noteconfig(e) {
+        let Note = Cfg.getConfig('config').Note
+        if (!Note) return false
         if (!e.isGroup) return
         if (!this.set.NoteTask) return e.reply(`主人未开启体力推送`)
 
@@ -139,6 +145,8 @@ export class ji_note extends plugin {
     }
 
     async copy(e) {
+        let Note = Cfg.getConfig('config').Note
+        if (!Note) return false
         let note = Cfg.getConfig('note')
         let Notes = Cfg.getConfig('defnote')
 

@@ -31,6 +31,8 @@ export class ji_role extends plugin {
 
   /** *角色 */
   async roleIndex() {
+    let role = Cfg.getConfig('config').role
+    if (!role) return false
     this.reply('角色数据获取中...')
     let data = await new Abyss(this.e).getIndex()
     if (!data) return false
@@ -41,6 +43,8 @@ export class ji_role extends plugin {
 
   /** 练度统计 */
   async roleList() {
+    let role = Cfg.getConfig('config').role
+    if (!role) return false
     let data = await new Abyss(this.e).roleList(this.e)
     if (!data) return false
 
@@ -49,6 +53,8 @@ export class ji_role extends plugin {
   }
 
   async uprarity() {
+    let role = Cfg.getConfig('config').role
+    if (!role) return false
     await new Abyss(this.e).uprarity(this.e)
   }
 }

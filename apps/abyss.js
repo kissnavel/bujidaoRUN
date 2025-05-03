@@ -26,6 +26,8 @@ export class ji_abyss extends plugin {
 
   /** 忘却之庭 */
   async abyss() {
+    let abyss = Cfg.getConfig('config').abyss
+    if (!abyss) return false
     this.reply('忘却之庭数据获取中...')
     let data = await new Abyss(this.e).getAbyss()
     if (!data) return false
@@ -36,6 +38,8 @@ export class ji_abyss extends plugin {
 
   /** 模拟宇宙*/
   async rogue() {
+    let abyss = Cfg.getConfig('config').abyss
+    if (!abyss) return false
     this.reply('模拟宇宙数据获取中...')
     let data = await new Abyss(this.e).getRogue()
     if (!data) return false
