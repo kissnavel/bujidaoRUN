@@ -93,7 +93,7 @@ export default class MysInfo {
    */
   static async getUid(e, matchMsgUid = true) {
     let user = await NoteUser.create(e)
-    const game = e?.game || (e.isZzz ? 'zzz' : e?.isSr ? 'sr' : 'gs')
+    const game = e?.game || (e?.isSr ? 'sr' : 'gs')
     if (e.uid && matchMsgUid) {
       /** 没有绑定的自动绑定 */
       return user.autoRegUid(e.uid, game)
@@ -188,10 +188,10 @@ export default class MysInfo {
 
     let user = e.user?.getMysUser()
     option.device = user.device
-    option.game = e?.game || (e.isZzz ? 'zzz' : e?.isSr ? 'sr' : 'gs')
+    option.game = e?.game || (e?.isSr ? 'sr' : 'gs')
     let mysApi
     if (ji)
-      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e.isZzz ? 'zzz' : e.isSr ? 'sr' : 'gs')
+      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option)
     else
       mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option)
 
@@ -457,10 +457,10 @@ export default class MysInfo {
     try {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
 
-      let challenge_game = (mysApi.isZzz || mysApi.game == 'zzz') ? '8' : (mysApi.isSr || mysApi.game == 'sr') ? '6' : '2'
+      let challenge_game = mysApi.game == 'zzz' ? '8' : mysApi.game == 'sr' ? '6' : '2'
       let deviceFp = await getDeviceFp.Fp(mysApi.uid, mysApi.cookie, mysApi.game)
       let headers = { 'x-rpc-device_fp': deviceFp?.data?.device_fp, 'x-rpc-challenge_game': challenge_game }
-      let app_key = (mysApi.isZzz || mysApi.game == 'zzz') ? 'game_record_zzz' : (mysApi.isSr || mysApi.game == 'sr') ? 'hkrpg_game_record' : ''
+      let app_key = mysApi.game == 'zzz' ? 'game_record_zzz' : mysApi.game == 'sr' ? 'hkrpg_game_record' : ''
 
       res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers, app_key })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }

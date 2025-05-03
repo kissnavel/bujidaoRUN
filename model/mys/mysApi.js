@@ -9,7 +9,7 @@ import md5 from 'md5'
 let HttpsProxyAgent = ''
 const _bbs = "WGtruoQrwczmsjLOPXzJLnaAYycsLavx"
 export default class MysApi {
-  constructor(uid, cookie, option = {}, game = 'gs', Server = '', Biz = '') {
+  constructor(uid, cookie, option = { game: '', device: '' }, game = 'gs', Server = '', Biz = '') {
     this.uid = uid
     this.cookie = cookie
     this.game = option.game || game
@@ -40,7 +40,7 @@ export default class MysApi {
   }
 
   get device() {
-    if (!this._device) this._device = `${md5(this.uid).substring(0, 5)}`
+    if (!this._device) this._device = this.option.device || `${md5(this.uid).substring(0, 5)}`
     return this._device
   }
 
