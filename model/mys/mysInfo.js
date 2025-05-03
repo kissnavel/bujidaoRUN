@@ -186,14 +186,15 @@ export default class MysInfo {
     if (!mysInfo.uid || !mysInfo.ckInfo.ck) return false
     e.uid = mysInfo.uid
 
-    let user = e.user?.getMysUser()
-    option.device = user.device
-    option.game = e?.game || (e?.isSr ? 'sr' : 'gs')
     let mysApi
-    if (ji)
-      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option)
-    else
+    if (ji) {
+      mysApi = new Validate(mysInfo.uid, mysInfo.ckInfo.ck, option, e?.game)
+    } else {
+      let user = e.user?.getMysUser()
+      option.device = user.device
+      option.game = e?.game || (e?.isSr ? 'sr' : 'gs')
       mysApi = new MysApi(mysInfo.uid, mysInfo.ckInfo.ck, option)
+    }
 
     let res
     if (_.isObject(api)) {
@@ -420,9 +421,8 @@ export default class MysInfo {
         break
       case 1034:
       case 10035:
-        let retcode = res.retcode
         let retry = 0
-        res = await this.geetest(type, mysApi, data, retcode)
+        res = await this.geetest(type, mysApi, data, res.retcode)
         while ((res?.retcode == 1034 || res?.retcode == 10035) && retry < Cfg.getConfig('config').retrytime) {
           res = await this.geetest(type, mysApi, data, res?.retcode)
           retry++
