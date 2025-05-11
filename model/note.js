@@ -181,7 +181,7 @@ export default class Note extends base {
     return { Data, User: resUser?.data?.list[0], Sign: signInfo?.data || {} }
   }
 
-  noteZzz(res, uid) {
+  async noteZzz(res, uid) {
     let { data } = res
     const ImgData = {}
 
@@ -191,7 +191,8 @@ export default class Note extends base {
       let maxDate = new Date(resinMaxTime)
 
       resinMaxTime = moment(maxDate).format('HH:mm')
-      ImgData.resinMaxTimeMb2 = this.dateTime_(maxDate) + moment(maxDate).format('hh:mm')
+      let timeDay = await this.dateTime_(maxDate)
+      ImgData.resinMaxTimeMb2 = timeDay + moment(maxDate).format('hh:mm')
 
       if (moment(maxDate).format('DD') !== nowDay) {
         ImgData.resinMaxTimeMb2Day = '明天'
@@ -282,9 +283,7 @@ export default class Note extends base {
 
     /** 树脂 */
     let nowDay = moment(new Date()).format('DD')
-    let resinMaxTime
-    let resinMaxTimeMb2
-    let resinMaxTimeMb2Day
+    let resinMaxTime, resinMaxTimeMb2, resinMaxTimeMb2Day
     if (data.resin_recovery_time > 0) {
       resinMaxTime = new Date().getTime() + data.resin_recovery_time * 1000
       let maxDate = new Date(resinMaxTime)
@@ -377,8 +376,7 @@ export default class Note extends base {
       ? '凌晨'
       : moment(time).format('HH') < 12
         ? '上午'
-        : moment(time).format(
-          'HH') < 17.5
+        : moment(time).format('HH') < 17.5
           ? '下午'
           : moment(time).format('HH') < 19.5
             ? '傍晚'
