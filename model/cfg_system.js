@@ -125,17 +125,18 @@ export const cfgSchema = {
         type: 'num',
         def: 260
       },
+      zzz_Resin: {
+        title: '绝区零推送默认阈值',
+        key: '绝区零推送',
+        type: 'num',
+        def: 200
+      },
       forward: {
         title: '合并转发',
         key: '合并转发',
         type: 'num',
         def: 2,
         desc: '查询体力时发送的文字消息+图片大于几条时合并转发'
-      },
-      Notezzz: {
-        title: '绝区零体力',
-        key: '绝区零体力',
-        def: false
       }
     }
   },

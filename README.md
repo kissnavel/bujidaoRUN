@@ -9,6 +9,4 @@ git clone https://github.com/kissnavel/bujidaoRUN.git ./plugins/bujidao/
 
 4、原神、星铁米游社面板代码来源：<a href="https://github.com/thisee/xiaokeli">xiaokeli</a>，已修改适配本仓库。
 
-5、绝区零体力代码来源：<a href="https://github.com/kissnavel/genshin">genshin</a>，已修改适配本仓库。
-
-6、绑定设备、未定签到等需配合<a href="https://github.com/kissnavel/genshin">genshin</a>使用。
+5、绑定设备、未定签到等需配合<a href="https://github.com/kissnavel/genshin">genshin</a>使用。

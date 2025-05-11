@@ -17,17 +17,12 @@ export class ji_note extends plugin {
                     fnc: 'note',
                 },
                 {
-                    reg: '^#?(原神|星铁)?(开启|关闭)体力推送(\\s*(1[0-9]|[1-9])?[0-9]{8})?$',
+                    reg: '^#?(原神|星铁|绝区零)?(开启|关闭)体力推送(\\s*(1[0-9]|[1-9])?[0-9]{8})?$',
                     fnc: 'noteconfig'
                 },
                 {
-                    reg: '^#?(原神|星铁)?体力推送(阈值)?\\s*[1-9][0-9]{0,2}$',
+                    reg: '^#?(原神|星铁|绝区零)?体力推送(阈值)?\\s*[1-9][0-9]{0,2}$',
                     fnc: 'noteResin'
-                },
-                {
-                    reg: '^#?体力推送格式转换$',//对8.30前的体力推送格式适配
-                    permission: 'master',
-                    fnc: 'copy'
                 }
             ]
         })
@@ -57,15 +52,15 @@ export class ji_note extends plugin {
 
         let Notes = Cfg.getConfig('defnote')
 
-        let Resin = Number(e.msg.replace(/#?(原神|星铁)?体力推送(阈值)?\s*/i, '').trim())
-        let max = e.msg.includes('星铁') ? 150 : 100
-        let g = e.msg.includes('星铁') ? 'sr_Resin' : 'gs_Resin'
-        if (Resin < max) return e.reply(`\n${e.msg.includes('星铁') ? '星铁' : '原神'}体力推送阈值不可小于${e.msg.includes('星铁') ? '【150】' : '【100】'}`, false, { at: true })
+        let Resin = Number(e.msg.replace(/#?(原神|星铁|绝区零)?体力推送(阈值)?\s*/i, '').trim())
+        let max = e.msg.includes('绝区零') ? 120 : e.msg.includes('星铁') ? 150 : 100
+        let g = e.msg.includes('绝区零') ? 'zzz_Resin' :  e.msg.includes('星铁') ? 'sr_Resin' : 'gs_Resin'
+        if (Resin < max) return e.reply(`\n${e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('星铁') ? '星铁' : '原神'}体力推送阈值不可小于${e.msg.includes('绝区零') ? '【120】' : e.msg.includes('星铁') ? '【150】' : '【100】'}`, false, { at: true })
         if (!Notes?.[e.self_id]?.[e.user_id]?.[e.group_id]) return e.reply(`\n你还没有在本群开启体力推送哦~`, false, { at: true })
 
         Notes[e.self_id][e.user_id][e.group_id][g] = Resin
         Cfg.setConfig('defnote', Notes)
-        return await e.reply(`\n${e.msg.includes('星铁') ? '星铁' : '原神'}体力推送阈值【${Resin}】`, false, { at: true })
+        return await e.reply(`\n${e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('星铁') ? '星铁' : '原神'}体力推送阈值【${Resin}】`, false, { at: true })
     }
 
     async noteconfig(e) {
@@ -74,9 +69,9 @@ export class ji_note extends plugin {
         if (!e.isGroup) return
         if (!this.set.NoteTask) return e.reply(`主人未开启体力推送`)
 
-        let uid = Number(e.msg.replace(/#?(原神|星铁)?(开启|关闭)体力推送\s*/i, '').trim())
-        let g = e.msg.includes('星铁') ? 'sr' : 'gs'
-        let game = e.msg.includes('星铁') ? '星铁' : '原神'
+        let uid = Number(e.msg.replace(/#?(原神|星铁|绝区零)?(开启|关闭)体力推送\s*/i, '').trim())
+        let g = e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('星铁') ? 'sr' : 'gs'
+        let game = e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('星铁') ? '星铁' : '原神'
 
         let { cks, uids } = await Cfg.getcks(false, e.user_id, true)
         let sks = await Cfg.getsks(false, e.user_id)
@@ -105,17 +100,17 @@ export class ji_note extends plugin {
         try {
             if (e.msg.includes('开启')) {
                 if (_.isEmpty(Notes)) {
-                    Notes = { [e.self_id]: { [e.user_id]: { [e.group_id]: { gs: g === 'gs' ? [uid] : [], sr: g === 'sr' ? [uid] : [], gs_Resin: this.set.gs_Resin, sr_Resin: this.set.sr_Resin } } } }
+                    Notes = { [e.self_id]: { [e.user_id]: { [e.group_id]: { gs: g === 'gs' ? [uid] : [], sr: g === 'sr' ? [uid] : [], zzz: g === 'zzz' ? [uid] : [], gs_Resin: this.set.gs_Resin, sr_Resin: this.set.sr_Resin, zzz_Resin: this.set.zzz_Resin } } } }
                 } else {
                     if (!Notes[e.self_id])
                         Notes[e.self_id] = {}
                     Notes[e.self_id][e.user_id] = Notes[e.self_id][e.user_id] || {}
 
                     if (!Notes[e.self_id][e.user_id][e.group_id]) {
-                        Notes[e.self_id][e.user_id][e.group_id] = { gs: g === 'gs' ? [uid] : [], sr: g === 'sr' ? [uid] : [], gs_Resin: this.set.gs_Resin, sr_Resin: this.set.sr_Resin }
+                        Notes[e.self_id][e.user_id][e.group_id] = { gs: g === 'gs' ? [uid] : [], sr: g === 'sr' ? [uid] : [], zzz: g === 'zzz' ? [uid] : [], gs_Resin: this.set.gs_Resin, sr_Resin: this.set.sr_Resin, zzz_Resin: this.set.zzz_Resin }
                     } else {
                         if (Notes[e.self_id][e.user_id][e.group_id][g].includes(uid))
-                            return e.reply(`\n${game}UID:${uid}本群体力推送已开启\n当体力大于${g === 'gs' ? '【160】' : '【260】'}时将提醒`, false, { at: true })
+                            return e.reply(`\n${game}UID:${uid}本群体力推送已开启\n当体力大于${g === 'gs' ? '【160】' : g === 'sr' ? '【260】' : '【200】'}时将提醒`, false, { at: true })
                         Notes[e.self_id][e.user_id][e.group_id][g].push(uid)
                     }
                 }
@@ -142,36 +137,5 @@ export class ji_note extends plugin {
         } catch (error) {
             logger.error(error)
         }
-    }
-
-    async copy(e) {
-        let Note = Cfg.getConfig('config').Note
-        if (!Note) return false
-        let note = Cfg.getConfig('note')
-        let Notes = Cfg.getConfig('defnote')
-
-        if (_.isEmpty(note)) return e.reply('note.yaml为空无需转换')
-        for (let bot_id in note) {
-            if (_.isEmpty(Notes)) Notes = {}
-            if (!Notes[bot_id]) Notes[bot_id] = {}
-            for (let group_id in note[bot_id])
-                for (let user_id in note[bot_id][group_id]) {
-                    let User = note[bot_id][group_id][user_id]
-                    if (!Notes[bot_id][user_id]) Notes[bot_id][user_id] = {}
-                    if (!Notes[bot_id][user_id][group_id]) {
-                        Notes[bot_id][user_id][group_id] = User
-                        continue
-                    }
-                    for (let g of ['gs', 'sr']) {
-                        for (let uid of User[g])
-                            if (!Notes[bot_id][user_id][group_id][g].includes(Number(uid)))
-                                Notes[bot_id][user_id][group_id][g].push(Number(uid))
-
-                        Notes[bot_id][user_id][group_id][`${g}_Resin`] = User[`${g}_Resin`]
-                    }
-                }
-        }
-        Cfg.setConfig('defnote', Notes)
-        return e.reply('转换完成')
     }
 }

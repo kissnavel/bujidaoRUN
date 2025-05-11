@@ -1,6 +1,4 @@
-import { Common } from '../../miao-plugin/components/index.js'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
-import Notezzz from '../../genshin/model/noteZzz.js'
 import common from '../../../lib/common/common.js'
 import MysInfo from './mys/mysInfo.js'
 import MysApi from './mys/mysApi.js'
@@ -40,20 +38,9 @@ export default class Note extends base {
     })
 
     let promises = []
-    for (let g of ['gs', 'sr'])
+    for (let g of ['gs', 'sr', 'zzz'])
       if (!_.isEmpty(cks[g]))
         promises.push(note.ddos(cks[g], g))
-
-    let config = Cfg.getConfig('config')
-    let banuid = Cfg.getConfig('banuid')
-    let uid = e.user?.getUid('zzz')
-    if (config.Notezzz && !banuid.zzz?.includes(Number(uid))) {
-      e.game = "zzz"
-      e.msg = "#绝区零体力"
-      let data = await Notezzz.get(e)
-
-      if (data) promises.push(await Common.render('genshin', `ZZZero/html/dailyNote/note`, data, { e }))
-    }
 
     await Promise.all(promises)
 
@@ -91,14 +78,16 @@ export default class Note extends base {
             user_id: user_id,
             qq: user_id,
             msg: "体力",
-            isSr: false
+            isSr: false,
+            isZzz: false,
           }
           let sendMsg = [segment.at(user_id), this.set.TaskMsg]
           let length = sendMsg.length
           this.e.reply = (msg) => { sendMsg.push(msg) }
 
-          for (let g of ['gs', 'sr']) {
+          for (let g of ['gs', 'sr', 'zzz']) {
             this.e.isSr = g == 'sr' ?? true
+            this.e.isZzz = g == 'zzz' ?? true
             for (let uid of Group[g]) {
               let data = {}, Resin = Group[`${g}_Resin`]
               let sendkey = `${group_id}:${bot_id}:${g}_NoteTask:${uid}`
@@ -119,11 +108,11 @@ export default class Note extends base {
               let { Data, User, Sign } = await this.noteData(ck, g)
               if (Data?.retcode !== 0 || _.isEmpty(User) || _.isEmpty(Sign)) continue
 
-              Resins[`${g}_${uid}`] = Data?.data[`current_${this.e.isSr ? 'stamina' : 'resin'}`]
+              Resins[`${g}_${uid}`] = this.e.isZzz ? Data?.data.energy.progress.current : Data?.data[`current_${this.e.isSr ? 'stamina' : 'resin'}`]
               if (Number(Resins[`${g}_${uid}`]) >= Number(Resin)) {
                 logger.mark(`[体力推送]Bot:${bot_id};Group:${group_id};QQ:${user_id};${`${g}_UID`}:${uid}`)
 
-                data = this.e.isSr ? await this.noteSr(Data, uid) : await this.notegs(Data, uid)
+                data = this.e.isZzz ? await this.noteZzz(Data, uid) : this.e.isSr ? await this.noteSr(Data, uid) : await this.notegs(Data, uid)
                 data = {
                   quality: 80,
                   ...this.screenData,
@@ -131,7 +120,7 @@ export default class Note extends base {
                   ...User,
                   ...Sign
                 }
-                imgs[`${g}_${uid}`] = await puppeteer.screenshot(this.e.isSr ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
+                imgs[`${g}_${uid}`] = await puppeteer.screenshot(`${data.gstempFile}dailyNote`, data)
               }
 
               if (imgs[`${g}_${uid}`]) {
@@ -154,16 +143,10 @@ export default class Note extends base {
     let res = await this.noteData(ck, game)
     if (res?.Data?.retcode !== 0 || _.isEmpty(res?.User) || _.isEmpty(res?.Sign)) return false
 
-    let data = game == 'sr' ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
+    let data = game == 'zzz' ? await this.noteZzz(res.Data, ck.uid) : game == 'sr' ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
     this.e.isSr = game == 'sr' ? true : false
+    this.e.isZzz = game == 'zzz' ? true : false
     let screenData = this.screenData
-
-    screenData.tplFile = `${this._path}/plugins/bujidao/resources/genshin/html/dailyNote/dailyNote.html`
-    screenData.pluResPath = `${this._path}/plugins/bujidao/resources/genshin/`
-    if (this.e.isSr) {
-      screenData.tplFile = `${this._path}/plugins/bujidao/resources/StarRail/html/dailyNote/dailyNote.html`
-      screenData.pluResPath = `${this._path}/plugins/bujidao/resources/StarRail/`
-    }
 
     data = {
       quality: 80,
@@ -172,7 +155,7 @@ export default class Note extends base {
       ...res.User,
       ...res.Sign
     }
-    let img = await puppeteer.screenshot(this.e.isSr ? `${data.srtempFile}dailyNote` : `${data.gstempFile}dailyNote`, data)
+    let img = await puppeteer.screenshot(`${data.gstempFile}dailyNote`, data)
     if (img) return await this.e.reply(img)
   }
 
@@ -197,6 +180,39 @@ export default class Note extends base {
     if (signInfo?.retcode !== 0) return false
 
     return { Data, User: resUser?.data?.list[0], Sign: signInfo?.data || {} }
+  }
+
+  noteZzz(res, uid) {
+    let { data } = res
+    const ImgData = {}
+
+    const nowDay = moment(new Date()).format('DD')
+    if (data.energy.restore > 0) {
+      let resinMaxTime = new Date().getTime() + data.energy.restore * 1000
+      let maxDate = new Date(resinMaxTime)
+
+      resinMaxTime = moment(maxDate).format('HH:mm')
+      ImgData.resinMaxTimeMb2 = this.dateTime_(maxDate) + moment(maxDate).format('hh:mm')
+
+      if (moment(maxDate).format('DD') !== nowDay) {
+        ImgData.resinMaxTimeMb2Day = '明天'
+        resinMaxTime = `明天 ${resinMaxTime}`
+      } else {
+        ImgData.resinMaxTimeMb2Day = '今天'
+        resinMaxTime = ` ${resinMaxTime}`
+      }
+      ImgData.resinMaxTime = resinMaxTime
+    }
+    ImgData.sale_state = /Doing/.test(data.vhs_sale.sale_state) ? '正在营业' : '未营业'
+    ImgData.card = /Done/.test(data.card_sign) ? '已完成' : '未完成'
+
+    return {
+      uid: uid,
+      saveId: uid,
+      dayMb2: moment(new Date()).format('yyyy年MM月DD日 HH:mm') + ' ' + this.week[new Date().getDay()],
+      ...ImgData,
+      ...data
+    }
   }
 
   noteSr(res, uid) {

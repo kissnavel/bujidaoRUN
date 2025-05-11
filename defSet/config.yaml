@@ -40,6 +40,7 @@ sendCD: 12
 #默认推送阈值
 gs_Resin: 160
 sr_Resin: 260
+zzz_Resin: 200
 #合并转发
 forward: 2
 #推送文案
@@ -68,9 +69,6 @@ Autodelsk: false
 myspanel: false
 #米游社更新面板CD，单位秒，建议不低于120秒
 myspanelCD: 120
-
-#是否开启绝区零体力
-Notezzz: false
 
 #是否开启深渊
 abyss: false

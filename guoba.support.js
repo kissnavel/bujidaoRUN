@@ -316,12 +316,23 @@ export function supportGuoba() {
         {
           field: 'config.sr_Resin',
           label: '星铁默认阈值',
-          bottomHelpMessage: '星铁体力推送初始默认阈值，开启推送后变为每人单独配置',
+          bottomHelpMessage: '星铁开拓力推送初始默认阈值，开启推送后变为每人单独配置',
           component: 'InputNumber',
           required: true,
           componentProps: {
             min: 150,
             placeholder: '请输入阈值，最低150',
+          },
+        },
+        {
+          field: 'config.zzz_Resin',
+          label: '绝区零默认阈值',
+          bottomHelpMessage: '绝区零电量推送初始默认阈值，开启推送后变为每人单独配置',
+          component: 'InputNumber',
+          required: true,
+          componentProps: {
+            min: 120,
+            placeholder: '请输入阈值，最低120',
           },
         },
         {
@@ -334,12 +345,6 @@ export function supportGuoba() {
             min: 2,
             placeholder: '请输入数字',
           },
-        },
-        {
-          field: 'config.Notezzz',
-          label: '绝区零体力',
-          bottomHelpMessage: '是否开启绝区零体力',
-          component: 'Switch',
         },
         {
           component: 'Divider',

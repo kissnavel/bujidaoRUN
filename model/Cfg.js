@@ -111,7 +111,7 @@ class Cfg {
     let config = this.getConfig('config')
     this.white = this.getConfig('white')
 
-    this.Game = note ? ['gs', 'sr'] : config.game
+    this.Game = note ? ['gs', 'sr', 'zzz'] : config.game
     let cks = _.fromPairs(this.Game.map((game) => [game, {}]))
     let uids = _.fromPairs(this.Game.map((game) => [game, {}]))
 

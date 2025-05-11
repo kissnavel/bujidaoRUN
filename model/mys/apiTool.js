@@ -362,6 +362,10 @@ export default class apiTool {
       },
       zzz: {
         ...(['prod_gf_cn'].includes(this.server) ? {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=nap_cn&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host_nap}event/luna/zzz/sign`,// 国服绝区零签到
             body: { act_id: 'e202406242138391', region: this.server, uid: this.uid, lang: 'zh-cn' },
@@ -376,8 +380,25 @@ export default class apiTool {
             url: `${host_nap}event/luna/zzz/home`,
             query: 'lang=zh-cn&act_id=e202406242138391',
             types: 'sign'
+          },
+          getFp: {
+            url: `${hostPublicData}device-fp/api/getFp`,
+            body: {
+              app_name: 'bbs_cn',
+              bbs_device_id: `${this.uuid}`,
+              device_fp: '38d7faa51d2b6',
+              device_id: '35315696b7071100',
+              ext_fields: `{"proxyStatus":1,"isRoot":0,"romCapacity":"512","deviceName":"${modelName}","productName":"${productName}","romRemain":"456","hostname":"BuildHost","screenSize":"1096x2434","isTablet":0,"aaid":"${this.uuid}","model":"${modelName}","brand":"${deviceBrand}","hardware":"qcom","deviceType":"${deviceType}","devId":"REL","serialNumber":"unknown","sdCapacity":107433,"buildTime":"1633631032000","buildUser":"BuildUser","simState":1,"ramRemain":"96757","appUpdateTimeDiff":1722171241616,"deviceInfo":"${deviceInfo}","vaid":"${this.uuid}","buildType":"user","sdkVersion":"30","ui_mode":"UI_MODE_TYPE_NORMAL","isMockLocation":0,"cpuType":"arm64-v8a","isAirMode":0,"ringMode":2,"chargeStatus":1,"manufacturer":"${deviceBrand}","emulatorStatus":0,"appMemory":"512","osVersion":"${osVersion}","vendor":"unknown","accelerometer":"-0.084346995x8.73799x4.6301117","sdRemain":96600,"buildTags":"release-keys","packageName":"com.mihoyo.hyperion","networkType":"WiFi","oaid":"${oaid}","debugStatus":1,"ramCapacity":"107433","magnetometer":"-13.9125x-17.8875x-5.4750004","display":"${deviceDisplay}","appInstallTimeDiff":1717065300325,"packageVersion":"2.20.2","gyroscope":"0.017714571x-4.5813544E-4x0.0015271181","batteryStatus":77,"hasKeyboard":0,"board":"${board}"}`,
+              platform: '2',
+              seed_id: `${this.uuid}`,
+              seed_time: new Date().getTime() + ''
+            }
           }
         } : {
+          UserGame: {
+            url: `${host}binding/api/getUserGameRolesByCookie`,
+            query: `game_biz=nap_global&region=${this.server}&game_uid=${this.uid}`
+          },
           sign: {
             url: `${host_nap}event/luna/zzz/os/sign`,// 国际服绝区零签到
             body: { act_id: 'e202406031448091', lang: 'zh-cn' },
@@ -392,8 +413,47 @@ export default class apiTool {
             url: `${host_nap}event/luna/zzz/os/home`,
             query: 'lang=zh-cn&act_id=e202406031448091',
             types: 'sign'
+          },
+          getFp: {
+            url: `${hostPublicData}device-fp/api/getFp`,
+            body: {
+              app_name: 'bbs_oversea',
+              device_fp: '38d7f2352506c',
+              device_id: '35315696b7071100',
+              ext_fields: `{"proxyStatus":1,"isRoot":0,"romCapacity":"512","deviceName":"${modelName}","productName":"${productName}","romRemain":"474","hostname":"BuildHost","screenSize":"1096x2434","isTablet":0,"model":"${modelName}","brand":"${deviceBrand}","hardware":"qcom","deviceType":"${deviceType}","devId":"REL","serialNumber":"unknown","sdCapacity":107433,"buildTime":"1633631032000","buildUser":"BuildUser","simState":1,"ramRemain":"96715","appUpdateTimeDiff":1722171191009,"deviceInfo":"${deviceInfo}","buildType":"user","sdkVersion":"30","ui_mode":"UI_MODE_TYPE_NORMAL","isMockLocation":0,"cpuType":"arm64-v8a","isAirMode":0,"ringMode":2,"app_set_id":"${this.uuid}","chargeStatus":1,"manufacturer":"${deviceBrand}","emulatorStatus":0,"appMemory":"512","adid":"${this.uuid}","osVersion":"${osVersion}","vendor":"unknown","accelerometer":"-0.22372891x-1.5332011x9.802497","sdRemain":96571,"buildTags":"release-keys","packageName":"com.mihoyo.hoyolab","networkType":"WiFi","debugStatus":1,"ramCapacity":"107433","magnetometer":"3.73125x-10.668751x3.7687502","display":"${deviceDisplay}","appInstallTimeDiff":1716489549794,"packageVersion":"2.20.2","gyroscope":"0.18386503x-0.006413896x-0.008857286","batteryStatus":77,"hasKeyboard":0,"board":"${board}"}`,
+              hoyolab_device_id: `${this.uuid}`,
+              platform: '2',
+              seed_id: `${this.uuid}`,
+              seed_time: new Date().getTime() + ''
+            }
           }
-        })
+        }),
+        dailyNote: {
+          url: `${hostRecord}event/game_record_zzz/api/zzz/note`,
+          query: `role_id=${this.uid}&server=${this.server}`
+        },
+        deviceLogin: {
+          url: `${Bbs_api}apihub/api/deviceLogin`,
+          body: {
+            app_version: '2.73.1',
+            device_id: data.deviceId,
+            device_name: `${deviceBrand}${modelName}`,
+            os_version: '33',
+            platform: 'Android',
+            registration_id: this.generateSeed(19)
+          }
+        },
+        saveDevice: {
+          url: `${Bbs_api}apihub/api/saveDevice`,
+          body: {
+            app_version: '2.73.1',
+            device_id: data.deviceId,
+            device_name: `${deviceBrand}${modelName}`,
+            os_version: '33',
+            platform: 'Android',
+            registration_id: this.generateSeed(19)
+          }
+        }
       },
       bh3: {
         bh3_cn: {
@@ -494,6 +554,11 @@ export default class apiTool {
           }
         })
       }
+    }
+
+    if (this.game == 'zzz' && /_us|_eu|_jp|_sg/.test(this.server)) {
+      urlMap.zzz.dailyNote.url = 'https://sg-act-nap-api.hoyolab.com/event/game_record_zzz/api/zzz/note'
+      urlMap.zzz.dailyNote.query = `role_id=${this.uid}&server=${this.server}`
     }
     return urlMap[this.game]
   }

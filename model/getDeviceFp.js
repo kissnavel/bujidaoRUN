@@ -43,7 +43,7 @@ export default class getDeviceFp {
       await redis.set(`genshin:device_fp:${ltuid}:fp`, deviceFp, {
         EX: 86400 * 7
       })
-      if (!/^(18|[6-9])[0-9]{8}/i.test(uid)) {
+      if (!/^(1[0-9]|[6-9])[0-9]{8}/i.test(uid)) {
         data['deviceFp'] = deviceFp
         const deviceLogin = mysapi.getUrl('deviceLogin', data)
         const saveDevice = mysapi.getUrl('saveDevice', data)
