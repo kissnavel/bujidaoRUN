@@ -143,14 +143,13 @@ export default class Note extends base {
     let res = await this.noteData(ck, game)
     if (res?.Data?.retcode !== 0 || _.isEmpty(res?.User) || _.isEmpty(res?.Sign)) return false
 
-    let data = game == 'zzz' ? await this.noteZzz(res.Data, ck.uid) : game == 'sr' ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
     this.e.isSr = game == 'sr' ? true : false
     this.e.isZzz = game == 'zzz' ? true : false
-    let screenData = this.screenData
+    let data = this.e.isZzz ? await this.noteZzz(res.Data, ck.uid) : this.e.isSr ? await this.noteSr(res.Data, ck.uid) : await this.notegs(res.Data, ck.uid)
 
     data = {
       quality: 80,
-      ...screenData,
+      ...this.screenData,
       ...data,
       ...res.User,
       ...res.Sign
