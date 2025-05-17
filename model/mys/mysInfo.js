@@ -4,7 +4,6 @@ import MysUser from '../../../genshin/model/mys/MysUser.js'
 import MysApi from '../../../genshin/model/mys/mysApi.js'
 import GsCfg from '../../../genshin/model/gsCfg.js'
 import common from '../../../../lib/common/common.js'
-import getDeviceFp from '../getDeviceFp.js'
 import Validate from './mysApi.js'
 import Cfg from '../Cfg.js'
 import _ from 'lodash'
@@ -458,7 +457,7 @@ export default class MysInfo {
       let vali = new Validate(mysApi.uid, mysApi.cookie, mysApi.option, 'all')
 
       let challenge_game = mysApi.game == 'zzz' ? '8' : mysApi.game == 'sr' ? '6' : '2'
-      let deviceFp = await getDeviceFp.Fp(mysApi.uid, mysApi.cookie, mysApi.game)
+      let deviceFp = await mysApi.getData('getFp')
       let headers = { 'x-rpc-device_fp': deviceFp?.data?.device_fp, 'x-rpc-challenge_game': challenge_game }
       let app_key = mysApi.game == 'zzz' ? 'game_record_zzz' : mysApi.game == 'sr' ? 'hkrpg_game_record' : ''
 
