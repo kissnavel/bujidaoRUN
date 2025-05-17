@@ -21,7 +21,6 @@ export default class apiTool {
     const board = data?.board ?? 'kona'
     const deviceBrand = deviceInfo.split('/')[0]
     const deviceDisplay = deviceInfo.split('/')[3]
-    let Bbs_api = 'https://bbs-api.miyoushe.com/'
     let bbs_api = 'https://bbs-api.mihoyo.com/'
     let host, host_hk4e, host_nap, hostRecord, hostPublicData
     if (['bh3_cn', 'bh2_cn'].includes(this.biz) || /cn_|_cn/.test(this.server)) {
@@ -213,28 +212,6 @@ export default class apiTool {
         character_detail: {
           url: `${hostRecord}game_record/app/genshin/api/character/detail`,
           body: { role_id: this.uid, server: this.server, character_ids: data.ids }
-        },
-        deviceLogin: {
-          url: `${Bbs_api}apihub/api/deviceLogin`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
-        },
-        saveDevice: {
-          url: `${Bbs_api}apihub/api/saveDevice`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
         }
       },
       sr: {
@@ -336,28 +313,6 @@ export default class apiTool {
         rogue: {
           url: `${hostRecord}game_record/app/hkrpg/api/rogue`,
           query: `need_detail=true&role_id=${this.uid}&schedule_type=3&server=${this.server}`
-        },
-        deviceLogin: {
-          url: `${Bbs_api}apihub/api/deviceLogin`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
-        },
-        saveDevice: {
-          url: `${Bbs_api}apihub/api/saveDevice`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
         }
       },
       zzz: {
@@ -431,28 +386,6 @@ export default class apiTool {
         dailyNote: {
           url: `${hostRecord}event/game_record_zzz/api/zzz/note`,
           query: `role_id=${this.uid}&server=${this.server}`
-        },
-        deviceLogin: {
-          url: `${Bbs_api}apihub/api/deviceLogin`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
-        },
-        saveDevice: {
-          url: `${Bbs_api}apihub/api/saveDevice`,
-          body: {
-            app_version: '2.73.1',
-            device_id: data.deviceId,
-            device_name: `${deviceBrand}${modelName}`,
-            os_version: '33',
-            platform: 'Android',
-            registration_id: this.generateSeed(19)
-          }
         }
       },
       bh3: {
