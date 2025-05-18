@@ -93,6 +93,7 @@ export default class MysInfo {
   static async getUid(e, matchMsgUid = true) {
     let user = await NoteUser.create(e)
     const game = e?.game || (e?.isSr ? 'sr' : 'gs')
+    let gametype = game == 'gs' ? '#' : game == 'sr' ? '*' : game == 'zzz' ? '%' : game == 'wd' ? '&' : game == 'bh3' ? '!' : '￥'
     if (e.uid && matchMsgUid) {
       /** 没有绑定的自动绑定 */
       return user.autoRegUid(e.uid, game)
@@ -107,7 +108,7 @@ export default class MysInfo {
       let atUser = await NoteUser.create(at)
       uid = atUser.getUid(game)
       if (uid) return String(uid)
-      if (e.noTips !== true) e.reply(`请先${e.game === 'gs' ? '#' : e.game === 'sr' ? '*' : e.game === 'zzz' ? '%' : e.game === 'bh3' ? '!' : '￥'}绑定uid`, false, { at })
+      if (e.noTips !== true) e.reply(`请先${gametype}绑定uid`, false, { at })
       return false
     }
 
@@ -136,7 +137,7 @@ export default class MysInfo {
       return user.autoRegUid(uid, game)
     }
 
-    if (e.noTips !== true) e.reply(`请先${e.game === 'gs' ? '#' : e.game === 'sr' ? '*' : e.game === 'zzz' ? '%' : e.game === 'bh3' ? '!' : '￥'}绑定uid`, false, { at })
+    if (e.noTips !== true) e.reply(`请先${gametype}绑定uid`, false, { at })
 
     return false
   }
@@ -323,7 +324,10 @@ export default class MysInfo {
   async checkReply() {
     if (this.e.noTips === true) return
 
-    if (!this.uid) this.e.reply(`请先${this.e.game === 'gs' ? '#' : this.e.game === 'sr' ? '*' : this.e.game === 'zzz' ? '%' : this.e.game === 'bh3' ? '!' : '￥'}绑定uid`)
+    const game = this.e?.game || (this.e?.isSr ? 'sr' : 'gs')
+    let gametype = game == 'gs' ? '#' : game == 'sr' ? '*' : game == 'zzz' ? '%' : game == 'wd' ? '&' : game == 'bh3' ? '!' : '￥'
+
+    if (!this.uid) this.e.reply(`请先${gametype}绑定uid`)
 
     if (!this.ckInfo.ck) this.e.reply('请发送【#cookie帮助】查看配置教程\n或尝试【#刷新ck】')
 
