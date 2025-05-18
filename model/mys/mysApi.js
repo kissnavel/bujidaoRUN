@@ -90,21 +90,6 @@ export default class MysApi {
       }
     }
 
-    if (type == 'deviceLogin' || type == 'saveDevice') {
-      try {
-        headers['x-rpc-sys_version'] = '12'
-        headers['x-rpc-client_type'] = '2'
-        headers['x-rpc-channel'] = 'miyousheluodi'
-        headers['x-rpc-csm_source'] = 'home'
-        headers['Host'] = 'bbs-api.miyoushe.com'
-        headers['User-Agent'] = 'okhttp/4.9.3'
-        headers['Referer'] = 'https://app.mihoyo.com/'
-        headers['DS'] = this.SignDs(_bbs)
-      } catch (error) {
-        logger.error(`[bujidao]设备信息解析失败：${error.message}`)
-      }
-    }
-
     return { url, headers, body, config }
   }
 
@@ -154,6 +139,7 @@ export default class MysApi {
   }
 
   async getData(type, data = {}, game = '', cached = false) {
+    if (!data?.headers) data.headers = {}
     const ck = this.cookie
     const ltuid = ck.ltuid
     if (ltuid) {
@@ -176,9 +162,15 @@ export default class MysApi {
         }
       }
       const device_fp = await redis.get(`genshin:device_fp:${ltuid}:fp`)
-      if (device_fp) data.deviceFp = device_fp
+      if (device_fp) {
+        data.deviceFp = device_fp
+        data.headers['x-rpc-device_fp'] = device_fp
+      }
       const device_id = await redis.get(`genshin:device_fp:${ltuid}:id`)
-      if (device_id) data.deviceId = device_id
+      if (device_id) {
+        data.deviceId = device_id
+        data.headers['x-rpc-device_id'] = device_id
+      }
     }
     if (this.types.includes(type)) {
       if (!this._device_fp && !data?.Getfp && !data?.headers?.['x-rpc-device_fp']) {
