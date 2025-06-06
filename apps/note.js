@@ -13,7 +13,7 @@ export class ji_note extends plugin {
             priority: Cfg.getConfig('config').priority,
             rule: [
                 {
-                    reg: '^#?(多|全|全部|原神|星铁)?(体力|开拓力|树脂|查询体力|便笺|便签)$',
+                    reg: '^#?(多|全|全部|原神|星铁|绝区零)?(体力|树脂|开拓力|电量|查询体力|便笺|便签)$',
                     fnc: 'note',
                 },
                 {
