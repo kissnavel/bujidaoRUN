@@ -1,3 +1,4 @@
+import puppeteer from '../../../lib/puppeteer/puppeteer.js'
 import common from '../../../lib/common/common.js'
 import cfg from '../../../lib/config/config.js'
 import MysApi from './mys/mysApi.js'
@@ -27,28 +28,105 @@ export default class MysSign extends base {
 
         e.reply(`签到中...`, false, { at: true, recallMsg: mysSign.set.recall })
 
-        let msg = []; let res
-        for (let g of mysSign.set.game) {
-            let name = g == 'gs' ? '原神' : g == 'sr' ? '星铁' : g == 'zzz' ? '绝区零' : g == 'bh3' ? '崩三' : g == 'bh2' ? '崩二' : '未定'
+        return await mysSign.signWithImage(cks, uids)
+    }
+
+    async signWithImage(cks, uids) {
+        let gameList = []
+        let totalSignCount = 0
+
+        for (let g of this.set.game) {
+            let name = g == 'gs' ? '原神' : g == 'sr' ? '崩坏：星穹铁道' : g == 'zzz' ? '绝区零' : g == 'bh3' ? '崩坏三' : g == 'bh2' ? '崩坏学园2' : '未定事件簿'
+            let gameData = {
+                name,
+                results: []
+            }
+
             for (let i = 0; i < uids[g].length; i++) {
-                mysSign.ckNum = Number(i) + 1
+                this.ckNum = Number(i) + 1
                 if (i >= 1) await common.sleep(5000)
                 let uid = uids[g][i]; let ck = cks[g][uid]; let retry = 0
 
-                logger.mark(`[${name}签到]QQ: ${e.user_id}${name}UID: ${uid}`)
-                res = await mysSign.doSign(ck, uid, g, name)
+                logger.mark(`[${name}签到]QQ: ${this.e.user_id} ${name}UID: ${uid}`)
+                let res = await this.doSign(ck, uid, g, name)
                 if (res.retcode === -1000)
-                    while (res.retcode === -1000 && retry < mysSign.set.retry) {
-                        res = await mysSign.doSign(ck, uid, g, name)
+                    while (res.retcode === -1000 && retry < this.set.retry) {
+                        res = await this.doSign(ck, uid, g, name)
                         retry++
                     }
 
-                if (res) msg.push(res.msg)
+                if (res) {
+                    let status = 'failed'
+                    let statusText = '签到失败'
+                    if (res.retcode === 0) {
+                        if (res.is_sign) {
+                            status = 'already'
+                            statusText = '今日已签'
+                        } else {
+                            status = 'success'
+                            statusText = '签到成功'
+                        }
+                    }
+
+                    let icon = ''; let reward = ''; let totalDays = ''
+                    let msgParts = res.msg.split('\n')
+                    for (let part of msgParts) {
+                        if (part.includes('天奖励：')) {
+                            let rewardMatch = part.match(/第(\d+)天奖励：(.+)/)
+                            if (rewardMatch) {
+                                totalDays = rewardMatch[1]
+                                reward = rewardMatch[2]
+                                icon = res.icon
+                            }
+                        }
+                    }
+
+                    gameData.results.push({
+                        index: i + 1,
+                        uid,
+                        status,
+                        statusText,
+                        icon,
+                        reward,
+                        totalDays
+                    })
+
+                    if (res.retcode === 0) {
+                        totalSignCount++
+                    }
+                }
+            }
+
+            if (gameData.results.length > 0) {
+                gameList.push(gameData)
             }
         }
 
-        msg = msg.join('\n')
-        return e.reply(msg, false, { at: true, recallMsg: mysSign.set.recall })
+        // 渲染图片
+        let screenData = this.screenData
+        screenData.tplFile = `${this._path}/plugins/bujidao/resources/MysSign/html/sign/sign.html`
+        screenData.pluResPath = `${this._path}/plugins/bujidao/resources/MysSign/`
+        let data = {
+            ...screenData,
+            saveId: this.e.user_id,
+            quality: 100,
+            totalSignCount,
+            gameList
+        }
+
+        let img = await puppeteer.screenshot('MysSign/sign', data)
+        if (img) {
+            return this.e.reply(img, false, { at: true })
+        } else {
+            let textMsg = []
+            for (let game of gameList) {
+                textMsg.push(`\n${game.name}：`)
+                for (let result of game.results) {
+                    textMsg.push(`uid:${result.uid}，${result.statusText}\n第${result.totalDays}天奖励：${result.reward}`)
+                }
+            }
+            return this.e.reply(textMsg.join('\n'), false, { at: true })
+        }
     }
 
     async doSign(ck, uid, game, name) {
@@ -62,7 +140,8 @@ export default class MysSign extends base {
             let reward = await this.getReward(isSigned, game)
             return {
                 retcode: 0,
-                msg: `\n${name}uid:${uid}，今日已签\n第${isSigned}天奖励：${reward}`,
+                msg: `\n${name}uid:${uid}，今日已签\n第${isSigned}天奖励：${reward.reward}`,
+                icon: reward.icon,
                 is_sign: true
             }
         }
@@ -103,7 +182,8 @@ export default class MysSign extends base {
             this.setCache(this.signInfo.total_sign_day)
             return {
                 retcode: 0,
-                msg: `\n${name}uid:${uid}，今日已签\n第${this.signInfo.total_sign_day}天奖励：${reward}`,
+                msg: `\n${name}uid:${uid}，今日已签\n第${this.signInfo.total_sign_day}天奖励：${reward.reward}`,
+                icon: reward.icon,
                 is_sign: true
             }
         }
@@ -128,7 +208,8 @@ export default class MysSign extends base {
 
             return {
                 retcode: 0,
-                msg: `\n${name}uid:${uid}，${tips}\n第${totalSignDay}天奖励：${reward}`
+                msg: `\n${name}uid:${uid}，${tips}\n第${totalSignDay}天奖励：${reward.reward}`,
+                icon: reward.icon
             }
         }
 
@@ -141,7 +222,7 @@ export default class MysSign extends base {
     async getReward(signDay) {
         let key = `${this.mysApi.game}:rewards`
 
-        let reward = await redis.get(key)
+        let icon; let reward = await redis.get(key)
 
         if (reward) {
             reward = JSON.parse(reward)
@@ -159,13 +240,16 @@ export default class MysSign extends base {
         }
         if (reward && reward.length > 0) {
             reward = reward[signDay - 1] || ''
-            if (reward.name && reward.cnt)
+            if (reward.icon && reward.name && reward.cnt) {
+                icon = reward.icon
                 reward = `${reward.name}*${reward.cnt}`
+            }
         } else {
+            icon = ''
             reward = ''
         }
 
-        return reward
+        return { icon, reward }
     }
 
     async setCache(day) {
