@@ -1,4 +1,5 @@
 import cfg from '../../../../lib/config/config.js'
+import getDeviceFp from '../getDeviceFp.js'
 import apiTool from './apiTool.js'
 import fetch from 'node-fetch'
 import Cfg from '../Cfg.js'
@@ -139,7 +140,9 @@ export default class MysApi {
   }
 
   async getData(type, data = { headers: {} }, game = '', cached = false) {
+    const uid = this.uid
     const ck = this.cookie
+    const Game = this.game
     const ltuid = ck.ltuid
     if (ltuid) {
       let bindInfo = await redis.get(`genshin:device_fp:${ltuid}:bind`)
@@ -160,10 +163,10 @@ export default class MysApi {
           bindInfo = null
         }
       }
-      const device_fp = await redis.get(`genshin:device_fp:${ltuid}:fp`)
-      if (device_fp) {
-        data.deviceFp = device_fp
-        data.headers['x-rpc-device_fp'] = device_fp
+      const { deviceFp } = await getDeviceFp.Fp(uid, ck, Game)
+      if (deviceFp) {
+        data.deviceFp = deviceFp
+        data.headers['x-rpc-device_fp'] = deviceFp
       }
       const device_id = await redis.get(`genshin:device_fp:${ltuid}:id`)
       if (device_id) {
