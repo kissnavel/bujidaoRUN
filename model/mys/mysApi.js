@@ -98,7 +98,19 @@ export default class MysApi {
     const _uid = String(this.uid)
     const isSr = this.game == 'sr'
     const isZzz = this.game == 'zzz'
-    if (isZzz) {
+    const isWd = this.game == 'wd'
+    if (isWd) {
+      switch (_uid.slice(0, -7)) {
+        case '11':
+          return 'cn_prod_bb01'
+        case '21':
+          return 'cn_prod_mix01'
+        case '10':
+          return 'tw_prod_wd01'
+        case '20':
+          return 'glb_prod_wd01'
+      }
+    } else if (isZzz) {
       switch (_uid.slice(0, -8)) {
         case '10':
           return 'prod_gf_us'
