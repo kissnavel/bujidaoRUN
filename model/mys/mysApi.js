@@ -77,14 +77,14 @@ export default class MysApi {
         headers['x-rpc-device_model'] = modelName
         headers['x-rpc-csm_source'] = 'myself'
         // 国际服不需要绑定设备，故写入的'User-Agent'为国服
-        headers['User-Agent'] = `Mozilla/5.0 (Linux; Android ${osVersion}; ${modelName} Build/${deviceDisplay}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/100.0.4896.88 Mobile Safari/537.36 miHoYoBBS/2.73.1`
+        headers['User-Agent'] = `Mozilla/5.0 (Linux; Android ${osVersion}; ${modelName} Build/${deviceDisplay}; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/111.0.5563.116 Mobile Safari/537.36 miHoYoBBS/2.73.1`
       } catch (error) {
         logger.error(`[bujidao]设备信息解析失败：${error.message}`)
       }
     } else {
       try {
-        headers['x-rpc-device_name'] = 'Sony XQ-AT52'
-        headers['x-rpc-device_model'] = 'XQ-AT52'
+        headers['x-rpc-device_name'] = 'Sony XQ-BC52'
+        headers['x-rpc-device_model'] = 'XQ-BC52'
         headers['x-rpc-csm_source'] = 'myself'
       } catch (error) {
         logger.error(`[bujidao]设备信息解析失败：${error.message}`)
@@ -98,19 +98,7 @@ export default class MysApi {
     const _uid = String(this.uid)
     const isSr = this.game == 'sr'
     const isZzz = this.game == 'zzz'
-    const isWd = this.game == 'wd'
-    if (isWd) {
-      switch (_uid.slice(0, -7)) {
-        case '11':
-          return 'cn_prod_bb01'
-        case '21':
-          return 'cn_prod_mix01'
-        case '10':
-          return 'tw_prod_wd01'
-        case '20':
-          return 'glb_prod_wd01'
-      }
-    } else if (isZzz) {
+    if (isZzz) {
       switch (_uid.slice(0, -8)) {
         case '10':
           return 'prod_gf_us'
@@ -279,7 +267,7 @@ export default class MysApi {
       'x-rpc-app_version': '2.73.1',
       'x-rpc-client_type': '5',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 12; XQ-AT52 Build/58.2.A.7.93; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/100.0.4896.88 Mobile Safari/537.36 miHoYoBBS/2.73.1',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 13; XQ-BC52 Build/61.2.A.0.472A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/111.0.5563.116 Mobile Safari/537.36 miHoYoBBS/2.73.1',
       Referer: 'https://webstatic.mihoyo.com/'
     }
 
@@ -287,7 +275,7 @@ export default class MysApi {
       'x-rpc-app_version': '2.57.1',
       'x-rpc-client_type': '2',
       'x-rpc-device_id': this.device_id,
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 12; XQ-AT52 Build/58.2.A.7.93; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/100.0.4896.88 Mobile Safari/537.36 miHoYoBBSOversea/2.57.1',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 13; XQ-BC52 Build/61.2.A.0.472A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/111.0.5563.116 Mobile Safari/537.36 miHoYoBBSOversea/2.57.1',
       Referer: 'https://act.hoyolab.com/'
     }
 
@@ -298,8 +286,8 @@ export default class MysApi {
       Referer: 'https://app.mihoyo.com/',
       'User-Agent': 'okhttp/4.9.3',
       'x-rpc-device_id': this.device_id,
-      'x-rpc-device_model': 'XQ-AT52',
-      'x-rpc-device_name': 'Sony XQ-AT52',
+      'x-rpc-device_model': 'XQ-BC52',
+      'x-rpc-device_name': 'Sony XQ-BC52',
       'x-rpc-sys_version': '12'
     }
 
@@ -312,8 +300,8 @@ export default class MysApi {
 
     let signgame = this.game == 'gs' ? 'hk4e' : this.game == 'sr' ? 'hkrpg' : this.game == 'zzz' ? 'zzz' : this.game == 'bh3' ? 'bh3' : this.game == 'bh2' ? 'bh2' : 'nxx'
     let x_rpc = {
-      'x-rpc-device_model': 'XQ-AT52',
-      'x-rpc-device_name': 'Sony XQ-AT52',
+      'x-rpc-device_model': 'XQ-BC52',
+      'x-rpc-device_name': 'Sony XQ-BC52',
       'x-rpc-sys_version': '12',
       'x-rpc-signgame': signgame,
       'x-rpc-platform': 'android'
