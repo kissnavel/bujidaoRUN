@@ -193,10 +193,10 @@ export default class Myspanel {
                                     k = 0
                                 } else {
                                     k = (val_.value - Number(at[1]) * times) / Number(at[2])
-                                    if (k.toString().indexOf('.') != -1) {
+                                    if (k.toString().indexOf('.') !== -1) {
                                         b = Math.floor((k - Math.floor(k)) * 100)
                                         if (b > 50) k = Math.ceil(k)
-                                         else k = Math.floor(k)
+                                        else k = Math.floor(k)
                                     }
                                     p = k % times
                                 }
@@ -474,7 +474,7 @@ export default class Myspanel {
                 '效果抵抗': [11, 3.4560002, 0.432],
                 '击破特攻': [12, 5.183999999999999, 0.648]
             }
-            //四星遗器副词条[id,最低位,平均差值]
+            //4星遗器副词条[id,最低位,平均差值]
             let four_list = {
                 '生命值': [1, 27.096031, 3.387],
                 '攻击力': [2, 13.548016, 1.6935],
@@ -491,7 +491,7 @@ export default class Myspanel {
             }
             //遗器
             let artis = {}
-            let yqs=[...v.relics,...v.ornaments]
+            let yqs = [...v.relics, ...v.ornaments]
             if (yqs.length) {
                 yqs.map((yq) => {
                     let flist = five_list
@@ -511,16 +511,15 @@ export default class Myspanel {
                         if (k <= 0) {
                             p = 0
                         } else {
-                            let b=0
+                            let b = 0
                             p = k / at[2]
-                          if (p.toString().indexOf('.') != -1) {
-                            b = Math.floor((p - Math.floor(p)) * 100)
-                           if (b > 50) p = Math.ceil(p)
-                            else p = Math.floor(p)
+                            if (p.toString().indexOf('.') !== -1) {
+                                b = Math.floor((p - Math.floor(p)) * 100)
+                                if (b > 50) p = Math.ceil(p)
+                                else p = Math.floor(p)
                             }
                         }
-                        //由于米游社面板的副词条速度，全被向下取整了，所以遇到能被2整除的速度，采取+0.45速度，减少面板总体误差(5星遗器)
-                        if (at[0]==7&&at[1]==2&&p==0) {p=1.5}
+                        if (at[0] == 7 && at[1] == 2 && p !== 0) p = 3.3
                         attrIds.push(`${at[0]},${v_.times},${p}`)
                     }
                     artis[yq.pos] = {
