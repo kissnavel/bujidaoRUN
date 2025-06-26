@@ -44,7 +44,9 @@ export default class MysInfo {
       'detail_equip',
       'detail_avatar',
       'role_combat',
-      'character_detail'
+      'character_detail',
+      'hard_challenge',
+      'hard_challenge_popularity'
     ]
   }
 
