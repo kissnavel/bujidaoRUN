@@ -102,7 +102,7 @@ export default class Myspanel {
                     'promote': v.weapon.promote_level,
                     'affix': v.weapon.affix_level
                 },
-                '_source': 'mys',
+                '_source': 'mysPanel',
                 '_time': new Date().getTime(),
                 '_update': new Date().getTime(),
                 '_talent': new Date().getTime(),
@@ -560,7 +560,7 @@ export default class Myspanel {
                     'affix': v.equip.rank
                 } : null,
                 'artis': artis,
-                '_source': 'mys',
+                '_source': 'mysPanelHSR',
                 '_time': new Date().getTime(),
                 '_update': new Date().getTime(),
                 '_talent': new Date().getTime()
