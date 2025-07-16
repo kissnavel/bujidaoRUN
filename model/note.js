@@ -168,6 +168,7 @@ export default class Note extends base {
 
     let Data = await mysApi.getData('dailyNote', { headers })
     Data = await new MysInfo(this.e).checkCode(Data, 'dailyNote', mysApi, {}, true)
+    await common.sleep(500)
     if (Data?.retcode !== 0) return false
 
     let resUser = await mysApi.getData('UserGame')
