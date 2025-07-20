@@ -113,7 +113,7 @@ export function supportGuoba() {
         {
           field: 'api.type',
           label: '使用的平台',
-          bottomHelpMessage: '1：www.rrocr.com；2：2captcha.com',
+          bottomHelpMessage: '1：ttocr.com；2：2captcha.com',
           component: 'InputNumber',
           required: true,
           componentProps: {
@@ -125,7 +125,7 @@ export function supportGuoba() {
         {
           field: 'api.api',
           label: '使用的api',
-          bottomHelpMessage: 'rrocr、2captcha必填',
+          bottomHelpMessage: 'ttocr、2captcha必填',
           component: 'Input',
           componentProps: {
             placeholder: '例：https://api.example.com/recognize',
@@ -134,7 +134,7 @@ export function supportGuoba() {
         {
           field: 'api.resapi',
           label: '使用的resapi',
-          bottomHelpMessage: 'rrocr、2captcha必填',
+          bottomHelpMessage: 'ttocr、2captcha必填',
           component: 'Input',
           componentProps: {
             placeholder: '例：https://api.example.com/results',
@@ -143,7 +143,7 @@ export function supportGuoba() {
         {
           field: 'api.key',
           label: 'api、resapi需要的key',
-          bottomHelpMessage: 'rrocr、2captcha必填',
+          bottomHelpMessage: 'ttocr、2captcha必填',
           component: 'Input',
           componentProps: {
             placeholder: '例：appkey=***',
@@ -152,7 +152,7 @@ export function supportGuoba() {
         {
           field: 'api.query',
           label: 'api需要的其他参数',
-          bottomHelpMessage: '除“key、gt、challenge”以外的，rrocr、2captcha必填',
+          bottomHelpMessage: '除“key、gt、challenge”以外的，ttocr、2captcha必填',
           component: 'Input',
           componentProps: {
             placeholder: '例: referer=***',
