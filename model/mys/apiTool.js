@@ -45,9 +45,9 @@ export default class apiTool {
         verifyGeetest: {
           url: `${host}event/toolcomsrv/risk/verifyGeetest`,
           body: {
-            geetest_challenge: data.challenge,
-            geetest_validate: data.validate,
-            geetest_seccode: `${data.validate}|jordan`,
+            geetest_challenge: data.challenge || data.geetest_challenge,
+            geetest_validate: data.validate || data.geetest_validate,
+            geetest_seccode: `${data.validate || data.geetest_validate}|jordan`,
             app_key: data.app_key
           }
         },
@@ -58,9 +58,9 @@ export default class apiTool {
         verifyVerification: {
           url: `${hostRecord}game_record/app/card/wapi/verifyVerification`,
           body: {
-            geetest_challenge: data.challenge,
-            geetest_validate: data.validate,
-            geetest_seccode: `${data.validate}|jordan`
+            geetest_challenge: data.challenge || data.geetest_challenge,
+            geetest_validate: data.validate || data.geetest_validate,
+            geetest_seccode: `${data.validate || data.geetest_validate}|jordan`
           }
         },
         recognize: {
@@ -70,6 +70,14 @@ export default class apiTool {
         results: {
           url: `${this.api.resapi}`,
           config: `${this.api.key}&resultid=${data.resultid}`
+        },
+        in: {
+          url: `${this.api.api}`,
+          query: `${this.api.key}&${this.api.query}&gt=${data.gt}&challenge=${data.challenge}`
+        },
+        res: {
+          url: `${this.api.resapi}`,
+          query: `${this.api.key}&${this.api.resquery}&id=${data.request}`
         }
       },
       bbs: {
@@ -93,9 +101,9 @@ export default class apiTool {
         bbsCaptchaVerify: {
           url: `${bbs_api}misc/api/verifyVerification`,
           body: {
-            "geetest_challenge": data.challenge,
-            "geetest_validate": data.validate,
-            "geetest_seccode": `${data.validate}|jordan`
+            "geetest_challenge": data.challenge || data.geetest_challenge,
+            "geetest_validate": data.validate || data.geetest_validate,
+            "geetest_seccode": `${data.validate || data.geetest_validate}|jordan`
           },
           types: 'bbs'
         },

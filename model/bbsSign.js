@@ -328,23 +328,39 @@ export default class BBsSign extends base {
     }
 
     async bbsGeetest(mysApi, type = "", data = {}) {
+        let api = Cfg.getConfig('api')
         let vall = new MysApi(mysApi.uid, mysApi.cookie, {}, 'bbs')
         let res = await mysApi.getData('bbsGetCaptcha')
-        res = await vall.getData("recognize", res.data, 'all')
-        if (res?.resultid) {
-            let results = res
-            let retry = 0
-            await common.sleep(5000)
-            res = await vall.getData("results", results, 'all')
-            while ((res?.status == 2) && retry < 10) {
+        if (api.type == 1) {
+            res = await vall.getData("recognize", res.data, 'all')
+            if (res?.resultid) {
+                let results = res
+                let retry = 0
                 await common.sleep(5000)
                 res = await vall.getData("results", results, 'all')
-                retry++
+                while ((res?.status == 2) && retry < 10) {
+                    await common.sleep(5000)
+                    res = await vall.getData("results", results, 'all')
+                    retry++
+                }
+            }
+        } else if (api.type == 2) {
+            res = await vall.getData("in", res.data, 'all')
+            if (res?.request) {
+                let request = res
+                let retry = 0
+                await common.sleep(5000)
+                res = await vall.getData("res", request, 'all')
+                while ((res?.request == "CAPCHA_NOT_READY") && retry < 10) {
+                    await common.sleep(5000)
+                    res = await vall.getData("res", request, 'all')
+                    retry++
+                }
             }
         }
         try {
-            if (res?.data?.validate) {
-                res = await mysApi.getData("bbsCaptchaVerify", res.data)
+            if (res?.data?.validate || res?.request?.geetest_validate) {
+                res = await mysApi.getData("bbsCaptchaVerify", res?.data || res?.request)
                 if (type) {
                     if (res?.["data"]?.["challenge"])
                         return await mysApi.getData(type, {

@@ -456,6 +456,7 @@ export default class MysInfo {
   }
 
   async geetest(type, mysApi, data, retcode = 1034) {
+    let api = Cfg.getConfig('api')
     let res = await mysApi.getData(type, data)
     if (res?.retcode == 0 || (type == 'detail' && res?.retcode == -1002)) return res
 
@@ -471,25 +472,42 @@ export default class MysInfo {
       res = await vali.getData(retcode == 10035 ? "createGeetest" : "createVerification", { headers, app_key })
       if (!res) return { "data": null, "message": "公共ck失效", "retcode": 10103 }
 
-      res = await vali.getData("recognize", res?.data)
-      if (res?.resultid) {
-        let results = res
-        let retry = 0
-        await common.sleep(5000)
-        res = await vali.getData("results", results)
-        while ((res?.status == 2) && retry < 10) {
+      if (api.type == 1) {
+        res = await vali.getData("recognize", res?.data)
+        if (res?.resultid) {
+          let results = res
+          let retry = 0
           await common.sleep(5000)
           res = await vali.getData("results", results)
-          retry++
+          while ((res?.status == 2) && retry < 10) {
+            await common.sleep(5000)
+            res = await vali.getData("results", results)
+            retry++
+          }
+        }
+      } else if (api.type == 2) {
+        res = await vali.getData("in", res?.data)
+        if (res?.request) {
+          let request = res
+          let retry = 0
+          await common.sleep(5000)
+          res = await vali.getData("res", request)
+          while ((res?.request == "CAPCHA_NOT_READY") && retry < 10) {
+            await common.sleep(5000)
+            res = await vali.getData("res", request)
+            retry++
+          }
         }
       }
-      if (!res?.data?.validate) return { "data": null, "message": `${Cfg.getConfig('api').api}验证码失败`, "retcode": 1034 }
-
-      res = await vali.getData(retcode == 10035 ? "verifyGeetest" : "verifyVerification", {
-        ...res?.data,
-        headers,
-        app_key
-      })
+      if (res?.data?.validate || res?.request?.geetest_validate) {
+        res = await vali.getData(retcode == 10035 ? "verifyGeetest" : "verifyVerification", {
+          ...res?.data ? res.data : res.request,
+          headers,
+          app_key
+        })
+      } else {
+        return { "data": null, "message": `${api.api}验证码失败`, "retcode": 1034 }
+      }
 
       if (res?.data?.challenge) {
         res = await mysApi.getData(type, {

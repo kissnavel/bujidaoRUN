@@ -1,9 +1,12 @@
-#www.rrocr.com、www.ttocr.com
+#使用的平台，1：www.rrocr.com；2：2captcha.com
+type: 1
 #使用的api，例：https://api.example.com/recognize
 api: 
-#使用的resapi(rrocr不填，ttocr必填)，例：https://api.example.com/results
+#使用的resapi，例：https://api.example.com/results
 resapi: 
-#api、resapi需要的key(rrocr、ttocr)，例: appkey=***
+#api、resapi需要的key，例: appkey=***
 key: 
 #api需要的其他参数(除“key、gt、challenge”以外的)，例: referer=***
 query: 
+#resapi需要的其他参数(除“key”以外的)，例: action=***
+resquery: 

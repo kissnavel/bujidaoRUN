@@ -259,6 +259,7 @@ export default class MysSign extends base {
 
     async bbsSign(name, game) {
         this.signApi = true
+        let api = Cfg.getConfig('api')
         let sign = await this.mysApi.getData('sign')
         this.signMsg = sign?.message ?? 'Too Many Requests'
         await common.sleep(5000)
@@ -278,22 +279,37 @@ export default class MysSign extends base {
             this.signMsg = '验证码失败'
             sign.message = '验证码失败'
 
-            let res = await this.mysApi.getData('recognize', sign.data, 'all')
-            if (res?.resultid) {
-                let results = res
-                let retry = 0
-                await common.sleep(5000)
-                res = await this.mysApi.getData('results', results, 'all')
-                while ((res?.status == 2) && retry < 10) {
+            if (api.type == 1) {
+                let res = await this.mysApi.getData('recognize', sign.data, 'all')
+                if (res?.resultid) {
+                    let results = res
+                    let retry = 0
                     await common.sleep(5000)
                     res = await this.mysApi.getData('results', results, 'all')
-                    retry++
+                    while ((res?.status == 2) && retry < 10) {
+                        await common.sleep(5000)
+                        res = await this.mysApi.getData('results', results, 'all')
+                        retry++
+                    }
+                }
+            } else if (api.type == 2) {
+                let res = await this.mysApi.getData('in', sign.data, 'all')
+                if (res?.request) {
+                    let request = res
+                    let retry = 0
+                    await common.sleep(5000)
+                    res = await this.mysApi.getData('res', request, 'all')
+                    while ((res?.request == 'CAPCHA_NOT_READY') && retry < 10) {
+                        await common.sleep(5000)
+                        res = await this.mysApi.getData('res', request, 'all')
+                        retry++
+                    }
                 }
             }
 
             try {
-                if (res?.data?.validate) {
-                    sign = await this.mysApi.getData('sign', res.data, game)
+                if (res?.data?.validate || res?.request?.geetest_validate) {
+                    sign = await this.mysApi.getData('sign', res?.data || res?.request, game)
 
                     if (sign.data?.gt) {
                         logger.mark(`[${name}签到失败]${this.log}：${sign.message} 第${this.ckNum}个`)

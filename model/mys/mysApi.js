@@ -200,10 +200,10 @@ export default class MysApi {
       delete data.headers
     }
 
-    if (type == 'sign' && data.validate) {
-      headers["x-rpc-challenge"] = data.challenge
-      headers["x-rpc-validate"] = data.validate
-      headers["x-rpc-seccode"] = `${data.validate}|jordan`
+    if (type == 'sign' && (data.validate || data.geetest_validate)) {
+      headers["x-rpc-challenge"] = data.challenge || data.geetest_challenge
+      headers["x-rpc-validate"] = data.validate || data.geetest_validate
+      headers["x-rpc-seccode"] = `${data.validate || data.geetest_validate}|jordan`
     }
 
     if (this.types.includes(type)) {
