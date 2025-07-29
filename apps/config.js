@@ -107,10 +107,10 @@ export class ji_config extends plugin {
 
         let Uid = Cfg.getConfig('banuid')
 
-        let name = e.msg.includes('原神') ? '原神' : e.msg.includes('星铁') ? '星铁' : e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('崩三') ? '崩三' : e.msg.includes('崩二') ? '崩二' : '未定'
-        let set = Uid[e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('崩三') ? 'bh3' : e.msg.includes('崩二') ? 'bh2' : 'wd']
+        let name = e.msg.includes('未定') ? '未定' : e.msg.includes('崩二') ? '崩二' : e.msg.includes('崩三') ? '崩三' : e.msg.includes('绝区零') ? '绝区零' : e.msg.includes('星铁') ? '星铁' : '原神'
+        let set = Uid[e.msg.includes('未定') ? 'wd' : e.msg.includes('崩二') ? 'bh2' : e.msg.includes('崩三') ? 'bh3' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('星铁') ? 'sr' : 'gs']
         let action = e.msg.includes('禁用') ? '禁用' : '解禁'
-        let g = e.msg.includes('原神') ? 'gs' : e.msg.includes('星铁') ? 'sr' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('崩三') ? 'bh3' : e.msg.includes('崩二') ? 'bh2' : 'wd'
+        let g = e.msg.includes('未定') ? 'wd' : e.msg.includes('崩二') ? 'bh2' : e.msg.includes('崩三') ? 'bh3' : e.msg.includes('绝区零') ? 'zzz' : e.msg.includes('星铁') ? 'sr' : 'gs'
 
         if (!e.isMaster) {
             let { cks } = await Cfg.getcks(false, e.user_id)
