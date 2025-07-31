@@ -165,21 +165,24 @@ export default class Note extends base {
     device_fp = await new MysInfo(this.e).checkCode(device_fp, 'getFp', mysApi, {}, true)
     if (device_fp?.retcode !== 0) return false
     let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
+    await common.sleep(100)
 
     let Data = await mysApi.getData('dailyNote', { headers })
     Data = await new MysInfo(this.e).checkCode(Data, 'dailyNote', mysApi, {}, true)
-    await common.sleep(500)
     if (Data?.retcode !== 0) return false
+    await common.sleep(100)
 
     let resUser = await mysApi.getData('UserGame')
     resUser = await new MysInfo(this.e).checkCode(resUser, 'UserGame', mysApi, {}, true)
     if (resUser?.retcode !== 0) return false
+    await common.sleep(100)
 
     let signInfo = await mysApi.getData('sign_info')
     signInfo = await new MysInfo(this.e).checkCode(signInfo, 'sign_info', mysApi, {}, true)
     if (signInfo?.retcode !== 0) return false
+    await common.sleep(100)
 
-    return { Data, User: resUser?.data?.list[0], Sign: signInfo?.data || {} }
+    return { Data, User: resUser?.data?.list[0] || {}, Sign: signInfo?.data || {} }
   }
 
   async noteZzz(res, uid) {
