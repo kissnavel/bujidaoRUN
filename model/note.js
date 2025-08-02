@@ -106,7 +106,7 @@ export default class Note extends base {
               let ck = cks[g][uid]
 
               let { Data, User, Sign } = await this.noteData(ck, g)
-              if (Data?.retcode !== 0 || _.isEmpty(User) || _.isEmpty(Sign)) continue
+              if (Data?.retcode !== 0 || !User || !Sign) continue
 
               Resins[`${g}_${uid}`] = this.e.isZzz ? Data?.data.energy.progress.current : Data?.data[`current_${this.e.isSr ? 'stamina' : 'resin'}`]
               if (Number(Resins[`${g}_${uid}`]) >= Number(Resin)) {
@@ -141,7 +141,7 @@ export default class Note extends base {
 
   async getData(ck, game) {
     let res = await this.noteData(ck, game)
-    if (res?.Data?.retcode !== 0 || _.isEmpty(res?.User) || _.isEmpty(res?.Sign)) return false
+    if (res?.Data?.retcode !== 0 || !res?.User || !res?.Sign) return false
 
     this.e.isSr = game == 'sr' ? true : false
     this.e.isZzz = game == 'zzz' ? true : false
@@ -174,15 +174,24 @@ export default class Note extends base {
 
     let resUser = await mysApi.getData('UserGame')
     resUser = await new MysInfo(this.e).checkCode(resUser, 'UserGame', mysApi, {}, true)
-    if (resUser?.retcode !== 0) return false
+    if (resUser?.retcode !== 0 || _.isEmpty(resUser?.data?.list)) return false
+    let User = resUser?.data?.list.find(item => item.game_uid === ck.uid)
+    if (User) {
+      resUser = {
+        game_uid: User.game_uid,
+        nickname: User.nickname,
+        level: User.level
+      }
+    }
     await common.sleep(100)
 
     let signInfo = await mysApi.getData('sign_info')
     signInfo = await new MysInfo(this.e).checkCode(signInfo, 'sign_info', mysApi, {}, true)
     if (signInfo?.retcode !== 0) return false
+    signInfo = signInfo?.data
     await common.sleep(100)
 
-    return { Data, User: resUser?.data?.list[0] || {}, Sign: signInfo?.data || {} }
+    return { Data, User: resUser, Sign: signInfo }
   }
 
   async noteZzz(res, uid) {
