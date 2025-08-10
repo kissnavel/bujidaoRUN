@@ -37,6 +37,13 @@ export default class MysApi {
       'detail_avatar',
       'rogue'
     ]
+
+    this.gttypes = [
+      'recognize',
+      'signrecognize',
+      'bbssignrecognize',
+      'results'
+    ]
   }
 
   get device() {
@@ -228,7 +235,7 @@ export default class MysApi {
     if (this.set.isLog)
       logger.error(`[米游社接口][${type}][${this.uid}] ${url} ${JSON.stringify(param)}`)
 
-    if (type == 'recognize' || type == 'results') {
+    if (this.gttypes.includes(type)) {
       param = {
         method: 'post',
         headers: {
