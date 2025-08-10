@@ -332,7 +332,7 @@ export default class BBsSign extends base {
         let vall = new MysApi(mysApi.uid, mysApi.cookie, {}, 'bbs')
         let res = await mysApi.getData('bbsGetCaptcha')
         if (api.type == 1) {
-            res = await vall.getData("recognize", res.data, 'all')
+            res = await vall.getData("bbssignrecognize", res.data, 'all')
             if (res?.resultid) {
                 let results = res
                 let retry = 0

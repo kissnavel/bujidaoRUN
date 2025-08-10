@@ -280,7 +280,7 @@ export default class MysSign extends base {
             sign.message = '验证码失败'
 
             if (api.type == 1) {
-                let res = await this.mysApi.getData('recognize', sign.data, 'all')
+                let res = await this.mysApi.getData('signrecognize', sign.data, 'all')
                 if (res?.resultid) {
                     let results = res
                     let retry = 0
