@@ -7,7 +7,6 @@ import _ from 'lodash'
 import md5 from 'md5'
 
 let HttpsProxyAgent = ''
-const _bbs = "WGtruoQrwczmsjLOPXzJLnaAYycsLavx"
 export default class MysApi {
   constructor(uid, cookie, option = {}, game = 'gs', Server = '', Biz = '') {
     this.uid = uid
@@ -348,7 +347,7 @@ export default class MysApi {
       case 'bbs':
         return {
           ...header_bbs,
-          DS: (sign ? this.bbsDs(query, body) : this.SignDs(_bbs))
+          DS: (sign ? this.bbsDs(query, body) : this.SignDs("WGtruoQrwczmsjLOPXzJLnaAYycsLavx"))
         }
       case 'noheader':
         return {}
