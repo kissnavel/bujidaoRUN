@@ -370,8 +370,6 @@ export default class MysInfo {
     }
 
     res.retcode = Number(res.retcode)
-    if (type === 'bbs_sign')
-      if ([-5003].includes(res.retcode)) res.retcode = 0
 
     switch (res.retcode) {
       case 0:
@@ -527,6 +525,7 @@ export default class MysInfo {
     }
     return res
   }
+
   /** 删除失效ck */
   async delCk() {
     if (Cfg.getConfig('config').Autodelck) {

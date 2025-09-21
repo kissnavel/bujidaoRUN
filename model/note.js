@@ -165,12 +165,12 @@ export default class Note extends base {
     device_fp = await new MysInfo(this.e).checkCode(device_fp, 'getFp', mysApi, {}, true)
     if (device_fp?.retcode !== 0) return false
     let headers = { 'x-rpc-device_fp': device_fp?.data?.device_fp }
-    await common.sleep(100)
+    await common.sleep(200)
 
     let Data = await mysApi.getData('dailyNote', { headers })
     Data = await new MysInfo(this.e).checkCode(Data, 'dailyNote', mysApi, {}, true)
     if (Data?.retcode !== 0) return false
-    await common.sleep(100)
+    await common.sleep(200)
 
     let resUser = await mysApi.getData('UserGame')
     resUser = await new MysInfo(this.e).checkCode(resUser, 'UserGame', mysApi, {}, true)
@@ -183,13 +183,13 @@ export default class Note extends base {
         level: User.level
       }
     }
-    await common.sleep(100)
+    await common.sleep(200)
 
     let signInfo = await mysApi.getData('sign_info')
     signInfo = await new MysInfo(this.e).checkCode(signInfo, 'sign_info', mysApi, {}, true)
     if (signInfo?.retcode !== 0) return false
     signInfo = signInfo?.data
-    await common.sleep(100)
+    await common.sleep(200)
 
     return { Data, User: resUser, Sign: signInfo }
   }

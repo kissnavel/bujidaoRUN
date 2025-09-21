@@ -63,6 +63,7 @@ export class ji_myspanel extends plugin {
         let res, data
         if (game == 'sr') {
             data = await mysApi.getData('avatarInfo', { headers })
+            data = await new MysInfo(e).checkCode(data, 'avatarInfo', mysApi, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
                 return false
@@ -70,6 +71,7 @@ export class ji_myspanel extends plugin {
             await Myspanel.sr_mys(data, uid)
         } else {
             res = await mysApi.getData('character', { headers })
+            res = await new MysInfo(e).checkCode(res, 'character', mysApi, {}, true)
             if (!res.data) {
                 logger.mark('米游社查询失败')
                 return false
@@ -79,6 +81,7 @@ export class ji_myspanel extends plugin {
                 ids.push(value.id)
             })
             data = await mysApi.getData('character_detail', { headers, ids: ids })
+            data = await new MysInfo(e).checkCode(data, 'character_detail', mysApi, {}, true)
             if (!data.data) {
                 logger.mark('米游社查询失败')
                 return false

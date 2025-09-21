@@ -1,3 +1,6 @@
+## 停更说明
+1、本仓库主要使用的体力、签到、米游社面板功能已整合至：“<a href="https://github.com/kissnavel/genshin">genshin</a>”仓库，本仓库将暂停更新。
+
 ## 说明
 1、有问题请百度，爱用不用。
 ```
